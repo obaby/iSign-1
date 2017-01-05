@@ -4,8 +4,10 @@ namespace iSign.Core
 {
 	public class BaseViewModel : MvxViewModel
 	{
-		public BaseViewModel()
+        protected INavigationService NavigationService { get; }
+		public BaseViewModel(INavigationService navigationService)
 		{
+            NavigationService = navigationService;
 		}
 	}
 }

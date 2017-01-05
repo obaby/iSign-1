@@ -14,8 +14,16 @@ namespace iSign
     [Register ("HomePageViewController")]
     partial class HomePageViewController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton GoToSignDocButton { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (GoToSignDocButton != null) {
+                GoToSignDocButton.Dispose ();
+                GoToSignDocButton = null;
+            }
         }
     }
 }

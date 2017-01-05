@@ -125,6 +125,7 @@
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Views\HomePageView.xib" />
+    <InterfaceDefinition Include="Views\SignDocumentView.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -139,6 +140,10 @@
       <DependentUpon>HomePageViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Setup.cs" />
+    <Compile Include="ViewControllers\SignDocumentViewController.cs" />
+    <Compile Include="ViewControllers\SignDocumentViewController.designer.cs">
+      <DependentUpon>SignDocumentViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
