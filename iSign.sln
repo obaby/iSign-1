@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSign", "iSign\iSign.csproj", "{BF068523-036D-45E4-AF6C-DF7773FD2D76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Release|iPhone.ActiveCfg = Release|iPhone
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Release|iPhone.Build.0 = Release|iPhone
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{BF068523-036D-45E4-AF6C-DF7773FD2D76}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal
