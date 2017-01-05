@@ -1,14 +1,14 @@
 ﻿using System;
-
+using iSign.Core;
+using MvvmCross.iOS.Views;
 using UIKit;
 
 namespace iSign
 {
-	public partial class ViewController : UIViewController
+	public partial class HomePageViewController : MvxViewController<HomePageViewModel>
 	{
-		protected ViewController(IntPtr handle) : base(handle)
+		public HomePageViewController() : base("HomePageView", null)
 		{
-			// Note: this .ctor should not contain any initialization logic.
 		}
 
 		public override void ViewDidLoad()
@@ -24,3 +24,4 @@ namespace iSign
 		}
 	}
 }
+

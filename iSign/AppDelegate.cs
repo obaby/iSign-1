@@ -1,4 +1,7 @@
 ﻿using Foundation;
+using MvvmCross.Core.ViewModels;
+using MvvmCross.iOS.Platform;
+using MvvmCross.Platform;
 using UIKit;
 
 namespace iSign
@@ -6,7 +9,7 @@ namespace iSign
 	// The UIApplicationDelegate for the application. This class is responsible for launching the
 	// User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
 	[Register("AppDelegate")]
-	public class AppDelegate : UIApplicationDelegate
+	public class AppDelegate : MvxApplicationDelegate
 	{
 		// class-level declarations
 
@@ -20,7 +23,14 @@ namespace iSign
 		{
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
+            Window = new UIWindow (UIScreen.MainScreen.Bounds);
+            var setup = new Setup (this, Window);
+            setup.Initialize ();
 
+            Window.MakeKeyAndVisible ();
+            
+            var startup = Mvx.Resolve<IMvxAppStart> ();
+            startup.Start ();
 			return true;
 		}
 
