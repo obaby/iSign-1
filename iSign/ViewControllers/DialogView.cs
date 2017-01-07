@@ -1,6 +1,8 @@
 using System;
+using iSign.Core;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
+using UIKit;
 
 namespace iSign
 {
@@ -14,9 +16,19 @@ namespace iSign
         private void SetBindings ()
         {
             var set = this.CreateBindingSet<DialogView, DialogViewModel> ();
-
-
+            set.Bind (OkBtn).To (vm => vm.OkCommand);
+            set.Bind (OkBtn).For ("Title").To (vm => vm.OkTxt);
+            set.Bind (CancelBtn).To (vm => vm.CancelCommand);
+            set.Bind (CancelBtn).For ("Title").To (vm => vm.CancelTxt);
+            set.Bind (InputTxt).To (vm => vm.Input);
             set.Apply ();
+        }
+
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
+            BackgroundColor = UIColor.FromHSBA (204, 100, 36, 0.5f);
+            InputTxt.AutocapitalizationType = UITextAutocapitalizationType.Sentences;
         }
     }
 }

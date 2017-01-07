@@ -10,10 +10,10 @@
         <view contentMode="scaleToFill" id="1" customClass="DialogView">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" customColorSpace="sRGB" colorSpace="calibratedRGB" red="0" green="0.42745098039215684" blue="0.71372549019607845" alpha="1"/>
+            <color key="backgroundColor" customColorSpace="sRGB" colorSpace="calibratedRGB" red="0.043137254901960784" green="0.35686274509803922" blue="0.25098039215686274" alpha="1"/>
             <subviews>
                 <view contentMode="scaleToFill" id="4" translatesAutoresizingMaskIntoConstraints="NO">
-                    <rect key="frame" x="168" y="104" width="240" height="128"/>
+                    <rect key="frame" x="180" y="104" width="240" height="128"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9" translatesAutoresizingMaskIntoConstraints="NO">
@@ -52,13 +52,13 @@
                         <constraint id="17" firstItem="4" firstAttribute="bottom" secondItem="9" secondAttribute="bottom" constant="10"/>
                         <constraint id="20" firstItem="18" firstAttribute="top" secondItem="4" secondAttribute="top" constant="20"/>
                         <constraint id="21" firstItem="18" firstAttribute="centerX" secondItem="4" secondAttribute="centerX"/>
+                        <constraint id="40" firstItem="4" firstAttribute="width" constant="240"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint id="5" firstItem="4" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="168"/>
                 <constraint id="6" firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="104"/>
-                <constraint id="7" firstItem="1" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" constant="192"/>
+                <constraint id="39" firstItem="1" firstAttribute="centerX" secondItem="4" secondAttribute="centerX"/>
             </constraints>
             <connections>
                 <outlet property="OkBtn" destination="10" id="name-outlet-10"/>

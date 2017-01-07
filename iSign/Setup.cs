@@ -2,6 +2,7 @@
 using iSign.Core;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
+using MvvmCross.Platform;
 using UIKit;
 
 namespace iSign
@@ -21,6 +22,12 @@ namespace iSign
         protected override IMvxApplication CreateApp ()
         {
             return new App ();
+        }
+
+        protected override void InitializePlatformServices ()
+        {
+            base.InitializePlatformServices ();
+            Mvx.RegisterType<IDialogService, DialogService> ();
         }
     }
 }

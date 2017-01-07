@@ -22,6 +22,18 @@ namespace iSign
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton EditBtn { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton GeneratePdfBtn { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton LabelBtn { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton LoadFileBtn { get; set; }
+
         [Action ("EditBtn_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void EditBtn_TouchUpInside (UIKit.UIButton sender);
@@ -36,6 +48,21 @@ namespace iSign
             if (EditBtn != null) {
                 EditBtn.Dispose ();
                 EditBtn = null;
+            }
+
+            if (GeneratePdfBtn != null) {
+                GeneratePdfBtn.Dispose ();
+                GeneratePdfBtn = null;
+            }
+
+            if (LabelBtn != null) {
+                LabelBtn.Dispose ();
+                LabelBtn = null;
+            }
+
+            if (LoadFileBtn != null) {
+                LoadFileBtn.Dispose ();
+                LoadFileBtn = null;
             }
         }
     }
