@@ -11,19 +11,11 @@ using UIKit;
 
 namespace iSign
 {
-    [Register ("HomePageViewController")]
-    partial class HomePageViewController
+    [Register ("TouchableScrollView")]
+    partial class TouchableScrollView
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton GoToSignDocButton { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
-            if (GoToSignDocButton != null) {
-                GoToSignDocButton.Dispose ();
-                GoToSignDocButton = null;
-            }
         }
     }
 }

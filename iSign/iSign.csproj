@@ -121,10 +121,15 @@
     <Folder Include="Resources\" />
     <Folder Include="Views\" />
     <Folder Include="ViewControllers\" />
+    <Folder Include="Touch\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Views\HomePageView.xib" />
+    <InterfaceDefinition Include="Views\SignDocumentView.xib" />
+    <InterfaceDefinition Include="Views\DialogView.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -139,6 +144,27 @@
       <DependentUpon>HomePageViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Setup.cs" />
+    <Compile Include="ViewControllers\SignDocumentViewController.cs" />
+    <Compile Include="ViewControllers\SignDocumentViewController.designer.cs">
+      <DependentUpon>SignDocumentViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Touch\CanvasView.cs" />
+    <Compile Include="Touch\CanvasView.designer.cs" />
+    <Compile Include="Touch\MainViewController.cs" />
+    <Compile Include="Touch\MainViewController.designer.cs" />
+    <Compile Include="Touch\ReticleView.cs" />
+    <Compile Include="Helpers\CGRectHelpers.cs" />
+    <Compile Include="Model\Line.cs" />
+    <Compile Include="Model\LinePoint.cs" />
+    <Compile Include="ViewControllers\DialogView.cs" />
+    <Compile Include="ViewControllers\DialogView.designer.cs">
+      <DependentUpon>DialogView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\EditableView.cs" />
+    <Compile Include="ViewControllers\TouchableScrollView.cs" />
+    <Compile Include="ViewControllers\TouchableScrollView.designer.cs">
+      <DependentUpon>TouchableScrollView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

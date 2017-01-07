@@ -4,5 +4,6 @@ namespace iSign.Core
 	public interface INavigationService
 	{
 		void ShowHomePage();
+        void ShowSigningPage ();
 	}
 }

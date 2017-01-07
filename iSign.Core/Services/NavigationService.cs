@@ -11,5 +11,10 @@ namespace iSign.Core
 		{
 			ShowViewModel<HomePageViewModel>();
 		}
-	}
+
+        public void ShowSigningPage ()
+        {
+            ShowViewModel<SigningDocViewModel> ();
+        }
+    }
 }
