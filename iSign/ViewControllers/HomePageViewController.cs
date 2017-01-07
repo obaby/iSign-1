@@ -20,6 +20,12 @@ namespace iSign
             set.Bind (GoToSignDocButton).For ("Title").To (vm => vm.SigningPageButtonTxt);
             set.Apply ();
         }
+
+        public override void ViewDidLoad ()
+        {
+            base.ViewDidLoad ();
+            GoToSignDocButton.SizeToFit ();
+        }
 	}
 }
 

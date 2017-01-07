@@ -11,31 +11,36 @@ using UIKit;
 
 namespace iSign
 {
-    [Register ("SignDocumentViewController")]
-    partial class SignDocumentViewController
+    [Register ("DialogView")]
+    partial class DialogView
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        iSign.TouchableScrollView ContainerView { get; set; }
+        UIKit.UIButton CancelBtn { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton EditBtn { get; set; }
+        UIKit.UITextField InputTxt { get; set; }
 
-        [Action ("EditBtn_TouchUpInside:")]
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void EditBtn_TouchUpInside (UIKit.UIButton sender);
+        UIKit.UIButton OkBtn { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (ContainerView != null) {
-                ContainerView.Dispose ();
-                ContainerView = null;
+            if (CancelBtn != null) {
+                CancelBtn.Dispose ();
+                CancelBtn = null;
             }
 
-            if (EditBtn != null) {
-                EditBtn.Dispose ();
-                EditBtn = null;
+            if (InputTxt != null) {
+                InputTxt.Dispose ();
+                InputTxt = null;
+            }
+
+            if (OkBtn != null) {
+                OkBtn.Dispose ();
+                OkBtn = null;
             }
         }
     }
