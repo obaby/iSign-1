@@ -124,6 +124,7 @@
     <Folder Include="Touch\" />
     <Folder Include="Helpers\" />
     <Folder Include="Model\" />
+    <Folder Include="IoC\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -165,6 +166,7 @@
     <Compile Include="ViewControllers\TouchableScrollView.designer.cs">
       <DependentUpon>TouchableScrollView.cs</DependentUpon>
     </Compile>
+    <Compile Include="IoC\DialogService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
