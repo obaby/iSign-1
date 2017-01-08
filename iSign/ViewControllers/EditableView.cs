@@ -63,8 +63,14 @@ namespace iSign
 
             switch (CurrentTouch) {
             case TypeOfTouch.Dragging:
-                x = Math.Max (0, Math.Min (Superview.Frame.Width - panInfo.View.Frame.Width, panInfo.View.Frame.X + deltaWidthDrag));
-                y = Math.Max (0, Math.Min (Superview.Frame.Height - panInfo.View.Frame.Height, panInfo.View.Frame.Y + deltaHeightDrag));
+                var xMax = Superview.Frame.Width;
+                var yMax = Superview.Frame.Height;
+                if (Superview is UIScrollView) {
+                    xMax = ((UIScrollView)Superview).ContentSize.Width;
+                    yMax = ((UIScrollView)Superview).ContentSize.Height;
+                }
+                x = Math.Max (0, Math.Min (xMax - panInfo.View.Frame.Width, panInfo.View.Frame.X + deltaWidthDrag));
+                y = Math.Max (0, Math.Min (yMax - panInfo.View.Frame.Height, panInfo.View.Frame.Y + deltaHeightDrag));
                 break;
             case TypeOfTouch.ResizingTopBorder:
                 y = panInfo.View.Frame.Y + deltaHeightDrag;

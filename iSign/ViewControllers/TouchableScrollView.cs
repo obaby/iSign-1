@@ -22,6 +22,11 @@ namespace iSign
             SetupGestures ();
         }
 
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
+            PanGestureRecognizer.MinimumNumberOfTouches = 2;
+        }
 
         public event EventHandler FinishedAddingView;
         private void OnFinishedAddingView ()

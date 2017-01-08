@@ -125,6 +125,8 @@
     <Folder Include="Helpers\" />
     <Folder Include="Model\" />
     <Folder Include="IoC\" />
+    <Folder Include="Resources\Pdf\" />
+    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -167,12 +169,17 @@
       <DependentUpon>TouchableScrollView.cs</DependentUpon>
     </Compile>
     <Compile Include="IoC\DialogService.cs" />
+    <Compile Include="Service\PdfToImage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
       <Project>{6FE34CB1-E91D-44C1-8C7A-463666022E03}</Project>
       <Name>iSign.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Pdf\FastFlex.jpg" />
+    <BundleResource Include="Resources\Pdf\Timesheet.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
