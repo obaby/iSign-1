@@ -10,7 +10,6 @@ namespace iSign
     public partial class SignDocumentViewController : MvxViewController<SigningDocViewModel>
     {
         private bool _editMode;
-        private UIImageView Imageview { get; set; }
 
         public SignDocumentViewController () : base ("SignDocumentView", null)
         {
@@ -67,11 +66,12 @@ namespace iSign
         partial void LoadFileBtn_TouchUpInside (UIButton sender)
         {
             var image = new UIImage ("Pdf/FastFlex.jpg");
-            Imageview = new UIImageView (image);
+            var imageview = new UIImageView (image);
 
-            ContainerView.Add (Imageview);
+            ContainerView.Clear ();
+            ContainerView.Add (imageview);
             ContainerView.UserInteractionEnabled = true;
-            ContainerView.ContentSize = Imageview.Frame.Size;
+            ContainerView.ContentSize = imageview.Frame.Size;
         }
 
         partial void UIButton92_TouchUpInside (UIButton sender)
@@ -81,16 +81,21 @@ namespace iSign
 
         void Converter_ImageCreated (object sender, UIImage e)
         {
-            Imageview = new UIImageView (e);
-            ContainerView.Add (Imageview);
-            ContainerView.ContentSize = Imageview.Frame.Size;
+            var imageview = new UIImageView (e);
+            ContainerView.Clear ();
+            ContainerView.Add (imageview);
+            ContainerView.ContentSize = imageview.Frame.Size;
         }
 
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
             var converter = new PdfToImage ();
-            converter.ImageCreated += Converter_ImageCreated; ;
-            converter.Load ("Pdf/Timesheet.pdf");
+            //converter.ImageCreated += Converter_ImageCreated; ;
+            var image = converter.DrawPdrFromUrl ("Pdf/Timesheet.pdf");
+            var imageview = new UIImageView (image);
+            ContainerView.Clear ();
+            ContainerView.Add (imageview);
+            ContainerView.ContentSize = imageview.Frame.Size;
         }
     }
 }
