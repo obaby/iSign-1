@@ -169,7 +169,7 @@
       <DependentUpon>TouchableScrollView.cs</DependentUpon>
     </Compile>
     <Compile Include="IoC\DialogService.cs" />
-    <Compile Include="Service\PdfToImage.cs" />
+    <Compile Include="Helpers\PdfToImage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

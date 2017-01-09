@@ -105,14 +105,25 @@ namespace iSign
         private void ViewLongPressed (UILongPressGestureRecognizer tapInfo)
         {
             if (tapInfo.State == UIGestureRecognizerState.Ended) {
-                _isSigning = !_isSigning;
-                if (_isSigning) {
-                    Layer.BorderWidth = 0;
-                    DragGesture.Enabled = false;
-                } else {
-                    Layer.BorderWidth = 1;
-                    DragGesture.Enabled = true;
-                }
+                UpdateLayer ();
+            }
+        }
+
+        public void EndUpdate ()
+        {
+            _isSigning = false;
+            UpdateLayer ();
+        }
+
+        private void UpdateLayer ()
+        {
+            _isSigning = !_isSigning;
+            if (_isSigning) {
+                Layer.BorderWidth = 0;
+                DragGesture.Enabled = false;
+            } else {
+                Layer.BorderWidth = 1;
+                DragGesture.Enabled = true;
             }
         }
 

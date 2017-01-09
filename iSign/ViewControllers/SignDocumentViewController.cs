@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using iSign.Core;
+using iSign.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.iOS.Views;
 using UIKit;
@@ -65,13 +66,7 @@ namespace iSign
 
         partial void LoadFileBtn_TouchUpInside (UIButton sender)
         {
-            var image = new UIImage ("Pdf/FastFlex.jpg");
-            var imageview = new UIImageView (image);
-
-            ContainerView.Clear ();
-            ContainerView.Add (imageview);
-            ContainerView.UserInteractionEnabled = true;
-            ContainerView.ContentSize = imageview.Frame.Size;
+            LoadFromPDFFile ();
         }
 
         partial void UIButton92_TouchUpInside (UIButton sender)
@@ -89,12 +84,39 @@ namespace iSign
 
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
-            var converter = new PdfToImage ();
-            //converter.ImageCreated += Converter_ImageCreated; ;
-            var image = converter.DrawPdrFromUrl ("Pdf/Timesheet.pdf");
+            var pdf = new ViewToPDF ();
+            var filename = pdf.Convert (ContainerView, "result.pdf");
+        }
+
+        private void LoadFromPDFFile ()
+        {
+            var image = PDFToImage.Convert ("Pdf/Timesheet.pdf");
             var imageview = new UIImageView (image);
+            var width = image.Size.Width;
+            var height = image.Size.Height;
+            var ratio = width / height;
+            if (width < ContainerView.Frame.Width) {
+                width = ContainerView.Frame.Width;
+                height = width / ratio;
+            }
+            if (height < ContainerView.Frame.Height) {
+                height = ContainerView.Frame.Height;
+                width = height * ratio;
+            }
+            imageview.Frame = new CGRect (imageview.Frame.X, imageview.Frame.Y, width, height);
             ContainerView.Clear ();
             ContainerView.Add (imageview);
+            ContainerView.ContentSize = imageview.Frame.Size;
+        }
+
+        private void LoadFromImage ()
+        {
+            var image = new UIImage ("Pdf/FastFlex.jpg");
+            var imageview = new UIImageView (image);
+
+            ContainerView.Clear ();
+            ContainerView.Add (imageview);
+            ContainerView.UserInteractionEnabled = true;
             ContainerView.ContentSize = imageview.Frame.Size;
         }
     }

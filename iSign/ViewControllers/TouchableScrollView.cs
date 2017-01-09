@@ -16,12 +16,12 @@ namespace iSign
         }
         private Modes Mode { get; set; }
         private string Text { get; set;}
-        private List<UIView> AddedViews { get; }
+        private List<EditableView> AddedViews { get; }
         public TouchableScrollView (IntPtr handle) : base (handle)
         {
             Mode = Modes.Done;
             SetupGestures ();
-            AddedViews = new List<UIView> ();
+            AddedViews = new List<EditableView> ();
         }
 
         public override void LayoutSubviews ()
@@ -82,6 +82,13 @@ namespace iSign
                 view.RemoveFromSuperview ();
             }
             AddedViews.Clear ();
+        }
+
+        public void PrepareForPDF ()
+        {
+            foreach (var view in AddedViews) {
+                view.EndUpdate ();
+            }
         }
     }
 }
