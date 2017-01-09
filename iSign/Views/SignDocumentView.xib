@@ -104,14 +104,14 @@
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="92" translatesAutoresizingMaskIntoConstraints="NO">
                     <rect key="frame" x="468" y="544" width="112" height="30"/>
-                    <state key="normal" title="End Editing">
+                    <state key="normal" title="Rotate">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <constraints>
                         <constraint id="95" firstItem="92" firstAttribute="width" constant="112"/>
                     </constraints>
                     <connections>
-                        <action selector="UIButton92_TouchUpInside:" destination="-1" id="96" eventType="touchUpInside"/>
+                        <action selector="EndEditingBtn_TouchUpInside:" destination="-1" id="175" eventType="touchUpInside"/>
                     </connections>
                 </button>
             </subviews>

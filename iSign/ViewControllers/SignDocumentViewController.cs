@@ -67,12 +67,8 @@ namespace iSign
         partial void LoadFileBtn_TouchUpInside (UIButton sender)
         {
             LoadFromPDFFile ();
+            EndEditingBtn.Hidden = false;
         }
-
-        partial void UIButton92_TouchUpInside (UIButton sender)
-        {
-        }
-
 
         void Converter_ImageCreated (object sender, UIImage e)
         {
@@ -80,6 +76,15 @@ namespace iSign
             ContainerView.Clear ();
             ContainerView.Add (imageview);
             ContainerView.ContentSize = imageview.Frame.Size;
+        }
+
+
+        int nbRotations = 0;
+        partial void EndEditingBtn_TouchUpInside (UIButton sender)
+        {
+            nbRotations++;
+            var degrees = nbRotations * 90 * (nfloat) Math.PI / 180;
+            ContainerView.Transform = CGAffineTransform.MakeRotation (degrees);
         }
 
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)

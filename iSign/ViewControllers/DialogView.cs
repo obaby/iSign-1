@@ -27,7 +27,7 @@ namespace iSign
         public override void LayoutSubviews ()
         {
             base.LayoutSubviews ();
-            BackgroundColor = UIColor.FromHSBA (204, 100, 36, 0.5f);
+            BackgroundColor = UIColor.Clear;
             InputTxt.AutocapitalizationType = UITextAutocapitalizationType.Sentences;
         }
     }

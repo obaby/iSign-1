@@ -42,6 +42,10 @@ namespace iSign
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void EditBtn_TouchUpInside (UIKit.UIButton sender);
 
+        [Action ("EndEditingBtn_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void EndEditingBtn_TouchUpInside (UIKit.UIButton sender);
+
         [Action ("GeneratePdfBtn_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void GeneratePdfBtn_TouchUpInside (UIKit.UIButton sender);
@@ -49,10 +53,6 @@ namespace iSign
         [Action ("LoadFileBtn_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void LoadFileBtn_TouchUpInside (UIKit.UIButton sender);
-
-        [Action ("UIButton92_TouchUpInside:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        partial void UIButton92_TouchUpInside (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
