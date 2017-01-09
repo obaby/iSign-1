@@ -84,8 +84,7 @@ namespace iSign
 
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
-            var pdf = new ViewToPDF ();
-            var filename = pdf.Convert (ContainerView, "result.pdf");
+            var filename = ViewToPDF.Convert (ContainerView, "result.pdf");
         }
 
         private void LoadFromPDFFile ()
