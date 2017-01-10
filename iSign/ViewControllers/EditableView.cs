@@ -13,7 +13,6 @@ namespace iSign
         private UIPanGestureRecognizer DragGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
-        private bool _isSigning;
         private int _border = 20;
         public EditableView (CGRect rect) : base(rect)
         {
@@ -105,25 +104,48 @@ namespace iSign
         private void ViewLongPressed (UILongPressGestureRecognizer tapInfo)
         {
             if (tapInfo.State == UIGestureRecognizerState.Ended) {
+                State = NextState ();
                 UpdateLayer ();
+            }
+        }
+
+        private ViewState NextState ()
+        {
+            switch (State) {
+            case ViewState.Done:
+                return ViewState.Moving;
+            case ViewState.Moving:
+                return ViewState.Editing;
+            case ViewState.Editing:
+                return ViewState.Done;
+            default: 
+                return ViewState.Done;
             }
         }
 
         public void EndUpdate ()
         {
-            _isSigning = false;
+            State = ViewState.Done;
             UpdateLayer ();
         }
 
         private void UpdateLayer ()
         {
-            _isSigning = !_isSigning;
-            if (_isSigning) {
+            switch (State) {
+            case ViewState.Done:
                 Layer.BorderWidth = 0;
                 DragGesture.Enabled = false;
-            } else {
+                break;
+            case ViewState.Editing:
                 Layer.BorderWidth = 1;
+                Layer.BorderColor = UIColor.Red.CGColor;
+                DragGesture.Enabled = false;
+                break;
+            case ViewState.Moving:
+                Layer.BorderWidth = 1;
+                Layer.BorderColor = UIColor.Black.CGColor;
                 DragGesture.Enabled = true;
+                break;
             }
         }
 
@@ -141,7 +163,7 @@ namespace iSign
         private TypeOfTouch DetermineTypeOfTouch (CGPoint coordinate)
         {
             if (coordinate.Y < _border) return TypeOfTouch.ResizingTopBorder;
-            if (coordinate.Y > this.Frame.Height - _border) return TypeOfTouch.ResizingBottomBorder;
+            if (coordinate.Y > Frame.Height - _border) return TypeOfTouch.ResizingBottomBorder;
             if (coordinate.X < _border) return TypeOfTouch.ResizingLeftBorder;
             if (coordinate.X > Frame.Width - _border) return TypeOfTouch.ResizingRightBorder;
             return TypeOfTouch.Dragging;
@@ -164,7 +186,7 @@ namespace iSign
 
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
-            if (!_isSigning) return;
+            if (State != ViewState.Editing) return;
             DrawTouches (touches, evt);
 
             if (visualizeAzimuth) {
@@ -180,7 +202,7 @@ namespace iSign
 
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
-            if (!_isSigning) return;
+            if (State != ViewState.Editing) return;
             DrawTouches (touches, evt);
 
             if (visualizeAzimuth) {
@@ -201,7 +223,7 @@ namespace iSign
 
         public override void TouchesEnded (NSSet touches, UIEvent evt)
         {
-            if (!_isSigning) return;
+            if (State != ViewState.Editing) return;
             DrawTouches (touches, evt);
             EndTouches (touches, false);
 
@@ -214,7 +236,7 @@ namespace iSign
 
         public override void TouchesCancelled (NSSet touches, UIEvent evt)
         {
-            if (!_isSigning) return;
+            if (State != ViewState.Editing) return;
             if (touches == null)
                 return;
 
@@ -250,7 +272,7 @@ namespace iSign
 
         void UpdateReticleView (UITouch touch, bool predicated = false)
         {
-            if (!_isSigning) return;
+            if (State != ViewState.Editing) return;
             if (touch == null || touch.Type != UITouchType.Stylus)
                 return;
 
@@ -272,6 +294,13 @@ namespace iSign
                 ReticleView.ActualAzimuthUnitVector = azimuthUnitVector;
                 ReticleView.ActualAltitudeAngle = altitudeAngle;
             }
+        }
+        private ViewState State { get; set; }
+        private enum ViewState
+        {
+            Moving,
+            Editing,
+            Done
         }
     }
 }

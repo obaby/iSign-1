@@ -11,7 +11,7 @@ namespace iSign
     public partial class SignDocumentViewController : MvxViewController<SigningDocViewModel>
     {
         private bool _editMode;
-
+        private UIImageView _imageView;
         public SignDocumentViewController () : base ("SignDocumentView", null)
         {
             this.DelayBind (SetBindings);
@@ -72,10 +72,11 @@ namespace iSign
 
         void Converter_ImageCreated (object sender, UIImage e)
         {
-            var imageview = new UIImageView (e);
+            _imageView = new UIImageView (e);
             ContainerView.Clear ();
-            ContainerView.Add (imageview);
-            ContainerView.ContentSize = imageview.Frame.Size;
+            _imageView.RemoveFromSuperview ();
+            ContainerView.Add (_imageView);
+            ContainerView.ContentSize = _imageView.Frame.Size;
         }
 
 
@@ -84,7 +85,12 @@ namespace iSign
         {
             nbRotations++;
             var degrees = nbRotations * 90 * (nfloat) Math.PI / 180;
-            ContainerView.Transform = CGAffineTransform.MakeRotation (degrees);
+            var frame = _imageView.Frame;
+            _imageView.RemoveFromSuperview ();
+            _imageView.Transform = CGAffineTransform.MakeRotation (degrees);
+            _imageView.Frame = new CGRect (frame.X, frame.Y, frame.Height, frame.Width);
+            ContainerView.Add (_imageView);
+            ContainerView.ContentSize = _imageView.Frame.Size;
         }
 
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
@@ -95,7 +101,7 @@ namespace iSign
         private void LoadFromPDFFile ()
         {
             var image = PDFToImage.Convert ("Pdf/Timesheet.pdf");
-            var imageview = new UIImageView (image);
+            _imageView = new UIImageView (image);
             var width = image.Size.Width;
             var height = image.Size.Height;
             var ratio = width / height;
@@ -107,21 +113,23 @@ namespace iSign
                 height = ContainerView.Frame.Height;
                 width = height * ratio;
             }
-            imageview.Frame = new CGRect (imageview.Frame.X, imageview.Frame.Y, width, height);
+            _imageView.Frame = new CGRect (_imageView.Frame.X, _imageView.Frame.Y, width, height);
             ContainerView.Clear ();
-            ContainerView.Add (imageview);
-            ContainerView.ContentSize = imageview.Frame.Size;
+            _imageView.RemoveFromSuperview ();
+            ContainerView.Add (_imageView);
+            ContainerView.ContentSize = _imageView.Frame.Size;
         }
 
         private void LoadFromImage ()
         {
             var image = new UIImage ("Pdf/FastFlex.jpg");
-            var imageview = new UIImageView (image);
+            _imageView = new UIImageView (image);
 
             ContainerView.Clear ();
-            ContainerView.Add (imageview);
+            _imageView.RemoveFromSuperview ();
+            ContainerView.Add (_imageView);
             ContainerView.UserInteractionEnabled = true;
-            ContainerView.ContentSize = imageview.Frame.Size;
+            ContainerView.ContentSize = _imageView.Frame.Size;
         }
     }
 }
