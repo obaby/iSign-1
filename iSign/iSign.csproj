@@ -133,6 +133,7 @@
     <InterfaceDefinition Include="Views\HomePageView.xib" />
     <InterfaceDefinition Include="Views\SignDocumentView.xib" />
     <InterfaceDefinition Include="Views\DialogView.xib" />
+    <InterfaceDefinition Include="Views\PDFViewer.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -170,6 +171,10 @@
     </Compile>
     <Compile Include="IoC\DialogService.cs" />
     <Compile Include="Helpers\PdfToImage.cs" />
+    <Compile Include="ViewControllers\PDFViewerViewController.cs" />
+    <Compile Include="ViewControllers\PDFViewerViewController.designer.cs">
+      <DependentUpon>PDFViewerViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

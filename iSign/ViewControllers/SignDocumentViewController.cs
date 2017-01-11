@@ -24,12 +24,6 @@ namespace iSign
             ContainerView.FinishedAddingView += ContainerView_FinishedAddingView;
         }
 
-        public override void DidReceiveMemoryWarning ()
-        {
-            base.DidReceiveMemoryWarning ();
-            // Release any cached data, images, etc that aren't in use.
-        }
-
         void Context_InputSet (object sender, string e)
         {
             _editMode = true;
@@ -95,7 +89,10 @@ namespace iSign
 
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
+            ContainerView.EndUpdate ();
             var filename = ViewToPDF.Convert (ContainerView, "result.pdf");
+            var vc = new PDFViewerViewController (filename);
+            PresentViewController (vc, true, null);
         }
 
         private void LoadFromPDFFile ()

@@ -84,7 +84,7 @@ namespace iSign
             AddedViews.Clear ();
         }
 
-        public void PrepareForPDF ()
+        public void EndUpdate ()
         {
             foreach (var view in AddedViews) {
                 view.EndUpdate ();

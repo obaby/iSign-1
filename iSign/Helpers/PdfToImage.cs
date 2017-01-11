@@ -40,7 +40,11 @@ namespace iSign.Helpers
             var context = UIGraphics.GetCurrentContext ();
             var originFrame = view.Frame;
             view.Frame = new CGRect (new CGPoint (0, 0), view.ContentSize);
-            view.Layer.RenderInContext (context);
+            view.ContentScaleFactor = 2;
+            foreach (var subview in view.Subviews) {
+                subview.ContentScaleFactor = 2;}
+            view.DrawViewHierarchy (view.Frame, true);
+            //view.Layer.RenderInContext (context);
             view.Frame = originFrame;
             var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
             UIGraphics.EndPDFContent ();

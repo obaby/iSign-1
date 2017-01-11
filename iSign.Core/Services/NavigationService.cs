@@ -1,5 +1,4 @@
-﻿using System;
-using iSign.Services;
+﻿using iSign.Services;
 using MvvmCross.Core.ViewModels;
 
 namespace iSign.Core
