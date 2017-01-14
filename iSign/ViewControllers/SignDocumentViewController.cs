@@ -2,12 +2,11 @@
 using System.IO;
 using System.Net;
 using CoreGraphics;
-using Dropins.Chooser.iOS;
 using iSign.Core;
 using iSign.Helpers;
+using MobileCoreServices;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.iOS.Views;
-using MvvmCross.Platform;
 using UIKit;
 
 namespace iSign
@@ -57,9 +56,8 @@ namespace iSign
             var context = DataContext as SigningDocViewModel;
             if (context == null) return;
 
-            context.InputSet+= Context_InputSet;
-            context.FileDownloaded += Context_FileDownloaded;
-                
+            context.InputSet += Context_InputSet;
+
         }
 
         void Converter_ImageCreated (object sender, UIImage e)
@@ -76,7 +74,7 @@ namespace iSign
         partial void EndEditingBtn_TouchUpInside (UIButton sender)
         {
             nbRotations++;
-            var degrees = nbRotations * 90 * (nfloat) Math.PI / 180;
+            var degrees = nbRotations * 90 * (nfloat)Math.PI / 180;
             var frame = _imageView.Frame;
             _imageView.RemoveFromSuperview ();
             _imageView.Transform = CGAffineTransform.MakeRotation (degrees);
@@ -93,9 +91,14 @@ namespace iSign
             PresentViewController (vc, true, null);
         }
 
-        void Context_FileDownloaded (object sender, string filename)
+        void FileDownloaded (string filename)
         {
-            var image = PDFToImage.Convert (filename, true);
+            UIImage image = null;
+            try {
+                image = new UIImage (filename);
+            } catch {
+                image = PDFToImage.Convert (filename, true);
+            }
             _imageView = new UIImageView (image);
             var width = image.Size.Width;
             var height = image.Size.Height;
@@ -115,34 +118,53 @@ namespace iSign
             ContainerView.ContentSize = _imageView.Frame.Size;
         }
 
-        private void LoadFromImage ()
-        {
-            var image = new UIImage ("Pdf/FastFlex.jpg");
-            _imageView = new UIImageView (image);
-
-            ContainerView.Clear ();
-            _imageView.RemoveFromSuperview ();
-            ContainerView.Add (_imageView);
-            ContainerView.UserInteractionEnabled = true;
-            ContainerView.ContentSize = _imageView.Frame.Size;
-        }
-
         partial void LoadFileBtn_TouchUpInside (UIButton sender)
         {
-            var context = DataContext as SigningDocViewModel;
-            if (context == null) return;
-            var factory = Mvx.Resolve<IFileStorageChooser> ();
-            UIAlertController actionSheetAlert = UIAlertController.Create ("Select the source", "", UIAlertControllerStyle.ActionSheet);
-            foreach (var fileStorage in factory.FileStorages) {
-                actionSheetAlert.AddAction (UIAlertAction.Create (fileStorage.Name, UIAlertActionStyle.Default, (action) => context.LoadFile (fileStorage)));
+            if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) {
+                FileDownloaded ("Pdf/FastFlex.jpg");
+                return;
             }
+            var allowedUTIs = new string [] {
+                UTType.PDF,
+                UTType.Image
+            };
 
-            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+            // Display the picker
+            //var picker = new UIDocumentPickerViewController (allowedUTIs, UIDocumentPickerMode.Open);
+            var pickerMenu = new UIDocumentMenuViewController (allowedUTIs, UIDocumentPickerMode.Import);
+            pickerMenu.DidPickDocumentPicker += (s, args) => {
+
+                // Wireup Document Picker
+                args.DocumentPicker.DidPickDocument += (sndr, pArgs) => {
+
+                    // IMPORTANT! You must lock the security scope before you can
+                    // access this file
+                    var securityEnabled = pArgs.Url.StartAccessingSecurityScopedResource ();
+                    var filename = pArgs.Url.LastPathComponent;
+                    var client = new WebClient ();
+                    var localpath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
+                    client.DownloadFile (pArgs.Url, localpath);
+                    // Open the document
+                    FileDownloaded (localpath);
+
+                    // IMPORTANT! You must release the security lock established
+                    // above.
+                    pArgs.Url.StopAccessingSecurityScopedResource ();
+                };
+
+                // Display the document picker
+                PresentViewController (args.DocumentPicker, true, null);
+            };
+
+            pickerMenu.ModalPresentationStyle = UIModalPresentationStyle.Popover;
+            PresentViewController (pickerMenu, true, null);
+            UIPopoverPresentationController presentationPopover = pickerMenu.PopoverPresentationController;
             if (presentationPopover != null) {
-                presentationPopover.SourceView = LoadFileBtn;
+                presentationPopover.SourceView = this.View;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Down;
+                presentationPopover.SourceRect = LoadFileBtn.Frame;
             }
-            PresentViewController (actionSheetAlert, true, null);
         }
-    }
+   }
 }
 

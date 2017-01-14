@@ -56,6 +56,7 @@ namespace iSign
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+            FilenameTextfield.Text = Filename;
             Viewer.LoadRequest (new NSUrlRequest (new NSUrl (GetPath (Filename))));
             FilenameTextfield.EditingChanged += FilenameTextfield_ValueChanged;
         }
