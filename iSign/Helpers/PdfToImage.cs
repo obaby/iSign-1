@@ -8,9 +8,9 @@ namespace iSign.Helpers
 {
     public static class PDFToImage
     {
-        public static UIImage Convert (string pdfPath)
+        public static UIImage Convert (string pdfPath, bool directLink)
         {
-            var localDocUrl = Path.Combine (NSBundle.MainBundle.BundlePath, pdfPath);
+            var localDocUrl = directLink ? pdfPath : Path.Combine (NSBundle.MainBundle.BundlePath, pdfPath);
 
             var document = new CGPDFDocument (new CGDataProvider (localDocUrl));
             var page = document.GetPage (1);
@@ -30,26 +30,33 @@ namespace iSign.Helpers
         }
     }
 
-    public static class ViewToPDF
+    public static class ViewConverter
     {
-        public static string Convert (UIScrollView view, string filename)
+        public static string ToPDF (this UIScrollView view, string filename)
         {
-            var pdfData = new NSMutableData ();
-            UIGraphics.BeginPDFContext (pdfData, new CGRect (new CGPoint(0, 0), view.ContentSize), new NSDictionary ());
-            UIGraphics.BeginPDFPage ();
+            var image = view.ToUIImage ();
+            var bounds = new CGRect (0, 0, view.ContentSize.Width, view.ContentSize.Height);
+            var r = new UIGraphicsPdfRenderer (bounds, UIGraphicsPdfRendererFormat.DefaultFormat);
+            NSData pdf = r.CreatePdf ((UIGraphicsPdfRendererContext ctx) => {
+                ctx.BeginPage ();
+                image.Draw (new CGPoint (0, 0));
+            });
+            var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
+            pdf.Save (filePath, true);
+            return filePath;
+        }
+
+        public static UIImage ToUIImage (this UIScrollView view)
+        {
+            UIGraphics.BeginImageContext (view.ContentSize);
             var context = UIGraphics.GetCurrentContext ();
             var originFrame = view.Frame;
             view.Frame = new CGRect (new CGPoint (0, 0), view.ContentSize);
-            view.ContentScaleFactor = 2;
-            foreach (var subview in view.Subviews) {
-                subview.ContentScaleFactor = 2;}
-            view.DrawViewHierarchy (view.Frame, true);
-            //view.Layer.RenderInContext (context);
+            view.Layer.RenderInContext (context);
             view.Frame = originFrame;
-            var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
-            UIGraphics.EndPDFContent ();
-            pdfData.Save (filePath, true);
-            return filePath;
+            var image = UIGraphics.GetImageFromCurrentImageContext ();
+            UIGraphics.EndImageContext ();
+            return image;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using CoreGraphics;
 using Foundation;
 using UIKit;
 
@@ -7,11 +8,13 @@ namespace iSign
 {
     public partial class PDFViewerViewController : UIViewController
     {
-        private string GetPath(string filename) => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), filename);
+        private string GetPath (string filename) => Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
         private string Filename { get; set; }
         private string Oldname { get; set; }
         private string Originalname { get; set; }
         private bool _filenameChanged;
+        private CGRect PrintableRect { get; set; }
+        private CGRect PaperRect { get; set; }
 
         public PDFViewerViewController (string filename) : base ("PDFViewer", null)
         {
@@ -54,7 +57,7 @@ namespace iSign
         {
             base.ViewDidLoad ();
             Viewer.LoadRequest (new NSUrlRequest (new NSUrl (GetPath (Filename))));
-            FilenameTextfield.EditingChanged+=FilenameTextfield_ValueChanged;
+            FilenameTextfield.EditingChanged += FilenameTextfield_ValueChanged;
         }
 
         void FilenameTextfield_ValueChanged (object sender, EventArgs e)
@@ -65,4 +68,3 @@ namespace iSign
         }
     }
 }
-

@@ -112,6 +112,9 @@
     <Reference Include="MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.iOS10\MvvmCross.Localization.dll</HintPath>
     </Reference>
+    <Reference Include="Dropins.Chooser.iOS">
+      <HintPath>..\Components\dropboxdropins-1.2.1.4\lib\ios-unified\Dropins.Chooser.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -175,6 +178,8 @@
     <Compile Include="ViewControllers\PDFViewerViewController.designer.cs">
       <DependentUpon>PDFViewerViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="IoC\DropBoxFileStorage.cs" />
+    <Compile Include="IoC\FileStorageChooser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
@@ -185,6 +190,12 @@
   <ItemGroup>
     <BundleResource Include="Resources\Pdf\FastFlex.jpg" />
     <BundleResource Include="Resources\Pdf\Timesheet.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="dropboxdropins">
+      <Version>1.2.1.4</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 using CoreGraphics;
+using Dropins.Chooser.iOS;
 using iSign.Core;
 using iSign.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.iOS.Views;
+using MvvmCross.Platform;
 using UIKit;
 
 namespace iSign
@@ -48,20 +52,14 @@ namespace iSign
             var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
             set.Bind (LabelBtn)
                .To (vm => vm.AddLabelCommand);
-
             set.Apply ();
 
             var context = DataContext as SigningDocViewModel;
             if (context == null) return;
 
             context.InputSet+= Context_InputSet;
+            context.FileDownloaded += Context_FileDownloaded;
                 
-        }
-
-        partial void LoadFileBtn_TouchUpInside (UIButton sender)
-        {
-            LoadFromPDFFile ();
-            EndEditingBtn.Hidden = false;
         }
 
         void Converter_ImageCreated (object sender, UIImage e)
@@ -90,14 +88,14 @@ namespace iSign
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
             ContainerView.EndUpdate ();
-            var filename = ViewToPDF.Convert (ContainerView, "result.pdf");
+            var filename = ContainerView.ToPDF ("result.pdf");
             var vc = new PDFViewerViewController (filename);
             PresentViewController (vc, true, null);
         }
 
-        private void LoadFromPDFFile ()
+        void Context_FileDownloaded (object sender, string filename)
         {
-            var image = PDFToImage.Convert ("Pdf/Timesheet.pdf");
+            var image = PDFToImage.Convert (filename, true);
             _imageView = new UIImageView (image);
             var width = image.Size.Width;
             var height = image.Size.Height;
@@ -127,6 +125,23 @@ namespace iSign
             ContainerView.Add (_imageView);
             ContainerView.UserInteractionEnabled = true;
             ContainerView.ContentSize = _imageView.Frame.Size;
+        }
+
+        partial void LoadFileBtn_TouchUpInside (UIButton sender)
+        {
+            var context = DataContext as SigningDocViewModel;
+            if (context == null) return;
+            var factory = Mvx.Resolve<IFileStorageChooser> ();
+            UIAlertController actionSheetAlert = UIAlertController.Create ("Select the source", "", UIAlertControllerStyle.ActionSheet);
+            foreach (var fileStorage in factory.FileStorages) {
+                actionSheetAlert.AddAction (UIAlertAction.Create (fileStorage.Name, UIAlertActionStyle.Default, (action) => context.LoadFile (fileStorage)));
+            }
+
+            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+            if (presentationPopover != null) {
+                presentationPopover.SourceView = LoadFileBtn;
+            }
+            PresentViewController (actionSheetAlert, true, null);
         }
     }
 }
