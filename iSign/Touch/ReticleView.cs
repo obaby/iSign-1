@@ -10,15 +10,15 @@ namespace iSign.Touch {
 		const float lineWidth = 2f;
 		const float radius = 80f;
 
-		static readonly UIColor reticleColor = new UIColor (.516f, .38f, .85f, .4f);
-		static readonly UIColor predictedIndicatorColor = new UIColor (.53f, .86f, .91f, 1f);
+        static readonly UIColor reticleColor = UIColor.Black;//new UIColor (.516f, .38f, .85f, .4f);
+        static readonly UIColor predictedIndicatorColor = UIColor.Black; //new UIColor (.53f, .86f, .91f, 1f);
 
 		CALayer reticleLayer = new CALayer ();
 		UIImage reticleImage;
 
 		CALayer dotLayer = new CALayer ();
 		CALayer lineLayer = new CALayer ();
-		UIColor indicatorColor = UIColor.Red;
+		UIColor indicatorColor = UIColor.Black;
 
 		public override CGSize IntrinsicContentSize {
 			get {

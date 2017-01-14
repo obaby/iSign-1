@@ -24,6 +24,10 @@ namespace iSign
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton EndEditingBtn { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton GeneratePdfBtn { get; set; }
 
         [Outlet]
@@ -38,6 +42,18 @@ namespace iSign
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void EditBtn_TouchUpInside (UIKit.UIButton sender);
 
+        [Action ("EndEditingBtn_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void EndEditingBtn_TouchUpInside (UIKit.UIButton sender);
+
+        [Action ("GeneratePdfBtn_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void GeneratePdfBtn_TouchUpInside (UIKit.UIButton sender);
+
+        [Action ("LoadFileBtn_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void LoadFileBtn_TouchUpInside (UIKit.UIButton sender);
+
         void ReleaseDesignerOutlets ()
         {
             if (ContainerView != null) {
@@ -48,6 +64,11 @@ namespace iSign
             if (EditBtn != null) {
                 EditBtn.Dispose ();
                 EditBtn = null;
+            }
+
+            if (EndEditingBtn != null) {
+                EndEditingBtn.Dispose ();
+                EndEditingBtn = null;
             }
 
             if (GeneratePdfBtn != null) {

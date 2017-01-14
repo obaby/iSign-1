@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using Dropins.Chooser.iOS;
+using Foundation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
 using MvvmCross.Platform;
@@ -33,6 +34,16 @@ namespace iSign
             startup.Start ();
 			return true;
 		}
+
+        public override bool OpenUrl (UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            if (DBChooser.DefaultChooser.HandleOpenUrl (url)) {
+                // This was a Chooser response and handleOpenURL automatically ran the
+                // completion handler   
+                return true;
+            }
+            return false;
+        }
 
 		public override void OnResignActivation(UIApplication application)
 		{

@@ -2,6 +2,7 @@ using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
+using System.Collections.Generic;
 
 namespace iSign
 {
@@ -15,13 +16,19 @@ namespace iSign
         }
         private Modes Mode { get; set; }
         private string Text { get; set;}
-
+        private List<EditableView> AddedViews { get; }
         public TouchableScrollView (IntPtr handle) : base (handle)
         {
             Mode = Modes.Done;
             SetupGestures ();
+            AddedViews = new List<EditableView> ();
         }
 
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
+            PanGestureRecognizer.MinimumNumberOfTouches = 2;
+        }
 
         public event EventHandler FinishedAddingView;
         private void OnFinishedAddingView ()
@@ -47,7 +54,7 @@ namespace iSign
                 view.Add (label);
                 label.SizeToFit ();
             }
-           
+            AddedViews.Add (view);
             Add (view);
             Mode = Modes.Done;
             OnFinishedAddingView ();
@@ -67,6 +74,21 @@ namespace iSign
         {
             Mode = Modes.AddingLabel;
             Text = text;
+        }
+
+        internal void Clear ()
+        {
+            foreach (var view in AddedViews) {
+                view.RemoveFromSuperview ();
+            }
+            AddedViews.Clear ();
+        }
+
+        public void EndUpdate ()
+        {
+            foreach (var view in AddedViews) {
+                view.EndUpdate ();
+            }
         }
     }
 }

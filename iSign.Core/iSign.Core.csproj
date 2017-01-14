@@ -37,6 +37,8 @@
     <Compile Include="ViewModels\SigningDocViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IFileStorageChooser.cs" />
+    <Compile Include="Services\IFileStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">
