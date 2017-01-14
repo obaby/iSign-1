@@ -41,6 +41,8 @@ namespace iSign.Helpers
                 ctx.BeginPage ();
                 image.Draw (new CGPoint (0, 0));
             });
+            var original = Path.Combine(Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL", filename);
+            File.Delete (original);
             var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
             pdf.Save (filePath, true);
             return filePath;

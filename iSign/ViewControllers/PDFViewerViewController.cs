@@ -48,6 +48,7 @@ namespace iSign
         public void Rename ()
         {
             if (!_filenameChanged) return;
+            if (File.Exists (GetPath (Filename))) File.Delete (GetPath (Filename));
             File.Move (GetPath (Oldname), GetPath (Filename));
             Oldname = Filename;
             _filenameChanged = false;
@@ -57,7 +58,11 @@ namespace iSign
         {
             base.ViewDidLoad ();
             FilenameTextfield.Text = Filename;
-            Viewer.LoadRequest (new NSUrlRequest (new NSUrl (GetPath (Filename))));
+            var path = GetPath (Filename);
+            var uriPath = new Uri (path);
+            var nsUrl = new NSUrl (uriPath.AbsolutePath);
+            var nsUrlRequest = new NSUrlRequest (nsUrl);
+            Viewer.LoadRequest (nsUrlRequest);
             FilenameTextfield.EditingChanged += FilenameTextfield_ValueChanged;
         }
 

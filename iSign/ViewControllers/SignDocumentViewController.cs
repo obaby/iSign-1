@@ -82,12 +82,12 @@ namespace iSign
             ContainerView.Add (_imageView);
             ContainerView.ContentSize = _imageView.Frame.Size;
         }
-
+        SigningDocViewModel Context => DataContext as SigningDocViewModel;
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
             ContainerView.EndUpdate ();
-            var filename = ContainerView.ToPDF ("result.pdf");
-            var vc = new PDFViewerViewController (filename);
+            var filename = ContainerView.ToPDF (Context.Filename);
+            var vc = new PDFViewerViewController (Context.Filename);
             PresentViewController (vc, true, null);
         }
 
@@ -142,7 +142,9 @@ namespace iSign
                     var securityEnabled = pArgs.Url.StartAccessingSecurityScopedResource ();
                     var filename = pArgs.Url.LastPathComponent;
                     var client = new WebClient ();
-                    var localpath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
+                    Context.Filename = filename;
+                    Directory.CreateDirectory (Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL"));
+                    var localpath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL" ,filename);
                     client.DownloadFile (pArgs.Url, localpath);
                     // Open the document
                     FileDownloaded (localpath);

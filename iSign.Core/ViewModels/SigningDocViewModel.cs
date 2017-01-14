@@ -7,6 +7,7 @@ namespace iSign.Core
     {
         private IDialogService DialogService { get; }
         private IFileStorageChooser FileStorageChooser { get; }
+        public string Filename { get; set;}
         public SigningDocViewModel (INavigationService navigationService, IDialogService dialogService) : base(navigationService)
         {
             AddLabelCommand = new MvxCommand (AddLabel);
@@ -33,6 +34,7 @@ namespace iSign.Core
         public event EventHandler<string> FileDownloaded;
         private void OnFileDownloaded (string filename)
         {
+            Filename = filename;
             FileDownloaded?.Invoke (this, filename);
         }
     }
