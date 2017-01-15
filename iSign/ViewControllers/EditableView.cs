@@ -30,7 +30,7 @@ namespace iSign
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (LongPressGesture);
-            Layer.BorderWidth = 1;
+            Layer.BorderWidth = 2;
             BackgroundColor = UIColor.Clear;
         }
 
@@ -137,12 +137,12 @@ namespace iSign
                 DragGesture.Enabled = false;
                 break;
             case ViewState.Editing:
-                Layer.BorderWidth = 1;
+                Layer.BorderWidth = 2;
                 Layer.BorderColor = UIColor.Red.CGColor;
                 DragGesture.Enabled = false;
                 break;
             case ViewState.Moving:
-                Layer.BorderWidth = 1;
+                Layer.BorderWidth = 2;
                 Layer.BorderColor = UIColor.Black.CGColor;
                 DragGesture.Enabled = true;
                 break;
@@ -170,131 +170,25 @@ namespace iSign
         }
 
 
-        bool visualizeAzimuth;
-
-        ReticleView reticleView;
-        ReticleView ReticleView {
-            get {
-                reticleView = reticleView ?? new ReticleView (CGRectNull ()) {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    Hidden = true
-                };
-
-                return reticleView;
-            }
-        }
-
-        public override void TouchesBegan (NSSet touches, UIEvent evt)
-        {
-            if (State != ViewState.Editing) return;
-            DrawTouches (touches, evt);
-
-            if (visualizeAzimuth) {
-                foreach (var touch in touches.Cast<UITouch> ()) {
-                    if (touch.Type != UITouchType.Stylus)
-                        continue;
-
-                    ReticleView.Hidden = false;
-                    UpdateReticleView (touch);
-                }
-            }
-        }
-
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
             if (State != ViewState.Editing) return;
-            DrawTouches (touches, evt);
-
-            if (visualizeAzimuth) {
-                foreach (var touch in touches.Cast<UITouch> ()) {
-                    if (touch.Type != UITouchType.Stylus)
-                        continue;
-
-                    UpdateReticleView (touch);
-
-                    UITouch [] predictedTouches = evt?.GetPredictedTouches (touch);
-                    UITouch predictedTouch = predictedTouches?.LastOrDefault ();
-
-                    if (predictedTouch != null)
-                        UpdateReticleView (predictedTouch, true);
-                }
-            }
+            base.TouchesMoved (touches, evt);
         }
 
         public override void TouchesEnded (NSSet touches, UIEvent evt)
         {
             if (State != ViewState.Editing) return;
-            DrawTouches (touches, evt);
-            EndTouches (touches, false);
-
-            if (visualizeAzimuth) {
-                foreach (var touch in touches.Cast<UITouch> ()) {
-                    ReticleView.Hidden |= touch.Type == UITouchType.Stylus;
-                }
-            }
+            base.TouchesEnded (touches, evt);
+            
         }
 
         public override void TouchesCancelled (NSSet touches, UIEvent evt)
         {
             if (State != ViewState.Editing) return;
-            if (touches == null)
-                return;
-
-            EndTouches (touches, true);
-            if (visualizeAzimuth) {
-                foreach (var touch in touches.Cast<UITouch> ())
-                    ReticleView.Hidden |= touch.Type == UITouchType.Stylus;
-            }
+            base.TouchesCancelled (touches, evt);
         }
-
-        public override void TouchesEstimatedPropertiesUpdated (NSSet touches)
-        {
-            UpdateEstimatedPropertiesForTouches (touches);
-        }
-
-        public void ClearView ()
-        {
-            Clear ();
-        }
-
-        public void ToggleDebugDrawing (UIButton sender)
-        {
-            IsDebuggingEnabled = !IsDebuggingEnabled;
-            visualizeAzimuth = !visualizeAzimuth;
-            sender.Selected = IsDebuggingEnabled;
-        }
-
-        public void ToggleUsePreciseLocations (UIButton sender)
-        {
-            UsePreciseLocations = !UsePreciseLocations;
-            sender.Selected = UsePreciseLocations;
-        }
-
-        void UpdateReticleView (UITouch touch, bool predicated = false)
-        {
-            if (State != ViewState.Editing) return;
-            if (touch == null || touch.Type != UITouchType.Stylus)
-                return;
-
-            ReticleView.PredictedDotLayer.Hidden = !predicated;
-            ReticleView.PredictedLineLayer.Hidden = !predicated;
-
-            var azimuthAngle = touch.GetAzimuthAngle (this);
-            var azimuthUnitVector = touch.GetAzimuthUnitVector (this);
-            var altitudeAngle = touch.AltitudeAngle;
-
-            if (predicated) {
-                ReticleView.PredictedAzimuthAngle = azimuthAngle;
-                ReticleView.PredictedAzimuthUnitVector = azimuthUnitVector;
-                ReticleView.PredictedAltitudeAngle = altitudeAngle;
-            } else {
-                var location = touch.PreviousLocationInView (this);
-                ReticleView.Center = location;
-                ReticleView.ActualAzimuthAngle = azimuthAngle;
-                ReticleView.ActualAzimuthUnitVector = azimuthUnitVector;
-                ReticleView.ActualAltitudeAngle = altitudeAngle;
-            }
-        }
+      
         private ViewState State { get; set; }
         private enum ViewState
         {

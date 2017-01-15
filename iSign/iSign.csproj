@@ -155,11 +155,6 @@
     <Compile Include="ViewControllers\SignDocumentViewController.designer.cs">
       <DependentUpon>SignDocumentViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Touch\CanvasView.cs" />
-    <Compile Include="Touch\CanvasView.designer.cs" />
-    <Compile Include="Touch\MainViewController.cs" />
-    <Compile Include="Touch\MainViewController.designer.cs" />
-    <Compile Include="Touch\ReticleView.cs" />
     <Compile Include="Helpers\CGRectHelpers.cs" />
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\LinePoint.cs" />
@@ -180,6 +175,7 @@
     </Compile>
     <Compile Include="IoC\DropBoxFileStorage.cs" />
     <Compile Include="IoC\FileStorageChooser.cs" />
+    <Compile Include="Touch\CanvasView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
@@ -190,6 +186,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\Pdf\FastFlex.jpg" />
     <BundleResource Include="Resources\Pdf\Timesheet.pdf" />
+    <BundleResource Include="Resources\PencilTexture.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="dropboxdropins">
