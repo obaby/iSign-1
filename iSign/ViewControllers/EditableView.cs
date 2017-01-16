@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using CoreGraphics;
 using Foundation;
 using iSign.Touch;
 using UIKit;
-using static iSign.Helpers.CGRectHelpers;
 
 namespace iSign
 {

@@ -15,13 +15,25 @@ namespace iSign
             Done
         }
         private Modes Mode { get; set; }
-        private string Text { get; set;}
+        private string Text { get; set; }
         private List<EditableView> AddedViews { get; }
+        private PaletteView PaletteView { get; }
         public TouchableScrollView (IntPtr handle) : base (handle)
         {
             Mode = Modes.Done;
             SetupGestures ();
             AddedViews = new List<EditableView> ();
+            PaletteView = new PaletteView ();
+        }
+        private object _paletteContext;
+        public object PaletteContext {
+            get {
+                return _paletteContext;
+            }
+            set {
+                _paletteContext = value;
+                PaletteView.DataContext = value;
+            }
         }
 
         public override void LayoutSubviews ()
@@ -46,16 +58,18 @@ namespace iSign
         {
             if (Mode == Modes.Done) return;
             var location = tapInfo.LocationInView (this);
-            var   view = new EditableView (new CGRect (location.X, location.Y, 100, 100));
+            var view = new EditableView (new CGRect (location.X, location.Y, 100, 100));
             if (Mode == Modes.AddingLabel) {
                 var label = new UILabel (new CGRect (0, 0, 100, 10)) {
                     Text = Text
                 };
                 view.Add (label);
                 label.SizeToFit ();
+                view.Frame = new CGRect (view.Frame.Location, label.Frame.Size);
             }
             AddedViews.Add (view);
             Add (view);
+            ShowPalette ();
             Mode = Modes.Done;
             OnFinishedAddingView ();
         }
@@ -89,6 +103,14 @@ namespace iSign
             foreach (var view in AddedViews) {
                 view.EndUpdate ();
             }
+        }
+
+        private void ShowPalette ()
+        {
+            PaletteView.Frame = new CGRect (0, Frame.Height - 50, Frame.Width, 50);
+            PaletteView.Layout ();
+            Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () =>
+                     Add (PaletteView), null);
         }
     }
 }

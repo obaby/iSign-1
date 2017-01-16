@@ -39,6 +39,10 @@
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFileStorageChooser.cs" />
     <Compile Include="Services\IFileStorage.cs" />
+    <Compile Include="ViewModels\PaletteViewModel.cs" />
+    <Compile Include="ViewModels\PaletteColorViewModel.cs" />
+    <Compile Include="Services\IViewModelServices.cs" />
+    <Compile Include="Services\ViewModelServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">
@@ -52,6 +56,9 @@
     </Reference>
     <Reference Include="MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.Binding.4.4.0\lib\portable-net45+win+wpa81+wp80\MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Messenger">
+      <HintPath>..\packages\MvvmCross.Plugin.Messenger.4.4.0\lib\portable-net45+win+wpa81+wp80\MvvmCross.Plugins.Messenger.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
