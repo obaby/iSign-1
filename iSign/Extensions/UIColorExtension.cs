@@ -33,5 +33,14 @@ namespace iSign
 
             return result;
         }
+
+        public static string ToPCLColor (this UIColor color)
+        {
+            var red = (int)(color.CGColor.Components [0] * 255);
+            var green = (int)(color.CGColor.Components [1] * 255);
+            var blue = (int)(color.CGColor.Components [2] * 255);
+
+            return string.Format ("#{0:X2}{1:X2}{2:X2}", red, green, blue);
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace iSign.Core
 	public class HomePageViewModel : BaseViewModel
 	{
         
-        public HomePageViewModel(INavigationService navigationService) : base(navigationService)
+        public HomePageViewModel(IViewModelServices viewModelServices) : base(viewModelServices)
 		{
             GoToSigningDocumentCommand = new MvxCommand (GoToSigningDocument);
 		}

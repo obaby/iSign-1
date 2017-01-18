@@ -9,7 +9,7 @@ namespace iSign.Core
     {
         public string Color { get; }
         public int Id { get; }
-        public PaletteColorViewModel (string color, int id)
+        public PaletteColorViewModel (IViewModelServices viewModelService, string color, int id) : base(viewModelService)
         {
             Id = id;
             Color = color;
@@ -20,10 +20,23 @@ namespace iSign.Core
             get {
                 return _isSelected;
             }
-
             set {
+                PublishMessage (new PaletteColorSelectedMessage (this, Id));
                 SetProperty (ref _isSelected, value);
             }
         }
-    }
+
+        internal void Unselect ()
+        {
+            _isSelected = false;
+            RaisePropertyChanged (nameof (IsSelected));
+        }
+
+        internal void Select ()
+        {
+            _isSelected = true;
+            RaisePropertyChanged (nameof (IsSelected));
+        }
+
+   }
 }

@@ -9,7 +9,7 @@ namespace iSign.Core
         private IFileStorageChooser FileStorageChooser { get; }
         public string Filename { get; set;}
         public PaletteViewModel PaletteContext { get; }
-        public SigningDocViewModel (INavigationService navigationService, IDialogService dialogService, PaletteViewModel paletteContext) : base(navigationService)
+        public SigningDocViewModel (IViewModelServices viewModelServices, IDialogService dialogService, PaletteViewModel paletteContext) : base(viewModelServices)
         {
             PaletteContext = paletteContext;
             AddLabelCommand = new MvxCommand (AddLabel);

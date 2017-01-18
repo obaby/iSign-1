@@ -16,3 +16,4 @@ namespace iSign.Core
         public INavigationService NavigationService { get; }
     }
 
+}

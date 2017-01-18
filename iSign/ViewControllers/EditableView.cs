@@ -1,19 +1,25 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using iSign.Core;
 using iSign.Touch;
+using MvvmCross.Platform;
+using MvvmCross.Plugins.Messenger;
 using UIKit;
 
 namespace iSign
 {
     public class EditableView : CanvasView
     {
+        public int Id { get; set; }
         private UIPanGestureRecognizer DragGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
+        private IMvxMessenger Messenger { get; }
         private int _border = 20;
         public EditableView (CGRect rect) : base(rect)
         {
+            Messenger = Mvx.Resolve<IMvxMessenger> ();
             DragGesture = new UIPanGestureRecognizer (ViewDragged) {
                 MinimumNumberOfTouches = 1
             };
@@ -95,7 +101,8 @@ namespace iSign
         {
             tapInfo.View.RemoveFromSuperview ();
             RemoveGestureRecognizer (DragGesture);
-            RemoveGestureRecognizer (DoubleTapGesture);
+            RemoveGestureRecognizer (DoubleTapGesture); 
+            RemoveGestureRecognizer (LongPressGesture);
             Dispose ();
         }
 
@@ -113,6 +120,7 @@ namespace iSign
             case ViewState.Done:
                 return ViewState.Moving;
             case ViewState.Moving:
+                Messenger.Publish (new ViewActivatedMessage (this, Id));
                 return ViewState.Editing;
             case ViewState.Editing:
                 return ViewState.Done;

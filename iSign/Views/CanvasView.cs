@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
+using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
 namespace iSign.Touch
 {
-    public class CanvasView : UIImageView
+    public class CanvasView : MvxImageView
     {
 
         private const double π = Math.PI;
@@ -15,15 +16,17 @@ namespace iSign.Touch
         private const double TiltThreshold = π / 6; // 30°
         private const double MinLineWidth = 1;
         private const double HandLineWidth = 1;
-
+        private List<UIImage> PreviousImages { get; set; }
         private UIImage DrawingImage;
-        private UIColor DrawColor = UIColor.Red;
+        public UIColor DrawColor { get; set;}
         private UIColor EraserColor => BackgroundColor ?? UIColor.White;
 
         public CanvasView (CGRect rect)
         {
             UserInteractionEnabled = true;
             Frame = rect;
+            DrawColor = UIColor.Red;
+            PreviousImages = new List<UIImage> ();
         }
        
         public override void TouchesMoved (Foundation.NSSet touches, UIEvent evt)
@@ -61,10 +64,25 @@ namespace iSign.Touch
             UIGraphics.EndImageContext ();
         }
 
+        public bool CanUndo => PreviousImages.Count > 0;
+
+        public void Undo ()
+        {
+            if (PreviousImages.Count <= 1) {
+                Image = new UIImage ();
+                DrawingImage = new UIImage ();
+                PreviousImages = new List<UIImage> ();
+                return; }
+            PreviousImages.RemoveAt (PreviousImages.Count - 1);
+            Image = PreviousImages [PreviousImages.Count - 1];
+            DrawingImage = Image;
+        }
+
         public override void TouchesEnded (Foundation.NSSet touches, UIEvent evt)
         {
             base.TouchesEnded (touches, evt);
             Image = DrawingImage;
+            PreviousImages.Add (Image);
         }
 
         public override void TouchesCancelled (Foundation.NSSet touches, UIEvent evt)

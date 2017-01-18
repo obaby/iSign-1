@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using iSign.Services;
 using MvvmCross.Core.ViewModels;
 
 namespace iSign.Core
 {
-    public class PaletteViewModel : MvxViewModel
+    public class PaletteViewModel : BaseViewModel
     {
-        public PaletteViewModel ()
+        public PaletteViewModel (IViewModelServices viewModelServices) : base(viewModelServices)
         {
             var colors = new List<string> {
                 Colors.Red,
@@ -19,12 +20,14 @@ namespace iSign.Core
             };
 
             var list = new List<PaletteColorViewModel> ();
+            var i = 0;
             foreach (var color in colors) {
-                var vm = new PaletteColorViewModel (color);
-                vm.Selected += Vm_Selected;
+                var vm = new PaletteColorViewModel (viewModelServices, color, i);
                 list.Add (vm);
+                i++;
             }
             PaletteColors = new List<PaletteColorViewModel> (list);
+            Subscribe<PaletteColorSelectedMessage> (PaletteColorSelectedMessageReceived);
         }
 
         public IEnumerable<PaletteColorViewModel> PaletteColors { get; }
@@ -40,12 +43,26 @@ namespace iSign.Core
             }
         }
 
-        void Vm_Selected (object sender, EventArgs e)
+        void PaletteColorSelectedMessageReceived (PaletteColorSelectedMessage message)
         {
-            if (SelectedColor != null && SelectedColor != sender) {
-                SelectedColor.IsSelected = false;
+            if (SelectedColor != null && SelectedColor.Id != message.Id) {
+                SelectedColor.Unselect ();
             }
-            SelectedColor = (PaletteColorViewModel)sender;
+            SelectedColor = PaletteColors.First (x => x.Id == message.Id);
+        }
+
+        public void SetSelectedColor (string color)
+        {
+            if (SelectedColor != null) {
+                SelectedColor.Unselect ();
+            }
+            SelectedColor = PaletteColors.First (x => x.Color == color);
+            SelectedColor.Select ();
+        }
+
+        public void Undo ()
+        {
+            PublishMessage (new UndoMessage (this));
         }
     }
 }

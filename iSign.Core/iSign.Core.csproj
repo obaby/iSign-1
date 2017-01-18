@@ -43,6 +43,10 @@
     <Compile Include="ViewModels\PaletteColorViewModel.cs" />
     <Compile Include="Services\IViewModelServices.cs" />
     <Compile Include="Services\ViewModelServices.cs" />
+    <Compile Include="Exceptions\AlreadyListeningThisMessageException.cs" />
+    <Compile Include="ViewModels\Messages\PaletteColorSelectedMessage.cs" />
+    <Compile Include="ViewModels\Messages\ViewActivated.cs" />
+    <Compile Include="ViewModels\Messages\UndoMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">
@@ -73,6 +77,8 @@
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="ViewModels\Messages\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
