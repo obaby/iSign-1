@@ -25,7 +25,7 @@ namespace iSign.Core
 
 		private void RegisterAllViewModels()
 		{
-			CreatableTypes().Inherits(typeof(BaseViewModel)).AsTypes().RegisterAsDynamic();
+			CreatableTypes().Inherits(typeof(MvxViewModel)).AsTypes().RegisterAsDynamic();
 		}
 
 		private void RegisterServicesForAssembly(Assembly assembly)

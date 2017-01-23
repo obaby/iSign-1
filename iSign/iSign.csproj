@@ -115,6 +115,9 @@
     <Reference Include="Dropins.Chooser.iOS">
       <HintPath>..\Components\dropboxdropins-1.2.1.4\lib\ios-unified\Dropins.Chooser.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="MvvmCross.Plugins.Messenger">
+      <HintPath>..\packages\MvvmCross.Plugin.Messenger.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.Messenger.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -124,12 +127,12 @@
     <Folder Include="Resources\" />
     <Folder Include="Views\" />
     <Folder Include="ViewControllers\" />
-    <Folder Include="Touch\" />
     <Folder Include="Helpers\" />
     <Folder Include="Model\" />
     <Folder Include="IoC\" />
     <Folder Include="Resources\Pdf\" />
     <Folder Include="Service\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -175,7 +178,11 @@
     </Compile>
     <Compile Include="IoC\DropBoxFileStorage.cs" />
     <Compile Include="IoC\FileStorageChooser.cs" />
-    <Compile Include="Touch\CanvasView.cs" />
+    <Compile Include="Views\PaletteView.cs" />
+    <Compile Include="Views\PaletteColorView.cs" />
+    <Compile Include="Extensions\UIColorExtension.cs" />
+    <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
+    <Compile Include="Views\CanvasView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

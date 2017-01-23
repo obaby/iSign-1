@@ -51,7 +51,11 @@ namespace iSign
             var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
             set.Bind (LabelBtn)
                .To (vm => vm.AddLabelCommand);
-            set.Apply ();
+            set.Bind (ContainerView)
+               .For(v => v.PaletteContext)
+               .To (vm => vm.PaletteContext);
+
+               set.Apply ();
 
             var context = DataContext as SigningDocViewModel;
             if (context == null) return;

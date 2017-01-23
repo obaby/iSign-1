@@ -39,6 +39,14 @@
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFileStorageChooser.cs" />
     <Compile Include="Services\IFileStorage.cs" />
+    <Compile Include="ViewModels\PaletteViewModel.cs" />
+    <Compile Include="ViewModels\PaletteColorViewModel.cs" />
+    <Compile Include="Services\IViewModelServices.cs" />
+    <Compile Include="Services\ViewModelServices.cs" />
+    <Compile Include="Exceptions\AlreadyListeningThisMessageException.cs" />
+    <Compile Include="ViewModels\Messages\PaletteColorSelectedMessage.cs" />
+    <Compile Include="ViewModels\Messages\ViewActivated.cs" />
+    <Compile Include="ViewModels\Messages\UndoMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">
@@ -53,6 +61,9 @@
     <Reference Include="MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.Binding.4.4.0\lib\portable-net45+win+wpa81+wp80\MvvmCross.Localization.dll</HintPath>
     </Reference>
+    <Reference Include="MvvmCross.Plugins.Messenger">
+      <HintPath>..\packages\MvvmCross.Plugin.Messenger.4.4.0\lib\portable-net45+win+wpa81+wp80\MvvmCross.Plugins.Messenger.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -66,6 +77,8 @@
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="ViewModels\Messages\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

@@ -34,6 +34,7 @@
     <Compile Include="Attributes\RegisterInterfacesAsSingletonAttribute.cs" />
     <Compile Include="Attributes\RegisterSelfAsDynamicAttribute.cs" />
     <Compile Include="Attributes\RegisterSelfAsSingletonAttribute.cs" />
+    <Compile Include="Colors.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Attributes\" />
