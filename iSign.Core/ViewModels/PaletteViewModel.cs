@@ -17,6 +17,8 @@ namespace iSign.Core
                 Colors.Green,
                 Colors.Purple,
                 Colors.Orange,
+                Colors.Black,
+                Colors.White
             };
 
             var list = new List<PaletteColorViewModel> ();

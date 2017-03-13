@@ -130,5 +130,6 @@
     </objects>
     <resources>
         <image name="Pdf/FastFlex.jpg" width="1724" height="1240"/>
+        <image name="PencilTexture.png" width="200" height="200"/>
     </resources>
 </document>

@@ -9,5 +9,7 @@ namespace iSign.Services
         public static string Purple = "#800080";
         public static string Green = "#00FF00";
         public static string Orange = "#FF8C00";
+        public static string Black = "#000000";
+        public static string White = "#FFFFFF";
     }
 }

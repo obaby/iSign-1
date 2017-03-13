@@ -23,7 +23,7 @@ namespace iSign
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            EndEditingBtn.Hidden = true;
+            EndEditingBtn.Hidden = false;
             ContainerView.FinishedAddingView += ContainerView_FinishedAddingView;
         }
 
