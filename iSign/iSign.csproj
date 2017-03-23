@@ -183,6 +183,7 @@
     <Compile Include="Extensions\UIColorExtension.cs" />
     <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
     <Compile Include="Views\CanvasView.cs" />
+    <Compile Include="Views\SigningView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

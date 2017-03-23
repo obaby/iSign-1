@@ -30,14 +30,12 @@ namespace iSign
         void Context_InputSet (object sender, string e)
         {
             _editMode = true;
-            ContainerView.AddLabel (e);
+            //Todo : add label
         }
 
         partial void EditBtn_TouchUpInside (UIButton sender)
         {
-            _editMode = !_editMode;
-            if (!_editMode) { ContainerView.EndEditMode (); return; }
-            ContainerView.SetToEditMode ();
+            ContainerView.ShowSigningView ();
         }
 
 
@@ -51,9 +49,6 @@ namespace iSign
             var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
             set.Bind (LabelBtn)
                .To (vm => vm.AddLabelCommand);
-            set.Bind (ContainerView)
-               .For(v => v.PaletteContext)
-               .To (vm => vm.PaletteContext);
 
                set.Apply ();
 
@@ -133,16 +128,11 @@ namespace iSign
                 UTType.Image
             };
 
-            // Display the picker
-            //var picker = new UIDocumentPickerViewController (allowedUTIs, UIDocumentPickerMode.Open);
             var pickerMenu = new UIDocumentMenuViewController (allowedUTIs, UIDocumentPickerMode.Import);
             pickerMenu.DidPickDocumentPicker += (s, args) => {
 
-                // Wireup Document Picker
                 args.DocumentPicker.DidPickDocument += (sndr, pArgs) => {
 
-                    // IMPORTANT! You must lock the security scope before you can
-                    // access this file
                     var securityEnabled = pArgs.Url.StartAccessingSecurityScopedResource ();
                     var filename = pArgs.Url.LastPathComponent;
                     var client = new WebClient ();
@@ -150,15 +140,11 @@ namespace iSign
                     Directory.CreateDirectory (Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL"));
                     var localpath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL" ,filename);
                     client.DownloadFile (pArgs.Url, localpath);
-                    // Open the document
                     FileDownloaded (localpath);
 
-                    // IMPORTANT! You must release the security lock established
-                    // above.
                     pArgs.Url.StopAccessingSecurityScopedResource ();
                 };
 
-                // Display the document picker
                 PresentViewController (args.DocumentPicker, true, null);
             };
 

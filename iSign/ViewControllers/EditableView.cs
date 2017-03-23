@@ -9,9 +9,10 @@ using UIKit;
 
 namespace iSign
 {
-    public class EditableView : CanvasView
+    public class EditableView : UIView
     {
         public int Id { get; set; }
+        private UIImageView ImageView { get; set; }
         private UIPanGestureRecognizer DragGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
@@ -34,6 +35,7 @@ namespace iSign
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (LongPressGesture);
+            Layer.CornerRadius = 10;
             Layer.BorderWidth = 2;
             BackgroundColor = UIColor.Clear;
         }
@@ -63,7 +65,7 @@ namespace iSign
             double y = Frame.Y;
             var width = Frame.Size.Width;
             var height = Frame.Size.Height;
-
+            nfloat ratio = 1;
             switch (CurrentTouch) {
             case TypeOfTouch.Dragging:
                 var xMax = Superview.Frame.Width;
@@ -78,16 +80,24 @@ namespace iSign
             case TypeOfTouch.ResizingTopBorder:
                 y = panInfo.View.Frame.Y + deltaHeightDrag;
                 height = panInfo.View.Frame.Height - deltaHeightDrag;
+                ratio = panInfo.View.Frame.Height / height;
+                width = panInfo.View.Frame.Width / ratio;
                 break;
             case TypeOfTouch.ResizingBottomBorder:
                 height = panInfo.View.Frame.Height + deltaHeight;
+                ratio = panInfo.View.Frame.Height / height;
+                width = panInfo.View.Frame.Width / ratio;
                 break;
             case TypeOfTouch.ResizingLeftBorder:
                 x = panInfo.View.Frame.X + deltaWidthDrag;
                 width = panInfo.View.Frame.Width - deltaWidthDrag;
+                ratio = panInfo.View.Frame.Width / width;
+                height = panInfo.View.Frame.Height / ratio;
                 break;
             case TypeOfTouch.ResizingRightBorder:
                 width = panInfo.View.Frame.Width + deltaWidth;
+                ratio = panInfo.View.Frame.Width / width;
+                height = panInfo.View.Frame.Height / ratio;
                 break;
             default: return;
             }
@@ -95,6 +105,7 @@ namespace iSign
             panInfo.View.Frame = new CGRect (x, y,
                 width,
                 height);
+            UpdateImage (new CGSize (width, height));
         }
 
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
@@ -201,6 +212,21 @@ namespace iSign
             Moving,
             Editing,
             Done
+        }
+
+        public void SetImage (UIImage image)
+        {
+            ImageView = new UIImageView (new CGRect (CGPoint.Empty, image.Size));
+            ImageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            Frame = new CGRect (Frame.Location, image.Size);
+            ImageView.Image = image;
+            Add (ImageView);
+        }
+
+        void UpdateImage (CGSize size)
+        {
+            if (ImageView != null)
+                ImageView.Frame = new CGRect (ImageView.Frame.Location, size);
         }
     }
 }

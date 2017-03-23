@@ -17,13 +17,14 @@ namespace iSign.Touch
         private const double MinLineWidth = 1;
         private const double HandLineWidth = 1;
         private List<UIImage> PreviousImages { get; set; }
-        private UIImage DrawingImage;
+        public UIImage DrawingImage { get; private set;}
         public UIColor DrawColor { get; set;}
         private UIColor EraserColor => BackgroundColor ?? UIColor.White;
 
         public CanvasView (CGRect rect)
         {
             UserInteractionEnabled = true;
+            BackgroundColor = UIColor.White;
             Frame = rect;
             DrawColor = UIColor.Red;
             PreviousImages = new List<UIImage> ();
