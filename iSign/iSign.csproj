@@ -184,6 +184,9 @@
     <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
     <Compile Include="Views\CanvasView.cs" />
     <Compile Include="Views\SigningView.cs" />
+    <Compile Include="Extensions\UIViewExtension.cs" />
+    <Compile Include="Extensions\AntmarchLayer.cs" />
+    <Compile Include="Extensions\BlinkingLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
