@@ -35,8 +35,7 @@ namespace iSign
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (LongPressGesture);
-            Layer.CornerRadius = 10;
-            Layer.BorderWidth = 2;
+            this.AntMarch (UIColor.Blue);
             BackgroundColor = UIColor.Clear;
         }
 
