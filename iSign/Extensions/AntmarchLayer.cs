@@ -15,7 +15,7 @@ namespace iSign.Extensions
 
         public override void LayoutSublayers ()
         {
-            Frame = View.Frame;
+            Frame = View.Bounds;
             LineWidth = 2;
             FillColor = UIColor.Clear.CGColor;
             LineJoin = JoinRound;

@@ -23,8 +23,7 @@ namespace iSign
 
         public static void Blink (this UIView self, UIColor color)
         {
-            var blinkLayer = new BlinkingLayer ();
-            blinkLayer.StrokeColor = color.CGColor;
+            var blinkLayer = new BlinkingLayer (color, self);
             blinkLayer.Bounds = self.Bounds;
             self.Layer.AddSublayer (blinkLayer);
         }
@@ -39,7 +38,7 @@ namespace iSign
         public static void UpdateLayersFrame (this UIView self)
         {
             foreach (var layer in self.Layer.Sublayers) {
-                layer.Frame = self.Frame;
+                layer.Frame = self.Bounds;
             }
         }
     }

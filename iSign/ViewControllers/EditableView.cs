@@ -128,10 +128,10 @@ namespace iSign
         {
             switch (State) {
             case ViewState.Done:
-                return ViewState.Resizing;
-            case ViewState.Resizing:
                 return ViewState.Moving;
             case ViewState.Moving:
+                return ViewState.Resizing;
+            case ViewState.Resizing:
                 return ViewState.Done;
             default: 
                 return ViewState.Done;
@@ -152,16 +152,16 @@ namespace iSign
                 this.Unblink ();
                 DragGesture.Enabled = false;
                 break;
-            case ViewState.Resizing:
-                this.UnantMarch ();
-                this.Unblink ();
-                this.Blink (UIColor.Blue);
-                DragGesture.Enabled = true;
-                break;
             case ViewState.Moving:
                 this.UnantMarch ();
                 this.Unblink ();
                 this.AntMarch (UIColor.Blue);
+                DragGesture.Enabled = true;
+                break;
+            case ViewState.Resizing:
+                this.UnantMarch ();
+                this.Unblink ();
+                this.Blink (UIColor.Red);
                 DragGesture.Enabled = true;
                 break;
             }
@@ -232,7 +232,7 @@ namespace iSign
         void UpdateImageAndLayer (CGSize size)
         {
             if (ImageView != null)
-                ImageView.Frame = new CGRect (ImageView.Frame.Location, size);;
+                ImageView.Frame = new CGRect (ImageView.Frame.Location, size);
             this.UpdateLayersFrame ();
         }
     }

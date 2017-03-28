@@ -7,8 +7,15 @@ namespace iSign.Extensions
 {
     public class BlinkingLayer : CAShapeLayer
     {
+        private UIView View { get; }
+        public BlinkingLayer (UIColor color, UIView view)
+        {
+            StrokeColor = color.CGColor;
+            View = view;
+        }
         public override void LayoutSublayers ()
         {
+            Frame = View.Bounds;
             LineWidth = 2;
             FillColor = UIColor.Clear.CGColor;
             LineJoin = JoinRound;
