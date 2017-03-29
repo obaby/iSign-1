@@ -26,12 +26,7 @@ namespace iSign
             CancelButton.TouchUpInside += CancelButton_TouchUpInside;
         }
 
-        private CGPoint PlaceInCenter (CGRect rect)
-        {
-            var x = (Frame.Width - rect.Width) / 2;
-            var y = (Frame.Height - rect.Height) / 2;
-            return new CGPoint (x, y);
-        }
+
 
         public override void LayoutSubviews ()
         {
@@ -42,7 +37,7 @@ namespace iSign
         void ShowViewWithAnimation ()
         {
 
-            var topLeft = PlaceInCenter (CanvasView.Frame);
+            var topLeft = this.GetCenter (CanvasView.Frame);
             var topRight = new CGPoint (topLeft.X + CanvasView.Frame.Width, topLeft.Y);
             CanvasView.Frame = new CGRect (topLeft, CanvasView.Frame.Size);
             CanvasView.Layer.BorderWidth = 5;

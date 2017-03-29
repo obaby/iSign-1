@@ -68,8 +68,10 @@ namespace iSign
             signingView.CancelAction = () => _signingViewIsShown = false;
             signingView.OkAction = () => {
                 _signingViewIsShown = false;
-                var editableView = new EditableView (signingView.Frame);
-                editableView.SetImage (signingView.GetSignature ());
+                var signature = signingView.GetSignature ();
+                var center = this.GetCenter (signature.Size, ContentOffset);
+                var editableView = new EditableView (new CGRect (center, signature.Size));
+                editableView.SetImage (signature);
                 Add (editableView);
             };
             var vc = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController;

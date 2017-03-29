@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
 using iSign.Core;
@@ -35,8 +36,11 @@ namespace iSign
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (LongPressGesture);
-            this.AntMarch (UIColor.Blue);
             BackgroundColor = UIColor.Clear;
+            ViewStateFlow = new List<ViewState> { ViewState.Done, ViewState.Resizing, ViewState.Moving };
+
+            State = ViewState.Resizing;
+            UpdateLayer ();
         }
 
         private CGPoint _viewCoordinate;
@@ -126,17 +130,12 @@ namespace iSign
 
         private ViewState NextState ()
         {
-            switch (State) {
-            case ViewState.Done:
-                return ViewState.Moving;
-            case ViewState.Moving:
-                return ViewState.Resizing;
-            case ViewState.Resizing:
-                return ViewState.Done;
-            default: 
-                return ViewState.Done;
-            }
+            var index = ViewStateFlow.IndexOf (State);
+            var newIndex = (index + 1) % ViewStateFlow.Count;
+            return ViewStateFlow [newIndex];
         }
+
+        private List<ViewState> ViewStateFlow { get; }
 
         public void EndUpdate ()
         {
