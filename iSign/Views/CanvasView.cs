@@ -7,9 +7,8 @@ using UIKit;
 
 namespace iSign.Touch
 {
-    public class CanvasView : MvxImageView
+    public class CanvasView : UIImageView
     {
-
         private const double π = Math.PI;
         private const double DefaultLineWidth = 2;
         private const double ForceSensitivity = 2;
@@ -26,7 +25,7 @@ namespace iSign.Touch
             UserInteractionEnabled = true;
             BackgroundColor = UIColor.White;
             Frame = rect;
-            DrawColor = UIColor.Red;
+            DrawColor = null;
             PreviousImages = new List<UIImage> ();
         }
        

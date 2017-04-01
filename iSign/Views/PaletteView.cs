@@ -22,7 +22,7 @@ namespace iSign
         }
         PaletteViewModel Context => DataContext as PaletteViewModel;
         
-        public void Layout ()
+        public void Layout (UIColor currentColor)
         {
             var x = (nfloat)XMargin;
             var withMargin = true;
@@ -38,10 +38,13 @@ namespace iSign
             Add (_undoButton);
             _undoButton.SizeToFit ();
             x += _undoButton.Frame.Width + XMargin;
-
+            var i = 0;
             foreach (var colorVm in Context.PaletteColors) {
                 var colorView = new PaletteColorView ();
                 colorView.DataContext = colorVm;
+                if (colorVm.Color.ToUIColor () == currentColor || (i == 0 && currentColor == null)) {
+                    colorVm.IsSelected = true;
+                }
                 colorView.Frame = new CGRect (x, y, size, size);
                 Add (colorView);
                 x += size + XMargin;

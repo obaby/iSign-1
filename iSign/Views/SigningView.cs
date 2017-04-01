@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Linq;
 using CoreGraphics;
+using iSign.Core;
 using iSign.Touch;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
 namespace iSign
 {
-    public class SigningView : UIView
+    public class SigningView : MvxView
     {
         private CanvasView CanvasView { get; }
         private UIButton OkButton { get; }
         private UIButton CancelButton { get; }
         private UILabel HelpMessage { get; }
+        private PaletteView PaletteView { get; }
 
         public SigningView (CGRect bounds) : base (bounds)
         {
@@ -18,25 +23,45 @@ namespace iSign
             CanvasView = new CanvasView (new CGRect(0, 0, 500, 500));
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha(0.3f);
             OkButton = new UIButton ();
-            OkButton.SetTitle ("Add Signature", UIControlState.Normal);
             OkButton.TouchUpInside += OkButton_TouchUpInside;
 
             CancelButton = new UIButton ();
-            CancelButton.SetTitle ("Cancel", UIControlState.Normal);
             CancelButton.TouchUpInside += CancelButton_TouchUpInside;
+
+            PaletteView = new PaletteView ();
+
+            this.DelayBind (() => {
+                var set = this.CreateBindingSet<SigningView, SigningViewModel> ();
+                set.Bind (OkButton)
+                   .For ("Title")
+                   .To (vm => vm.AddSignatureTxt);
+
+                set.Bind (CancelButton)
+                   .For ("Title")
+                   .To (vm => vm.CancelTxt);
+
+                set.Bind (PaletteView)
+                   .For (v => v.DataContext)
+                   .To (vm => vm.PaletteContext);
+
+                set.Bind (CanvasView)
+                   .For (v => v.DrawColor)
+                   .To (vm => vm.DrawingColor)
+                   .WithConversion (new UIColorConverter ());
+
+                set.Apply ();
+            });
         }
-
-
 
         public override void LayoutSubviews ()
         {
             base.LayoutSubviews ();
             ShowViewWithAnimation ();
+            ShowPalette ();
         }
 
         void ShowViewWithAnimation ()
         {
-
             var topLeft = this.GetCenter (CanvasView.Frame);
             var topRight = new CGPoint (topLeft.X + CanvasView.Frame.Width, topLeft.Y);
             CanvasView.Frame = new CGRect (topLeft, CanvasView.Frame.Size);
@@ -55,7 +80,16 @@ namespace iSign
             Add (OkButton);
             OkButton.SizeToFit ();
             OkButton.Frame = new CGRect (new CGPoint (topRight.X - OkButton.Frame.Width - 10, topRight.Y - 40), OkButton.Frame.Size);
+        }
 
+        private SigningViewModel Context => DataContext as SigningViewModel;
+
+        private void ShowPalette ()
+        {
+            PaletteView.Frame = new CGRect (Frame.X, Frame.Height, Frame.Width, 50);
+            PaletteView.Layout (CanvasView.DrawColor);
+            Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () =>
+                     Superview.Add (PaletteView), null);
         }
 
         public UIImage GetSignature ()
@@ -67,6 +101,7 @@ namespace iSign
         public Action CancelAction { get; set;}
         private void CloseView ()
         {
+            PaletteView.RemoveFromSuperview ();
             RemoveFromSuperview ();
         }
 

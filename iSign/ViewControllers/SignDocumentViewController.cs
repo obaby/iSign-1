@@ -35,7 +35,7 @@ namespace iSign
 
         partial void EditBtn_TouchUpInside (UIButton sender)
         {
-            ContainerView.ShowSigningView ();
+            ContainerView.ShowSigningView (Context.SigningViewModel);
         }
 
 

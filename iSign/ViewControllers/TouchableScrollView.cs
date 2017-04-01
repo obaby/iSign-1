@@ -1,12 +1,10 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
-using System.Collections.Generic;
 using iSign.Core;
 using MvvmCross.Plugins.Messenger;
 using MvvmCross.Platform;
-using System.Linq;
+using MvvmCross.Core.ViewModels;
 
 namespace iSign
 {
@@ -61,10 +59,11 @@ namespace iSign
             OnFinishedAddingView ();
         }
         private bool _signingViewIsShown;
-        public void ShowSigningView ()
+        public void ShowSigningView (IMvxViewModel context)
         {
             if (_signingViewIsShown) return;
             var signingView = new SigningView (Frame);
+            signingView.DataContext = context;
             signingView.CancelAction = () => _signingViewIsShown = false;
             signingView.OkAction = () => {
                 _signingViewIsShown = false;

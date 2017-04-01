@@ -133,6 +133,7 @@
     <Folder Include="Resources\Pdf\" />
     <Folder Include="Service\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -187,6 +188,7 @@
     <Compile Include="Extensions\UIViewExtension.cs" />
     <Compile Include="Extensions\AntmarchLayer.cs" />
     <Compile Include="Extensions\BlinkingLayer.cs" />
+    <Compile Include="Converters\UIColorConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
