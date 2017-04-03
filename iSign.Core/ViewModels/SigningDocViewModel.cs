@@ -7,13 +7,14 @@ namespace iSign.Core
     {
         private IDialogService DialogService { get; }
         private IFileStorageChooser FileStorageChooser { get; }
+        public SigningViewModel SigningViewModel { get; }
         public string Filename { get; set;}
-        public PaletteViewModel PaletteContext { get; }
-        public SigningDocViewModel (IViewModelServices viewModelServices, IDialogService dialogService, PaletteViewModel paletteContext) : base(viewModelServices)
+
+        public SigningDocViewModel (IViewModelServices viewModelServices, IDialogService dialogService, SigningViewModel signingViewModel) : base(viewModelServices)
         {
-            PaletteContext = paletteContext;
             AddLabelCommand = new MvxCommand (AddLabel);
             DialogService = dialogService;
+            SigningViewModel = signingViewModel;
         }
 
         public IMvxCommand AddLabelCommand { get; }

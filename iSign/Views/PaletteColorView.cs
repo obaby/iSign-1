@@ -33,13 +33,24 @@ namespace iSign
         void Context_PropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof (Context.IsSelected)) {
-                if (Context.IsSelected) {
-                    Layer.BorderWidth = 2;
-                    Layer.BorderColor = UIColor.White.CGColor;
-                    return;
-                }
-                Layer.BorderWidth = 0;
+                UpdateBorder ();
             }
+        }
+
+        private void UpdateBorder ()
+        {
+            if (Context.IsSelected) {
+                Layer.BorderWidth = 2;
+                Layer.BorderColor = UIColor.White.CGColor;
+                return;
+            }
+            Layer.BorderWidth = 0;
+        }
+
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
+            UpdateBorder ();
         }
     }
 }

@@ -47,6 +47,7 @@
     <Compile Include="ViewModels\Messages\PaletteColorSelectedMessage.cs" />
     <Compile Include="ViewModels\Messages\ViewActivated.cs" />
     <Compile Include="ViewModels\Messages\UndoMessage.cs" />
+    <Compile Include="ViewModels\SigningViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">

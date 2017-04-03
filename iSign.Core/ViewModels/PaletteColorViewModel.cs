@@ -1,9 +1,4 @@
-﻿using System;
-using iSign.Services;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Plugins.Messenger;
-
-namespace iSign.Core
+﻿namespace iSign.Core
 {
     public class PaletteColorViewModel : BaseViewModel
     {

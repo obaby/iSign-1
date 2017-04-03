@@ -2,30 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
+using iSign.Core;
 using MvvmCross.Binding.iOS.Views;
+using MvvmCross.Platform;
+using MvvmCross.Plugins.Messenger;
 using UIKit;
 
 namespace iSign.Touch
 {
-    public class CanvasView : MvxImageView
+    public class CanvasView : UIImageView
     {
-
         private const double π = Math.PI;
-        private const double DefaultLineWidth = 1;
-        private const double ForceSensitivity = 1;
+        private const double DefaultLineWidth = 2;
+        public double ForceSensitivity { get; set; } = 2;
         private const double TiltThreshold = π / 6; // 30°
         private const double MinLineWidth = 1;
-        private const double HandLineWidth = 1;
+        public double HandLineWidth { get; set;} = 2;
         private List<UIImage> PreviousImages { get; set; }
-        private UIImage DrawingImage;
+        public UIImage DrawingImage { get; private set;}
         public UIColor DrawColor { get; set;}
         private UIColor EraserColor => BackgroundColor ?? UIColor.White;
 
         public CanvasView (CGRect rect)
         {
             UserInteractionEnabled = true;
+            BackgroundColor = UIColor.White;
             Frame = rect;
-            DrawColor = UIColor.Red;
             PreviousImages = new List<UIImage> ();
         }
        
@@ -76,6 +78,7 @@ namespace iSign.Touch
             PreviousImages.RemoveAt (PreviousImages.Count - 1);
             Image = PreviousImages [PreviousImages.Count - 1];
             DrawingImage = Image;
+            return;
         }
 
         public override void TouchesEnded (Foundation.NSSet touches, UIEvent evt)
@@ -83,6 +86,13 @@ namespace iSign.Touch
             base.TouchesEnded (touches, evt);
             Image = DrawingImage;
             PreviousImages.Add (Image);
+            LineAdded ();
+        }
+
+        public event EventHandler OnLineAdded;
+        private void LineAdded ()
+        {
+            OnLineAdded?.Invoke (this, EventArgs.Empty);
         }
 
         public override void TouchesCancelled (Foundation.NSSet touches, UIEvent evt)

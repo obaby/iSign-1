@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
 using iSign.Core;
@@ -9,14 +10,15 @@ using UIKit;
 
 namespace iSign
 {
-    public class EditableView : CanvasView
+    public class EditableView : UIView
     {
         public int Id { get; set; }
+        private UIImageView ImageView { get; set; }
         private UIPanGestureRecognizer DragGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
         private IMvxMessenger Messenger { get; }
-        private int _border = 20;
+        private int _border = 50;
         public EditableView (CGRect rect) : base(rect)
         {
             Messenger = Mvx.Resolve<IMvxMessenger> ();
@@ -34,8 +36,11 @@ namespace iSign
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (LongPressGesture);
-            Layer.BorderWidth = 2;
             BackgroundColor = UIColor.Clear;
+            ViewStateFlow = new List<ViewState> { ViewState.Done, ViewState.Resizing, ViewState.Moving };
+
+            State = ViewState.Resizing;
+            UpdateLayer ();
         }
 
         private CGPoint _viewCoordinate;
@@ -63,7 +68,7 @@ namespace iSign
             double y = Frame.Y;
             var width = Frame.Size.Width;
             var height = Frame.Size.Height;
-
+            nfloat ratio = 1;
             switch (CurrentTouch) {
             case TypeOfTouch.Dragging:
                 var xMax = Superview.Frame.Width;
@@ -78,16 +83,24 @@ namespace iSign
             case TypeOfTouch.ResizingTopBorder:
                 y = panInfo.View.Frame.Y + deltaHeightDrag;
                 height = panInfo.View.Frame.Height - deltaHeightDrag;
+                ratio = panInfo.View.Frame.Height / height;
+                width = panInfo.View.Frame.Width / ratio;
                 break;
             case TypeOfTouch.ResizingBottomBorder:
                 height = panInfo.View.Frame.Height + deltaHeight;
+                ratio = panInfo.View.Frame.Height / height;
+                width = panInfo.View.Frame.Width / ratio;
                 break;
             case TypeOfTouch.ResizingLeftBorder:
                 x = panInfo.View.Frame.X + deltaWidthDrag;
                 width = panInfo.View.Frame.Width - deltaWidthDrag;
+                ratio = panInfo.View.Frame.Width / width;
+                height = panInfo.View.Frame.Height / ratio;
                 break;
             case TypeOfTouch.ResizingRightBorder:
                 width = panInfo.View.Frame.Width + deltaWidth;
+                ratio = panInfo.View.Frame.Width / width;
+                height = panInfo.View.Frame.Height / ratio;
                 break;
             default: return;
             }
@@ -95,6 +108,7 @@ namespace iSign
             panInfo.View.Frame = new CGRect (x, y,
                 width,
                 height);
+            UpdateImageAndLayer (new CGSize (width, height));
         }
 
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
@@ -116,18 +130,12 @@ namespace iSign
 
         private ViewState NextState ()
         {
-            switch (State) {
-            case ViewState.Done:
-                return ViewState.Moving;
-            case ViewState.Moving:
-                Messenger.Publish (new ViewActivatedMessage (this, Id));
-                return ViewState.Editing;
-            case ViewState.Editing:
-                return ViewState.Done;
-            default: 
-                return ViewState.Done;
-            }
+            var index = ViewStateFlow.IndexOf (State);
+            var newIndex = (index + 1) % ViewStateFlow.Count;
+            return ViewStateFlow [newIndex];
         }
+
+        private List<ViewState> ViewStateFlow { get; }
 
         public void EndUpdate ()
         {
@@ -139,17 +147,20 @@ namespace iSign
         {
             switch (State) {
             case ViewState.Done:
-                Layer.BorderWidth = 0;
-                DragGesture.Enabled = false;
-                break;
-            case ViewState.Editing:
-                Layer.BorderWidth = 2;
-                Layer.BorderColor = UIColor.Red.CGColor;
+                this.UnantMarch ();
+                this.Unblink ();
                 DragGesture.Enabled = false;
                 break;
             case ViewState.Moving:
-                Layer.BorderWidth = 2;
-                Layer.BorderColor = UIColor.Black.CGColor;
+                this.UnantMarch ();
+                this.Unblink ();
+                this.AntMarch (UIColor.Blue);
+                DragGesture.Enabled = true;
+                break;
+            case ViewState.Resizing:
+                this.UnantMarch ();
+                this.Unblink ();
+                this.Blink (UIColor.Red);
                 DragGesture.Enabled = true;
                 break;
             }
@@ -168,30 +179,35 @@ namespace iSign
 
         private TypeOfTouch DetermineTypeOfTouch (CGPoint coordinate)
         {
-            if (coordinate.Y < _border) return TypeOfTouch.ResizingTopBorder;
-            if (coordinate.Y > Frame.Height - _border) return TypeOfTouch.ResizingBottomBorder;
-            if (coordinate.X < _border) return TypeOfTouch.ResizingLeftBorder;
-            if (coordinate.X > Frame.Width - _border) return TypeOfTouch.ResizingRightBorder;
-            return TypeOfTouch.Dragging;
+            if (State == ViewState.Resizing) {
+                if (coordinate.Y < _border) return TypeOfTouch.ResizingTopBorder;
+                if (coordinate.Y > Frame.Height - _border) return TypeOfTouch.ResizingBottomBorder;
+                if (coordinate.X < _border) return TypeOfTouch.ResizingLeftBorder;
+                if (coordinate.X > Frame.Width - _border) return TypeOfTouch.ResizingRightBorder;
+            }
+            if (State == ViewState.Moving) {
+                return TypeOfTouch.Dragging;
+            }
+            return TypeOfTouch.Nothing;
         }
 
 
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
-            if (State != ViewState.Editing) return;
+            if (State != ViewState.Resizing) return;
             base.TouchesMoved (touches, evt);
         }
 
         public override void TouchesEnded (NSSet touches, UIEvent evt)
         {
-            if (State != ViewState.Editing) return;
+            if (State != ViewState.Resizing) return;
             base.TouchesEnded (touches, evt);
             
         }
 
         public override void TouchesCancelled (NSSet touches, UIEvent evt)
         {
-            if (State != ViewState.Editing) return;
+            if (State != ViewState.Resizing) return;
             base.TouchesCancelled (touches, evt);
         }
       
@@ -199,8 +215,24 @@ namespace iSign
         private enum ViewState
         {
             Moving,
-            Editing,
+            Resizing,
             Done
+        }
+
+        public void SetImage (UIImage image)
+        {
+            ImageView = new UIImageView (new CGRect (CGPoint.Empty, image.Size));
+            ImageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            Frame = new CGRect (Frame.Location, image.Size);
+            ImageView.Image = image;
+            Add (ImageView);
+        }
+
+        void UpdateImageAndLayer (CGSize size)
+        {
+            if (ImageView != null)
+                ImageView.Frame = new CGRect (ImageView.Frame.Location, size);
+            this.UpdateLayersFrame ();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using iSign.Services;
 using MvvmCross.Core.ViewModels;
 
@@ -10,6 +10,7 @@ namespace iSign.Core
     {
         public PaletteViewModel (IViewModelServices viewModelServices) : base(viewModelServices)
         {
+            Subscribe<PaletteColorSelectedMessage> (PaletteColorSelectedMessageReceived);
             var colors = new List<string> {
                 Colors.Red,
                 Colors.Blue,
@@ -29,7 +30,19 @@ namespace iSign.Core
                 i++;
             }
             PaletteColors = new List<PaletteColorViewModel> (list);
-            Subscribe<PaletteColorSelectedMessage> (PaletteColorSelectedMessageReceived);
+            MaxThickness = 10;
+            MinThickness = 1;
+            PointThickness = 2;
+        }
+
+        public void SetDefaultColor (string defaultColor)
+        {
+            foreach (var vm in PaletteColors) {
+                if (vm.Color == defaultColor) {
+                    vm.IsSelected = true;
+                    return;
+                }
+            }
         }
 
         public IEnumerable<PaletteColorViewModel> PaletteColors { get; }
@@ -62,9 +75,29 @@ namespace iSign.Core
             SelectedColor.Select ();
         }
 
-        public void Undo ()
+        public ICommand UndoCommand => new MvxCommand (Undo);
+
+        private void Undo ()
         {
             PublishMessage (new UndoMessage (this));
         }
+
+        public string UndoText => "Undo";
+
+        private float pointThickness;
+
+        public float PointThickness {
+            get {
+                return pointThickness;
+            }
+
+            set {
+                pointThickness = value;
+                RaisePropertyChanged ();
+            }
+        }
+
+        public float MaxThickness { get; }
+        public float MinThickness { get; }
     }
 }
