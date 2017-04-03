@@ -14,10 +14,12 @@ namespace iSign
         private const int XMargin = 40;
         private List<PaletteColorView> Colors { get; }
         private UIButton _undoButton { get; }
+        private UISlider _thicknessSlider { get; }
         public PaletteView ()
         {
             BackgroundColor = UIColor.Gray;
             _undoButton = new UIButton ();
+            _thicknessSlider = new UISlider ();
             this.DelayBind (() => {
                 var set = this.CreateBindingSet<PaletteView, PaletteViewModel> ();
                 set.Bind (_undoButton)
@@ -25,6 +27,18 @@ namespace iSign
                    .To (vm => vm.UndoText);
                 set.Bind (_undoButton)
                    .To (vm => vm.UndoCommand);
+
+                set.Bind (_thicknessSlider)
+                   .For (v => v.MinValue)
+                   .To (vm => vm.MinThickness);
+
+                set.Bind (_thicknessSlider)
+                   .For (v => v.MaxValue)
+                   .To (vm => vm.MaxThickness);
+
+                set.Bind (_thicknessSlider)
+                   .For (v => v.Value)
+                   .To (vm => vm.PointThickness);
 
                 set.Apply ();
             });
@@ -59,7 +73,10 @@ namespace iSign
                 Add (colorView);
                 x += size + XMargin;
                 if (x >= Frame.Width - size - XMargin) break;
+                i++;
             }
+            _thicknessSlider.Frame = new CGRect (x, y, Frame.Width - XMargin - x, Frame.Height/2);
+            Add (_thicknessSlider);
         }
 
         internal void UpdateUndo (bool canUndo)

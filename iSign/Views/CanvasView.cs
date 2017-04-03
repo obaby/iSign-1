@@ -14,10 +14,10 @@ namespace iSign.Touch
     {
         private const double π = Math.PI;
         private const double DefaultLineWidth = 2;
-        private const double ForceSensitivity = 2;
+        public double ForceSensitivity { get; set; } = 2;
         private const double TiltThreshold = π / 6; // 30°
         private const double MinLineWidth = 1;
-        private const double HandLineWidth = 2;
+        public double HandLineWidth { get; set;} = 2;
         private List<UIImage> PreviousImages { get; set; }
         public UIImage DrawingImage { get; private set;}
         public UIColor DrawColor { get; set;}

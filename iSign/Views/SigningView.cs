@@ -53,6 +53,14 @@ namespace iSign
                    .To (vm => vm.DrawingColor)
                    .WithConversion (new UIColorConverter ());
 
+                set.Bind (CanvasView)
+                   .For (v => v.HandLineWidth)
+                   .To (vm => vm.Thickness);
+
+                set.Bind (CanvasView)
+                   .For (v => v.ForceSensitivity)
+                   .To (vm => vm.Thickness);
+
                 set.Apply ();
             });
 

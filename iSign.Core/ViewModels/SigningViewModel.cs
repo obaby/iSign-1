@@ -22,8 +22,13 @@ namespace iSign.Core
             if (e.PropertyName == nameof (PaletteContext.SelectedColor)) {
                 RaisePropertyChanged (nameof (DrawingColor));
             }
+
+            if (e.PropertyName == nameof (PaletteContext.PointThickness)) {
+                RaisePropertyChanged (nameof (Thickness));
+            }
         }
 
         public string DrawingColor => PaletteContext.SelectedColor?.Color;
+        public float Thickness => PaletteContext.PointThickness;
     }
 }

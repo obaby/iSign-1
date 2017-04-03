@@ -30,6 +30,9 @@ namespace iSign.Core
                 i++;
             }
             PaletteColors = new List<PaletteColorViewModel> (list);
+            MaxThickness = 10;
+            MinThickness = 1;
+            PointThickness = 2;
         }
 
         public void SetDefaultColor (string defaultColor)
@@ -80,5 +83,21 @@ namespace iSign.Core
         }
 
         public string UndoText => "Undo";
+
+        private float pointThickness;
+
+        public float PointThickness {
+            get {
+                return pointThickness;
+            }
+
+            set {
+                pointThickness = value;
+                RaisePropertyChanged ();
+            }
+        }
+
+        public float MaxThickness { get; }
+        public float MinThickness { get; }
     }
 }
