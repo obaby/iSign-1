@@ -113,9 +113,9 @@ namespace iSign
                      Superview.Add (PaletteView), null);
         }
 
-        public UIImage GetSignature ()
+        public CanvasView GetSignature ()
         {
-            return CanvasView?.DrawingImage;
+            return CanvasView;
         }
 
         public Action OkAction { get; set;}

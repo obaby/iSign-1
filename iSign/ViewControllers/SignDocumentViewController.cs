@@ -24,7 +24,6 @@ namespace iSign
         {
             base.ViewDidLoad ();
             EndEditingBtn.Hidden = false;
-            ContainerView.FinishedAddingView += ContainerView_FinishedAddingView;
         }
 
         void Context_InputSet (object sender, string e)
@@ -36,12 +35,6 @@ namespace iSign
         partial void EditBtn_TouchUpInside (UIButton sender)
         {
             ContainerView.ShowSigningView (Context.SigningViewModel);
-        }
-
-
-        void ContainerView_FinishedAddingView (object sender, EventArgs e)
-        {
-            _editMode = false;
         }
 
         private void SetBindings ()
@@ -62,7 +55,6 @@ namespace iSign
         void Converter_ImageCreated (object sender, UIImage e)
         {
             _imageView = new UIImageView (e);
-            ContainerView.Clear ();
             _imageView.RemoveFromSuperview ();
             ContainerView.Add (_imageView);
             ContainerView.ContentSize = _imageView.Frame.Size;
@@ -84,7 +76,6 @@ namespace iSign
         SigningDocViewModel Context => DataContext as SigningDocViewModel;
         partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
         {
-            ContainerView.EndUpdate ();
             var filename = ContainerView.ToPDF (Context.Filename);
             var vc = new PDFViewerViewController (Context.Filename);
             PresentViewController (vc, true, null);
@@ -111,7 +102,6 @@ namespace iSign
                 width = height * ratio;
             }
             _imageView.Frame = new CGRect (_imageView.Frame.X, _imageView.Frame.Y, width, height);
-            ContainerView.Clear ();
             _imageView.RemoveFromSuperview ();
             ContainerView.Add (_imageView);
             ContainerView.ContentSize = _imageView.Frame.Size;
