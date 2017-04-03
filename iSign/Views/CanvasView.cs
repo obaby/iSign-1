@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
+using iSign.Core;
 using MvvmCross.Binding.iOS.Views;
+using MvvmCross.Platform;
+using MvvmCross.Plugins.Messenger;
 using UIKit;
 
 namespace iSign.Touch
@@ -25,7 +28,6 @@ namespace iSign.Touch
             UserInteractionEnabled = true;
             BackgroundColor = UIColor.White;
             Frame = rect;
-            DrawColor = null;
             PreviousImages = new List<UIImage> ();
         }
        
@@ -76,6 +78,7 @@ namespace iSign.Touch
             PreviousImages.RemoveAt (PreviousImages.Count - 1);
             Image = PreviousImages [PreviousImages.Count - 1];
             DrawingImage = Image;
+            return;
         }
 
         public override void TouchesEnded (Foundation.NSSet touches, UIEvent evt)
@@ -83,6 +86,13 @@ namespace iSign.Touch
             base.TouchesEnded (touches, evt);
             Image = DrawingImage;
             PreviousImages.Add (Image);
+            LineAdded ();
+        }
+
+        public event EventHandler OnLineAdded;
+        private void LineAdded ()
+        {
+            OnLineAdded?.Invoke (this, EventArgs.Empty);
         }
 
         public override void TouchesCancelled (Foundation.NSSet touches, UIEvent evt)

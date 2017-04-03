@@ -7,13 +7,14 @@ namespace iSign.Core
 {
 	public class BaseViewModel : MvxViewModel
 	{
-        protected INavigationService NavigationService { get; }
-        private IMvxMessenger Messenger { get; }
+        protected IViewModelServices ViewModelServices { get; }
+        protected INavigationService NavigationService => ViewModelServices.NavigationService;
+
+        private IMvxMessenger Messenger => ViewModelServices.Messenger;
         private Dictionary<Type, MvxSubscriptionToken> Tokens { get; }
 		public BaseViewModel(IViewModelServices viewModelService)
 		{
-            NavigationService = viewModelService.NavigationService;
-            Messenger = viewModelService.Messenger;
+            ViewModelServices = viewModelService;
             Tokens = new Dictionary<Type, MvxSubscriptionToken> ();
 		}
 

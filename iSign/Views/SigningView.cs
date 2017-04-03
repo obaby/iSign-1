@@ -5,6 +5,8 @@ using iSign.Core;
 using iSign.Touch;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
+using MvvmCross.Platform;
+using MvvmCross.Plugins.Messenger;
 using UIKit;
 
 namespace iSign
@@ -16,11 +18,13 @@ namespace iSign
         private UIButton CancelButton { get; }
         private UILabel HelpMessage { get; }
         private PaletteView PaletteView { get; }
-
+        private MvxSubscriptionToken Token { get; }
+        private IMvxMessenger Messenger { get; }
         public SigningView (CGRect bounds) : base (bounds)
         {
             Frame = bounds;
             CanvasView = new CanvasView (new CGRect(0, 0, 500, 500));
+            CanvasView.OnLineAdded += CanvasView_OnLineAdded;
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha(0.3f);
             OkButton = new UIButton ();
             OkButton.TouchUpInside += OkButton_TouchUpInside;
@@ -51,6 +55,15 @@ namespace iSign
 
                 set.Apply ();
             });
+
+            Messenger = Mvx.Resolve<IMvxMessenger> ();
+            Token = Messenger.Subscribe<UndoMessage> (m => Undo ());
+        }
+
+        private void Undo ()
+        {
+            CanvasView.Undo ();
+            PaletteView.UpdateUndo (CanvasView.CanUndo);
         }
 
         public override void LayoutSubviews ()
@@ -87,7 +100,7 @@ namespace iSign
         private void ShowPalette ()
         {
             PaletteView.Frame = new CGRect (Frame.X, Frame.Height, Frame.Width, 50);
-            PaletteView.Layout (CanvasView.DrawColor);
+            PaletteView.Layout ();
             Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () =>
                      Superview.Add (PaletteView), null);
         }
@@ -101,6 +114,8 @@ namespace iSign
         public Action CancelAction { get; set;}
         private void CloseView ()
         {
+            CanvasView.OnLineAdded -= CanvasView_OnLineAdded;
+            Messenger.Unsubscribe<UndoMessage> (Token);
             PaletteView.RemoveFromSuperview ();
             RemoveFromSuperview ();
         }
@@ -119,6 +134,11 @@ namespace iSign
                 CancelAction ();
             }
             CloseView ();
+        }
+
+        void CanvasView_OnLineAdded (object sender, EventArgs e)
+        {
+            PaletteView.UpdateUndo (CanvasView.CanUndo);
         }
     }
 }

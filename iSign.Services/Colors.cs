@@ -1,15 +1,14 @@
-﻿using System;
-namespace iSign.Services
+﻿namespace iSign.Services
 {
-    public class Colors
+    public static class Colors
     {
-        public static string Red = "#FF0000";
-        public static string Blue = "#0000FF";
-        public static string Yellow = "#FFFF00";
-        public static string Purple = "#800080";
-        public static string Green = "#00FF00";
-        public static string Orange = "#FF8C00";
-        public static string Black = "#000000";
-        public static string White = "#FFFFFF";
+        public const string Red = "#FF0000";
+        public const string Blue = "#0000FF";
+        public const string Yellow = "#FFFF00";
+        public const string Purple = "#800080";
+        public const string Green = "#00FF00";
+        public const string Orange = "#FF8C00";
+        public const string Black = "#000000";
+        public const string White = "#FFFFFF";
     }
 }

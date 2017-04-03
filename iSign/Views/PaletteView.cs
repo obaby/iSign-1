@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using iSign.Core;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
@@ -17,12 +18,20 @@ namespace iSign
         {
             BackgroundColor = UIColor.Gray;
             _undoButton = new UIButton ();
-            _undoButton.SetTitle ("Undo", UIControlState.Normal);
-            _undoButton.TouchUpInside += (sender, e) => Context.Undo ();
+            this.DelayBind (() => {
+                var set = this.CreateBindingSet<PaletteView, PaletteViewModel> ();
+                set.Bind (_undoButton)
+                   .For ("Title")
+                   .To (vm => vm.UndoText);
+                set.Bind (_undoButton)
+                   .To (vm => vm.UndoCommand);
+
+                set.Apply ();
+            });
         }
         PaletteViewModel Context => DataContext as PaletteViewModel;
         
-        public void Layout (UIColor currentColor)
+        public void Layout ()
         {
             var x = (nfloat)XMargin;
             var withMargin = true;
@@ -39,10 +48,11 @@ namespace iSign
             _undoButton.SizeToFit ();
             x += _undoButton.Frame.Width + XMargin;
             var i = 0;
+            var currentColor = Context.SelectedColor;
             foreach (var colorVm in Context.PaletteColors) {
                 var colorView = new PaletteColorView ();
                 colorView.DataContext = colorVm;
-                if (colorVm.Color.ToUIColor () == currentColor || (i == 0 && currentColor == null)) {
+                if (colorVm == currentColor || (i == 0 && currentColor == null)) {
                     colorVm.IsSelected = true;
                 }
                 colorView.Frame = new CGRect (x, y, size, size);
@@ -54,7 +64,7 @@ namespace iSign
 
         internal void UpdateUndo (bool canUndo)
         {
-            //_undoButton.Enabled = canUndo;
+            _undoButton.SetTitleColor (canUndo ? UIColor.White : UIColor.LightGray, UIControlState.Normal);
         }
    }
 }
