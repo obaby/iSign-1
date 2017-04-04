@@ -89,6 +89,13 @@ namespace iSign.Touch
             LineAdded ();
         }
 
+        public void StartWith (UIImage image)
+        {
+            Image = image;
+            DrawingImage = image;
+            PreviousImages.Add (image);
+        }
+
         public event EventHandler OnLineAdded;
         private void LineAdded ()
         {

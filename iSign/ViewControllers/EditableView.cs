@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-using iSign.Core;
-using iSign.Touch;
 using MvvmCross.Platform;
 using MvvmCross.Plugins.Messenger;
 using UIKit;
@@ -13,8 +11,9 @@ namespace iSign
     public class EditableView : UIView
     {
         public int Id { get; set; }
-        private UIImageView ImageView { get; set; }
+        public UIImageView ImageView { get; private set; }
         private UIPanGestureRecognizer DragGesture { get; }
+        private UITapGestureRecognizer DoubleTapTwoFigersGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
         private IMvxMessenger Messenger { get; }
@@ -28,13 +27,20 @@ namespace iSign
 
             LongPressGesture = new UILongPressGestureRecognizer (ViewLongPressed);
 
-            DoubleTapGesture = new UITapGestureRecognizer (ViewDoubleTapped) {
+            DoubleTapTwoFigersGesture = new UITapGestureRecognizer (ViewDoubleTappedWith2Fingers) {
                 NumberOfTapsRequired = 2,
                 NumberOfTouchesRequired = 2
             };
+
+            DoubleTapGesture = new UITapGestureRecognizer (ViewDoubleTapped)
+            {
+                NumberOfTapsRequired = 2
+            };
+
             CurrentTouch = TypeOfTouch.Nothing;
-            AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapGesture);
+            AddGestureRecognizer (DragGesture);
+            AddGestureRecognizer (DoubleTapTwoFigersGesture);
             AddGestureRecognizer (LongPressGesture);
             BackgroundColor = UIColor.Clear;
             ViewStateFlow = new List<ViewState> { ViewState.Done, ViewState.Resizing, ViewState.Moving };
@@ -113,9 +119,24 @@ namespace iSign
 
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
         {
-            tapInfo.View.RemoveFromSuperview ();
+            if (OnDoubleTap != null) {
+                OnDoubleTap ();
+            }
+        }
+
+        public Action OnDoubleTap { get; set;}
+
+        private void ViewDoubleTappedWith2Fingers (UITapGestureRecognizer tapInfo)
+        {
+            Remove ();
+        }
+
+        public void Remove ()
+        {
+            RemoveFromSuperview ();
             RemoveGestureRecognizer (DragGesture);
-            RemoveGestureRecognizer (DoubleTapGesture); 
+            RemoveGestureRecognizer (DoubleTapGesture);
+            RemoveGestureRecognizer (DoubleTapTwoFigersGesture);
             RemoveGestureRecognizer (LongPressGesture);
             Dispose ();
         }
@@ -228,7 +249,7 @@ namespace iSign
             Add (ImageView);
         }
 
-        void UpdateImageAndLayer (CGSize size)
+        public void UpdateImageAndLayer (CGSize size)
         {
             if (ImageView != null)
                 ImageView.Frame = new CGRect (ImageView.Frame.Location, size);
