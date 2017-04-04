@@ -18,7 +18,7 @@ namespace iSign
         private UIButton CancelButton { get; }
         private UILabel HelpMessage { get; }
         private PaletteView PaletteView { get; }
-        private MvxSubscriptionToken Token { get; }
+        private MvxSubscriptionToken Token { get; set; }
         private IMvxMessenger Messenger { get; }
         public SigningView (CGRect bounds) : base (bounds)
         {
@@ -65,7 +65,6 @@ namespace iSign
             });
 
             Messenger = Mvx.Resolve<IMvxMessenger> ();
-            Token = Messenger.Subscribe<UndoMessage> (m => Undo ());
         }
 
         private void Undo ()
@@ -74,9 +73,11 @@ namespace iSign
             PaletteView.UpdateUndo (CanvasView.CanUndo);
         }
 
-        public override void LayoutSubviews ()
+        public override void MovedToSuperview ()
         {
-            base.LayoutSubviews ();
+            base.MovedToSuperview ();
+            if (Superview == null) return;
+            Token = Messenger.Subscribe<UndoMessage> (m => Undo ());
             ShowViewWithAnimation ();
             ShowPalette ();
         }
@@ -113,9 +114,14 @@ namespace iSign
                      Superview.Add (PaletteView), null);
         }
 
-        public CanvasView GetSignature ()
+        public UIImage GetSignature ()
         {
-            return CanvasView;
+            return CanvasView?.DrawingImage;
+        }
+
+        public void StartWith (UIImage image)
+        {
+            CanvasView?.StartWith (image);
         }
 
         public Action OkAction { get; set;}

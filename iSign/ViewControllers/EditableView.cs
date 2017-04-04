@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-using iSign.Core;
-using iSign.Touch;
 using MvvmCross.Platform;
 using MvvmCross.Plugins.Messenger;
 using UIKit;
@@ -13,8 +11,7 @@ namespace iSign
     public class EditableView : UIView
     {
         public int Id { get; set; }
-        public CanvasView CanvasView { get; private set; }
-        private UIImageView ImageView { get; set; }
+        public UIImageView ImageView { get; private set; }
         private UIPanGestureRecognizer DragGesture { get; }
         private UITapGestureRecognizer DoubleTapTwoFigersGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
@@ -41,6 +38,7 @@ namespace iSign
             };
 
             CurrentTouch = TypeOfTouch.Nothing;
+            AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapTwoFigersGesture);
             AddGestureRecognizer (LongPressGesture);
@@ -121,18 +119,24 @@ namespace iSign
 
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
         {
-            tapInfo.View.RemoveFromSuperview ();
-            RemoveGestureRecognizer (DragGesture);
-            RemoveGestureRecognizer (DoubleTapTwoFigersGesture);
-            RemoveGestureRecognizer (LongPressGesture);
-            Dispose ();
+            if (OnDoubleTap != null) {
+                OnDoubleTap ();
+            }
         }
+
+        public Action OnDoubleTap { get; set;}
 
         private void ViewDoubleTappedWith2Fingers (UITapGestureRecognizer tapInfo)
         {
-            tapInfo.View.RemoveFromSuperview ();
+            Remove ();
+        }
+
+        public void Remove ()
+        {
+            RemoveFromSuperview ();
             RemoveGestureRecognizer (DragGesture);
-            RemoveGestureRecognizer (DoubleTapTwoFigersGesture); 
+            RemoveGestureRecognizer (DoubleTapGesture);
+            RemoveGestureRecognizer (DoubleTapTwoFigersGesture);
             RemoveGestureRecognizer (LongPressGesture);
             Dispose ();
         }
@@ -236,10 +240,8 @@ namespace iSign
             Done
         }
 
-        public void SetImage (CanvasView canvasView)
+        public void SetImage (UIImage image)
         {
-            CanvasView = canvasView;
-            var image = canvasView.Image;
             ImageView = new UIImageView (new CGRect (CGPoint.Empty, image.Size));
             ImageView.ContentMode = UIViewContentMode.ScaleAspectFit;
             Frame = new CGRect (Frame.Location, image.Size);
@@ -247,7 +249,7 @@ namespace iSign
             Add (ImageView);
         }
 
-        void UpdateImageAndLayer (CGSize size)
+        public void UpdateImageAndLayer (CGSize size)
         {
             if (ImageView != null)
                 ImageView.Frame = new CGRect (ImageView.Frame.Location, size);

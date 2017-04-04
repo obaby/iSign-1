@@ -111,6 +111,7 @@ namespace iSign
         {
             if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) {
                 FileDownloaded ("Pdf/FastFlex.jpg");
+                Context.Filename = "FastFlex.jpg";
                 return;
             }
             var allowedUTIs = new string [] {

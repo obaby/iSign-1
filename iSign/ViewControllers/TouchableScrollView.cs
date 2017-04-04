@@ -1,10 +1,8 @@
 using System;
 using UIKit;
 using CoreGraphics;
-using iSign.Core;
-using MvvmCross.Plugins.Messenger;
-using MvvmCross.Platform;
 using MvvmCross.Core.ViewModels;
+using System.Collections.Generic;
 
 namespace iSign
 {
@@ -24,18 +22,42 @@ namespace iSign
         public void ShowSigningView (IMvxViewModel context)
         {
             if (_signingViewIsShown) return;
+            var vc = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController;
             var signingView = new SigningView (Frame);
+            EditableView editableView = null;
+            var doubleTapped = false;
             signingView.DataContext = context;
-            signingView.CancelAction = () => _signingViewIsShown = false;
+            signingView.CancelAction = () => {
+                _signingViewIsShown = false;
+            };
+
             signingView.OkAction = () => {
+                var previousRect = CGRect.Empty;
+                if (doubleTapped) {
+                    previousRect = editableView.Frame;
+                    editableView.Remove ();
+                    doubleTapped = false;
+                }
                 _signingViewIsShown = false;
                 var signature = signingView.GetSignature ();
-                var center = this.GetCenter (signature.Image.Size, ContentOffset);
-                var editableView = new EditableView (new CGRect (center, signature.Image.Size));
+                var center = this.GetCenter (signature.Size, ContentOffset);
+                var position = previousRect == CGRect.Empty ? new CGRect (center, signature.Size) : previousRect;
+                editableView = new EditableView (position);
                 editableView.SetImage (signature);
+                if (previousRect != CGRect.Empty) {
+                    editableView.Frame = previousRect;
+                    editableView.UpdateImageAndLayer (previousRect.Size);
+                }
                 Add (editableView);
+
+                editableView.OnDoubleTap = () => {
+                    doubleTapped = true;
+                    _signingViewIsShown = true;
+                    signingView.StartWith (editableView.ImageView.Image);
+                    vc.Add (signingView);
+                };
             };
-            var vc = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController;
+
             vc.Add (signingView);
             _signingViewIsShown = true;
         }
