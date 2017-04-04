@@ -3,6 +3,7 @@ using UIKit;
 using CoreGraphics;
 using MvvmCross.Core.ViewModels;
 using System.Collections.Generic;
+using iSign.Core;
 
 namespace iSign
 {
@@ -51,6 +52,8 @@ namespace iSign
                 Add (editableView);
 
                 editableView.OnDoubleTap = () => {
+                    var vm = signingView.DataContext as SigningViewModel;
+                    vm.Reloaded ();
                     doubleTapped = true;
                     _signingViewIsShown = true;
                     signingView.StartWith (editableView.ImageView.Image);
