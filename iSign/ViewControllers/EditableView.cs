@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using MvvmCross.Platform;
@@ -15,9 +16,10 @@ namespace iSign
         private UIPanGestureRecognizer DragGesture { get; }
         private UITapGestureRecognizer DoubleTapTwoFigersGesture { get; }
         private UITapGestureRecognizer DoubleTapGesture { get; }
+        private UIPinchGestureRecognizer PinchGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
         private IMvxMessenger Messenger { get; }
-        private int _border = 50;
+
         public EditableView (CGRect rect) : base(rect)
         {
             Messenger = Mvx.Resolve<IMvxMessenger> ();
@@ -32,90 +34,74 @@ namespace iSign
                 NumberOfTouchesRequired = 2
             };
 
+            PinchGesture = new UIPinchGestureRecognizer (ViewResized);
+
             DoubleTapGesture = new UITapGestureRecognizer (ViewDoubleTapped)
             {
                 NumberOfTapsRequired = 2
             };
 
-            CurrentTouch = TypeOfTouch.Nothing;
             AddGestureRecognizer (DoubleTapGesture);
             AddGestureRecognizer (DragGesture);
             AddGestureRecognizer (DoubleTapTwoFigersGesture);
             AddGestureRecognizer (LongPressGesture);
+            AddGestureRecognizer (PinchGesture);
             BackgroundColor = UIColor.Clear;
-            ViewStateFlow = new List<ViewState> { ViewState.Done, ViewState.Resizing, ViewState.Moving };
+            ViewStateFlow = new List<ViewState> { ViewState.Done, ViewState.Editing };
 
-            State = ViewState.Resizing;
             UpdateLayer ();
         }
 
         private CGPoint _viewCoordinate;
-        private CGPoint _formerCoordinate;
 
         private void ViewDragged (UIPanGestureRecognizer panInfo)
         {
             if (panInfo.State == UIGestureRecognizerState.Began) {
                 _viewCoordinate = panInfo.LocationInView (panInfo.View);
-                _formerCoordinate = _viewCoordinate;
-                var location = panInfo.LocationOfTouch (0, this);
-                CurrentTouch = DetermineTypeOfTouch (location);
-            }
-            if (panInfo.State == UIGestureRecognizerState.Ended) {
-                CurrentTouch = TypeOfTouch.Nothing;
             }
             var newCoord = panInfo.LocationInView (panInfo.View);
             var deltaWidthDrag = newCoord.X - _viewCoordinate.X;
             var deltaHeightDrag = newCoord.Y - _viewCoordinate.Y;
 
-            var deltaWidth = newCoord.X - _formerCoordinate.X;
-            var deltaHeight = newCoord.Y - _formerCoordinate.Y;
 
             double x = Frame.X;
             double y = Frame.Y;
             var width = Frame.Size.Width;
             var height = Frame.Size.Height;
-            nfloat ratio = 1;
-            switch (CurrentTouch) {
-            case TypeOfTouch.Dragging:
-                var xMax = Superview.Frame.Width;
-                var yMax = Superview.Frame.Height;
-                if (Superview is UIScrollView) {
-                    xMax = ((UIScrollView)Superview).ContentSize.Width;
-                    yMax = ((UIScrollView)Superview).ContentSize.Height;
-                }
-                x = Math.Max (0, Math.Min (xMax - panInfo.View.Frame.Width, panInfo.View.Frame.X + deltaWidthDrag));
-                y = Math.Max (0, Math.Min (yMax - panInfo.View.Frame.Height, panInfo.View.Frame.Y + deltaHeightDrag));
-                break;
-            case TypeOfTouch.ResizingTopBorder:
-                y = panInfo.View.Frame.Y + deltaHeightDrag;
-                height = panInfo.View.Frame.Height - deltaHeightDrag;
-                ratio = panInfo.View.Frame.Height / height;
-                width = panInfo.View.Frame.Width / ratio;
-                break;
-            case TypeOfTouch.ResizingBottomBorder:
-                height = panInfo.View.Frame.Height + deltaHeight;
-                ratio = panInfo.View.Frame.Height / height;
-                width = panInfo.View.Frame.Width / ratio;
-                break;
-            case TypeOfTouch.ResizingLeftBorder:
-                x = panInfo.View.Frame.X + deltaWidthDrag;
-                width = panInfo.View.Frame.Width - deltaWidthDrag;
-                ratio = panInfo.View.Frame.Width / width;
-                height = panInfo.View.Frame.Height / ratio;
-                break;
-            case TypeOfTouch.ResizingRightBorder:
-                width = panInfo.View.Frame.Width + deltaWidth;
-                ratio = panInfo.View.Frame.Width / width;
-                height = panInfo.View.Frame.Height / ratio;
-                break;
-            default: return;
+
+            var xMax = Superview.Frame.Width;
+            var yMax = Superview.Frame.Height;
+            if (Superview is UIScrollView) {
+                xMax = ((UIScrollView)Superview).ContentSize.Width;
+                yMax = ((UIScrollView)Superview).ContentSize.Height;
             }
-            _formerCoordinate = newCoord;
+
+            x = Math.Max (0, Math.Min (xMax - panInfo.View.Frame.Width, panInfo.View.Frame.X + deltaWidthDrag));
+            y = Math.Max (0, Math.Min (yMax - panInfo.View.Frame.Height, panInfo.View.Frame.Y + deltaHeightDrag));
+
             panInfo.View.Frame = new CGRect (x, y,
                 width,
                 height);
-            UpdateImageAndLayer (new CGSize (width, height));
         }
+
+        private nfloat _previousScale = 1;
+        private void ViewResized (UIPinchGestureRecognizer pinchInfo)
+        {
+            if (pinchInfo.State == UIGestureRecognizerState.Ended) {
+                this.UnantMarch ();
+                this.AntMarch (UIColor.Blue);
+                return;
+            }
+            var scale = 1 - _previousScale + pinchInfo.Scale;
+            _previousScale = pinchInfo.Scale;
+            var size = new CGSize (Frame.Size.Width * scale, Frame.Size.Height * scale);
+            var diffX = (Frame.Size.Width - size.Width) / 2;
+            var diffY = (Frame.Size.Height - size.Height) / 2;
+            var location = new CGPoint (Frame.X + diffX, Frame.Y + diffY);
+            Frame = new CGRect (location, size);
+            UpdateImageAndLayer (size);
+        }
+
 
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
         {
@@ -138,6 +124,7 @@ namespace iSign
             RemoveGestureRecognizer (DoubleTapGesture);
             RemoveGestureRecognizer (DoubleTapTwoFigersGesture);
             RemoveGestureRecognizer (LongPressGesture);
+            RemoveGestureRecognizer (PinchGesture);
             Dispose ();
         }
 
@@ -158,85 +145,32 @@ namespace iSign
 
         private List<ViewState> ViewStateFlow { get; }
 
-        public void EndUpdate ()
-        {
-            State = ViewState.Done;
-            UpdateLayer ();
-        }
 
         private void UpdateLayer ()
         {
             switch (State) {
             case ViewState.Done:
                 this.UnantMarch ();
-                this.Unblink ();
-                DragGesture.Enabled = false;
+                ChangeGestureEnablity (false);
                 break;
-            case ViewState.Moving:
+            case ViewState.Editing:
                 this.UnantMarch ();
-                this.Unblink ();
                 this.AntMarch (UIColor.Blue);
-                DragGesture.Enabled = true;
-                break;
-            case ViewState.Resizing:
-                this.UnantMarch ();
-                this.Unblink ();
-                this.Blink (UIColor.Red);
-                DragGesture.Enabled = true;
+                ChangeGestureEnablity (true);
                 break;
             }
         }
 
-        private TypeOfTouch CurrentTouch { get; set; }
-        private enum TypeOfTouch
+        private void ChangeGestureEnablity (bool enabled)
         {
-            Nothing,
-            Dragging,
-            ResizingTopBorder,
-            ResizingRightBorder,
-            ResizingBottomBorder,
-            ResizingLeftBorder,
+            DragGesture.Enabled = enabled;
+            PinchGesture.Enabled = enabled;
         }
 
-        private TypeOfTouch DetermineTypeOfTouch (CGPoint coordinate)
-        {
-            if (State == ViewState.Resizing) {
-                if (coordinate.Y < _border) return TypeOfTouch.ResizingTopBorder;
-                if (coordinate.Y > Frame.Height - _border) return TypeOfTouch.ResizingBottomBorder;
-                if (coordinate.X < _border) return TypeOfTouch.ResizingLeftBorder;
-                if (coordinate.X > Frame.Width - _border) return TypeOfTouch.ResizingRightBorder;
-            }
-            if (State == ViewState.Moving) {
-                return TypeOfTouch.Dragging;
-            }
-            return TypeOfTouch.Nothing;
-        }
-
-
-        public override void TouchesMoved (NSSet touches, UIEvent evt)
-        {
-            if (State != ViewState.Resizing) return;
-            base.TouchesMoved (touches, evt);
-        }
-
-        public override void TouchesEnded (NSSet touches, UIEvent evt)
-        {
-            if (State != ViewState.Resizing) return;
-            base.TouchesEnded (touches, evt);
-            
-        }
-
-        public override void TouchesCancelled (NSSet touches, UIEvent evt)
-        {
-            if (State != ViewState.Resizing) return;
-            base.TouchesCancelled (touches, evt);
-        }
-      
         private ViewState State { get; set; }
         private enum ViewState
         {
-            Moving,
-            Resizing,
+            Editing,
             Done
         }
 
