@@ -51,8 +51,8 @@ namespace iSign.Core.ViewModels
         PaletteColorViewModel _selectedColor;
 
         public PaletteColorViewModel SelectedColor {
-            get => _selectedColor;
-            set => SetProperty (ref _selectedColor, value);
+            get { return _selectedColor; }
+            set { SetProperty (ref _selectedColor, value); }
         }
 
         private void PaletteColorSelectedMessageReceived (PaletteColorSelectedMessage message)
@@ -82,7 +82,7 @@ namespace iSign.Core.ViewModels
         private float _pointThickness;
 
         public float PointThickness {
-            get => _pointThickness;
+            get { return _pointThickness; }
 
             set {
                 _pointThickness = value;
