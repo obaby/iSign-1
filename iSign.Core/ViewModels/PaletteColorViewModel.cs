@@ -17,7 +17,7 @@ namespace iSign.Core.ViewModels
         bool _isSelected;
 
         public bool IsSelected {
-            get { return _isSelected; }
+            get { return _isSelected; } 
             set {
                 PublishMessage (new PaletteColorSelectedMessage (this, Id));
                 SetProperty (ref _isSelected, value);
