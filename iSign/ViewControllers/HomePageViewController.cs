@@ -1,10 +1,8 @@
-﻿using System;
-using iSign.Core;
+﻿using iSign.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.iOS.Views;
-using UIKit;
 
-namespace iSign
+namespace iSign.ViewControllers
 {
 	public partial class HomePageViewController : MvxViewController<HomePageViewModel>
 	{

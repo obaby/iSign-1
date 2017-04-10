@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using iSign.Core;
+﻿using System.Collections.Generic;
+using iSign.Core.Services;
 
-namespace iSign
+namespace iSign.IoC
 {
     public class FileStorageChooser : IFileStorageChooser
     {

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
+using iSign.Core.Services;
 using iSign.Services;
 
-namespace iSign.Core
+namespace iSign.Core.ViewModels
 {
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public class SigningViewModel : BaseViewModel
     {
         public PaletteViewModel PaletteContext { get; }
@@ -18,7 +20,7 @@ namespace iSign.Core
         }
 
         public string AddSignatureTxt { get; private set;}
-        public string CancelTxt { get; private set; }
+        public string CancelTxt { get;  }
 
         void PaletteContext_PropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

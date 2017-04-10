@@ -1,11 +1,12 @@
 using System;
-using UIKit;
 using CoreGraphics;
+using iSign.Core.ViewModels;
+using iSign.Extensions;
+using iSign.Views;
 using MvvmCross.Core.ViewModels;
-using System.Collections.Generic;
-using iSign.Core;
+using UIKit;
 
-namespace iSign
+namespace iSign.ViewControllers
 {
     public partial class TouchableScrollView : UIScrollView
     {
@@ -35,8 +36,11 @@ namespace iSign
             signingView.OkAction = () => {
                 var previousRect = CGRect.Empty;
                 if (doubleTapped) {
-                    previousRect = editableView.Frame;
-                    editableView.Remove ();
+                    if (editableView != null)
+                    {
+                        previousRect = editableView.Frame;
+                        editableView.Remove ();
+                    }
                     doubleTapped = false;
                 }
                 _signingViewIsShown = false;
@@ -53,7 +57,7 @@ namespace iSign
 
                 editableView.OnDoubleTap = () => {
                     var vm = signingView.DataContext as SigningViewModel;
-                    vm.Reloaded ();
+                    vm?.Reloaded();
                     doubleTapped = true;
                     _signingViewIsShown = true;
                     signingView.StartWith (editableView.ImageView.Image);

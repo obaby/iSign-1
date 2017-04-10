@@ -1,7 +1,6 @@
-﻿using System;
-using MvvmCross.Plugins.Messenger;
+﻿using MvvmCross.Plugins.Messenger;
 
-namespace iSign.Core
+namespace iSign.Core.Services
 {
     public interface IViewModelServices
     {

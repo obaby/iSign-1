@@ -1,7 +1,7 @@
 ﻿using System;
 using UIKit;
 
-namespace iSign
+namespace iSign.Extensions
 {
     public static class UIColorExtension
     {
@@ -9,7 +9,7 @@ namespace iSign
         {
             var colorString = color.Replace ("#", "");
             float red, green, blue;
-            UIColor result = null;
+            UIColor result;
 
             switch (colorString.Length) {
             case 3: {
@@ -34,13 +34,14 @@ namespace iSign
             return result;
         }
 
+        // ReSharper disable once InconsistentNaming
         public static string ToPCLColor (this UIColor color)
         {
             var red = (int)(color.CGColor.Components [0] * 255);
             var green = (int)(color.CGColor.Components [1] * 255);
             var blue = (int)(color.CGColor.Components [2] * 255);
 
-            return string.Format ("#{0:X2}{1:X2}{2:X2}", red, green, blue);
+            return $"#{red:X2}{green:X2}{blue:X2}";
         }
     }
 }

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using iSign.Services;
+using iSign.Core.Services;
+using iSign.Services.Attributes;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Platform;
 using MvvmCross.Platform.IoC;
 
 namespace iSign.Core
 {
+	[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
 	public class App : MvxApplication
 	{
 		public App()

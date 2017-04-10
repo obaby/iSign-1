@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
-using Foundation;
-using MvvmCross.Platform;
-using MvvmCross.Plugins.Messenger;
+using iSign.Extensions;
 using UIKit;
 
-namespace iSign
+namespace iSign.ViewControllers
 {
-    public class EditableView : UIView
+    public sealed class EditableView : UIView
     {
         public int Id { get; set; }
         public UIImageView ImageView { get; private set; }
@@ -18,11 +15,9 @@ namespace iSign
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UIPinchGestureRecognizer PinchGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
-        private IMvxMessenger Messenger { get; }
 
         public EditableView (CGRect rect) : base(rect)
         {
-            Messenger = Mvx.Resolve<IMvxMessenger> ();
             DragGesture = new UIPanGestureRecognizer (ViewDragged) {
                 MinimumNumberOfTouches = 1
             };
@@ -64,20 +59,19 @@ namespace iSign
             var deltaHeightDrag = newCoord.Y - _viewCoordinate.Y;
 
 
-            double x = Frame.X;
-            double y = Frame.Y;
             var width = Frame.Size.Width;
             var height = Frame.Size.Height;
 
             var xMax = Superview.Frame.Width;
             var yMax = Superview.Frame.Height;
-            if (Superview is UIScrollView) {
-                xMax = ((UIScrollView)Superview).ContentSize.Width;
-                yMax = ((UIScrollView)Superview).ContentSize.Height;
+            var view = Superview as UIScrollView;
+            if (view != null) {
+                xMax = view.ContentSize.Width;
+                yMax = view.ContentSize.Height;
             }
 
-            x = Math.Max (0, Math.Min (xMax - panInfo.View.Frame.Width, panInfo.View.Frame.X + deltaWidthDrag));
-            y = Math.Max (0, Math.Min (yMax - panInfo.View.Frame.Height, panInfo.View.Frame.Y + deltaHeightDrag));
+            var x = Math.Max (0, Math.Min (xMax - panInfo.View.Frame.Width, panInfo.View.Frame.X + deltaWidthDrag));
+            var y = Math.Max (0, Math.Min (yMax - panInfo.View.Frame.Height, panInfo.View.Frame.Y + deltaHeightDrag));
 
             panInfo.View.Frame = new CGRect (x, y,
                 width,

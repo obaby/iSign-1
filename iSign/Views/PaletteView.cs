@@ -1,42 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using CoreGraphics;
-using iSign.Core;
+using iSign.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
-namespace iSign
+namespace iSign.Views
 {
-    public class PaletteView : MvxView
+    public sealed class PaletteView : MvxView
     {
         private const int Margin = 10;
         private const int XMargin = 40;
-        private List<PaletteColorView> Colors { get; }
-        private UIButton _undoButton { get; }
-        private UISlider _thicknessSlider { get; }
+        private UIButton UndoButton { get; }
+        private UISlider ThicknessSlider { get; }
         public PaletteView ()
         {
             BackgroundColor = UIColor.Gray;
-            _undoButton = new UIButton ();
-            _thicknessSlider = new UISlider ();
+            UndoButton = new UIButton ();
+            ThicknessSlider = new UISlider ();
             this.DelayBind (() => {
                 var set = this.CreateBindingSet<PaletteView, PaletteViewModel> ();
-                set.Bind (_undoButton)
+                set.Bind (UndoButton)
                    .For ("Title")
                    .To (vm => vm.UndoText);
-                set.Bind (_undoButton)
+                set.Bind (UndoButton)
                    .To (vm => vm.UndoCommand);
 
-                set.Bind (_thicknessSlider)
+                set.Bind (ThicknessSlider)
                    .For (v => v.MinValue)
                    .To (vm => vm.MinThickness);
 
-                set.Bind (_thicknessSlider)
+                set.Bind (ThicknessSlider)
                    .For (v => v.MaxValue)
                    .To (vm => vm.MaxThickness);
 
-                set.Bind (_thicknessSlider)
+                set.Bind (ThicknessSlider)
                    .For (v => v.Value)
                    .To (vm => vm.PointThickness);
 
@@ -56,18 +54,18 @@ namespace iSign
             }
             var y = withMargin ? Margin : 0;
 
-            _undoButton.Frame = new CGRect (x, y, 10, 10);
+            UndoButton.Frame = new CGRect (x, y, 10, 10);
            
-            Add (_undoButton);
-            _undoButton.SizeToFit ();
-            x += _undoButton.Frame.Width + XMargin;
+            Add (UndoButton);
+            UndoButton.SizeToFit ();
+            x += UndoButton.Frame.Width + XMargin;
             var i = 0;
             var currentColor = Context.SelectedColor;
             foreach (var colorVm in Context.PaletteColors) {
-                var colorView = new PaletteColorView ();
-                colorView.DataContext = colorVm;
-                if (colorVm == currentColor || (i == 0 && currentColor == null)) {
-                    colorVm.IsSelected = true;
+                var colorView = new PaletteColorView {DataContext = colorVm};
+                if (colorVm == currentColor || (i == 0 && currentColor == null))
+                {
+                    if (colorVm != null) colorVm.IsSelected = true;
                 }
                 colorView.Frame = new CGRect (x, y, size, size);
                 Add (colorView);
@@ -75,13 +73,13 @@ namespace iSign
                 if (x >= Frame.Width - size - XMargin) break;
                 i++;
             }
-            _thicknessSlider.Frame = new CGRect (x, y, Frame.Width - XMargin - x, Frame.Height/2);
-            Add (_thicknessSlider);
+            ThicknessSlider.Frame = new CGRect (x, y, Frame.Width - XMargin - x, Frame.Height/2);
+            Add (ThicknessSlider);
         }
 
         internal void UpdateUndo (bool canUndo)
         {
-            _undoButton.SetTitleColor (canUndo ? UIColor.White : UIColor.LightGray, UIControlState.Normal);
+            UndoButton.SetTitleColor (canUndo ? UIColor.White : UIColor.LightGray, UIControlState.Normal);
         }
    }
 }

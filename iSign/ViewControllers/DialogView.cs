@@ -1,10 +1,10 @@
 using System;
-using iSign.Core;
+using iSign.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
-namespace iSign
+namespace iSign.ViewControllers
 {
     public partial class DialogView : MvxView
     {

@@ -1,13 +1,13 @@
 ﻿using System;
 using MvvmCross.Core.ViewModels;
 
-namespace iSign.Core
+namespace iSign.Core.ViewModels
 {
     public class DialogViewModel : MvxViewModel
     {
-        public DialogViewModel (Action<string> OkAction, Action cancelAction)
+        public DialogViewModel (Action<string> okAction, Action cancelAction)
         {
-            OkCommand = new MvxCommand (() => OkAction(Input));
+            OkCommand = new MvxCommand (() => okAction(Input));
             CancelCommand = new MvxCommand (cancelAction);
         }
 
