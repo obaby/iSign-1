@@ -84,24 +84,17 @@ namespace iSign
                 height);
         }
 
-        private nfloat _previousScale = 1;
         private void ViewResized (UIPinchGestureRecognizer pinchInfo)
         {
-            if (pinchInfo.State == UIGestureRecognizerState.Ended) {
-                this.UnantMarch ();
-                this.AntMarch (UIColor.Blue);
-                return;
-            }
-            var scale = 1 - _previousScale + pinchInfo.Scale;
-            _previousScale = pinchInfo.Scale;
-            var size = new CGSize (Frame.Size.Width * scale, Frame.Size.Height * scale);
-            var diffX = (Frame.Size.Width - size.Width) / 2;
-            var diffY = (Frame.Size.Height - size.Height) / 2;
-            var location = new CGPoint (Frame.X + diffX, Frame.Y + diffY);
-            Frame = new CGRect (location, size);
-            UpdateImageAndLayer (size);
+            var scale = pinchInfo.Scale;
+            var transform = CGAffineTransform.MakeIdentity ();
+            transform.Scale (scale, scale);
+            ImageView.Transform = transform;
+            var transformedBounds = CGAffineTransform.CGRectApplyAffineTransform (ImageView.Bounds, transform);
+            var location = new CGPoint (Frame.X + ImageView.Frame.X, Frame.Y + ImageView.Frame.Y);
+            Frame = new CGRect (location, transformedBounds.Size);
+            this.UpdateLayersFrame ();
         }
-
 
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
         {
