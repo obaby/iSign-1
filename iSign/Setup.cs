@@ -1,5 +1,6 @@
-﻿using System;
-using iSign.Core;
+﻿using iSign.Core;
+using iSign.Core.Services;
+using iSign.IoC;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
 using MvvmCross.Platform;
@@ -9,14 +10,9 @@ namespace iSign
 {
     public class Setup : MvxIosSetup
     {
-        private UIWindow CurrentWindow { get; }
-        private IUIApplicationDelegate AppDelegate { get; }
-
         public Setup (IMvxApplicationDelegate appDelegate, UIWindow window)
             : base (appDelegate, window)
         {
-            CurrentWindow = window;
-            AppDelegate = appDelegate;
         }
 
         protected override IMvxApplication CreateApp ()

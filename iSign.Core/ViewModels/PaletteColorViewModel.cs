@@ -1,5 +1,10 @@
-﻿namespace iSign.Core
+﻿using System.Diagnostics.CodeAnalysis;
+using iSign.Core.Services;
+using iSign.Core.ViewModels.Messages;
+
+namespace iSign.Core.ViewModels
 {
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public class PaletteColorViewModel : BaseViewModel
     {
         public string Color { get; }
@@ -12,9 +17,7 @@
         bool _isSelected;
 
         public bool IsSelected {
-            get {
-                return _isSelected;
-            }
+            get => _isSelected;
             set {
                 PublishMessage (new PaletteColorSelectedMessage (this, Id));
                 SetProperty (ref _isSelected, value);

@@ -1,9 +1,11 @@
-﻿using MvvmCross.Core.ViewModels;
-using MvvmCross.Plugins.Messenger;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using iSign.Core.Exceptions;
+using iSign.Core.Services;
+using MvvmCross.Core.ViewModels;
+using MvvmCross.Plugins.Messenger;
 
-namespace iSign.Core
+namespace iSign.Core.ViewModels
 {
 	public class BaseViewModel : MvxViewModel
 	{

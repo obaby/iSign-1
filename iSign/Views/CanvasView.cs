@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
-using iSign.Core;
-using MvvmCross.Binding.iOS.Views;
-using MvvmCross.Platform;
-using MvvmCross.Plugins.Messenger;
 using UIKit;
 
-namespace iSign.Touch
+namespace iSign.Views
 {
-    public class CanvasView : UIImageView
+    public sealed class CanvasView : UIImageView
     {
+        // ReSharper disable once InconsistentNaming
         private const double π = Math.PI;
         private const double DefaultLineWidth = 2;
         public double ForceSensitivity { get; set; } = 2;
@@ -21,7 +18,6 @@ namespace iSign.Touch
         private List<UIImage> PreviousImages { get; set; }
         public UIImage DrawingImage { get; private set;}
         public UIColor DrawColor { get; set;}
-        private UIColor EraserColor => BackgroundColor ?? UIColor.White;
 
         public CanvasView (CGRect rect)
         {
@@ -39,9 +35,7 @@ namespace iSign.Touch
 
             UIGraphics.BeginImageContextWithOptions (Bounds.Size, false, 0);
             var context = UIGraphics.GetCurrentContext ();
-            if (DrawingImage != null) {
-                DrawingImage.Draw (Bounds);
-            }
+            DrawingImage?.Draw (Bounds);
 
             var allTouches = new List<UITouch> ();
             var coalescedTouches = evt.GetCoalescedTouches (touch);
@@ -51,7 +45,7 @@ namespace iSign.Touch
                 allTouches.Append (touch);
             }
 
-            foreach (var t in touches) {
+            foreach (var unused in touches) {
                 DrawStroke (context, touch);
             }
 
@@ -78,7 +72,6 @@ namespace iSign.Touch
             PreviousImages.RemoveAt (PreviousImages.Count - 1);
             Image = PreviousImages [PreviousImages.Count - 1];
             DrawingImage = Image;
-            return;
         }
 
         public override void TouchesEnded (Foundation.NSSet touches, UIEvent evt)
@@ -112,9 +105,9 @@ namespace iSign.Touch
         {
             var previousLocation = touch.PreviousLocationInView (this);
             var location = touch.LocationInView (this);
-            nfloat lineWidth = 0;
+            nfloat lineWidth;
             if (touch.Type == UITouchType.Stylus) {
-                lineWidth = touch.AltitudeAngle < TiltThreshold ? LineWidthForShading (context, touch) : LineWidthForDrawing (context, touch);
+                lineWidth = touch.AltitudeAngle < TiltThreshold ? LineWidthForShading (context, touch) : LineWidthForDrawing (touch);
                 DrawColor.SetStroke ();
             } else {
                 lineWidth = (nfloat)HandLineWidth;
@@ -165,7 +158,7 @@ namespace iSign.Touch
             return (nfloat)lineWidth;
         }
 
-        private nfloat LineWidthForDrawing (CGContext context, UITouch touch)
+        private nfloat LineWidthForDrawing (UITouch touch)
         {
             var lineWidth = DefaultLineWidth;
             if (touch.Force > 0) {

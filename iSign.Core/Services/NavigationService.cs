@@ -1,7 +1,8 @@
-﻿using iSign.Services;
+﻿using iSign.Core.ViewModels;
+using iSign.Services.Attributes;
 using MvvmCross.Core.ViewModels;
 
-namespace iSign.Core
+namespace iSign.Core.Services
 {
 	[RegisterInterfacesAsSingleton]
 	public class NavigationService : MvxNavigatingObject, INavigationService

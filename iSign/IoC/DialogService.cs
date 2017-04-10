@@ -1,10 +1,12 @@
 ﻿using System;
 using Foundation;
-using iSign.Core;
+using iSign.Core.Services;
+using iSign.Core.ViewModels;
+using iSign.ViewControllers;
 using ObjCRuntime;
 using UIKit;
 
-namespace iSign
+namespace iSign.IoC
 {
     public class DialogService : IDialogService
     {

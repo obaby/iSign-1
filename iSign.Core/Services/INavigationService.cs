@@ -1,5 +1,4 @@
-﻿using System;
-namespace iSign.Core
+﻿namespace iSign.Core.Services
 {
 	public interface INavigationService
 	{

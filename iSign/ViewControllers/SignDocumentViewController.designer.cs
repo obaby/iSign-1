@@ -4,19 +4,18 @@
 // actions declared in your storyboard file.
 // Manual changes to this file will not be maintained.
 //
-using Foundation;
-using System;
-using System.CodeDom.Compiler;
-using UIKit;
 
-namespace iSign
+using System.CodeDom.Compiler;
+using Foundation;
+
+namespace iSign.ViewControllers
 {
     [Register ("SignDocumentViewController")]
     partial class SignDocumentViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        iSign.TouchableScrollView ContainerView { get; set; }
+        TouchableScrollView ContainerView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]

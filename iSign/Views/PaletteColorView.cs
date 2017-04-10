@@ -1,12 +1,13 @@
 ﻿using System;
 using CoreGraphics;
-using iSign.Core;
+using iSign.Core.ViewModels;
+using iSign.Extensions;
 using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
-namespace iSign
+namespace iSign.Views
 {
-    public class PaletteColorView : MvxView
+    public sealed class PaletteColorView : MvxView
     {
         public PaletteColorView ()
         {

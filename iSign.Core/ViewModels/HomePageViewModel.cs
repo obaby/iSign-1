@@ -1,7 +1,8 @@
 ﻿using System.Windows.Input;
+using iSign.Core.Services;
 using MvvmCross.Core.ViewModels;
 
-namespace iSign.Core
+namespace iSign.Core.ViewModels
 {
 	public class HomePageViewModel : BaseViewModel
 	{

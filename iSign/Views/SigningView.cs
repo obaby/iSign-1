@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Linq;
 using CoreGraphics;
-using iSign.Core;
-using iSign.Touch;
+using iSign.Converters;
+using iSign.Core.ViewModels;
+using iSign.Core.ViewModels.Messages;
+using iSign.Extensions;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using MvvmCross.Platform;
 using MvvmCross.Plugins.Messenger;
 using UIKit;
 
-namespace iSign
+namespace iSign.Views
 {
-    public class SigningView : MvxView
+    public sealed class SigningView : MvxView
     {
         private CanvasView CanvasView { get; }
         private UIButton OkButton { get; }
         private UIButton CancelButton { get; }
-        private UILabel HelpMessage { get; }
         private PaletteView PaletteView { get; }
         private MvxSubscriptionToken Token { get; set; }
         private IMvxMessenger Messenger { get; }
@@ -103,8 +103,6 @@ namespace iSign
             OkButton.SizeToFit ();
             OkButton.Frame = new CGRect (new CGPoint (topRight.X - OkButton.Frame.Width - 10, topRight.Y - 40), OkButton.Frame.Size);
         }
-
-        private SigningViewModel Context => DataContext as SigningViewModel;
 
         private void ShowPalette ()
         {

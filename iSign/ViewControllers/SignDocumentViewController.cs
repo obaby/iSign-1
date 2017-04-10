@@ -2,18 +2,18 @@
 using System.IO;
 using System.Net;
 using CoreGraphics;
-using iSign.Core;
+using iSign.Core.ViewModels;
 using iSign.Helpers;
 using MobileCoreServices;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.iOS.Views;
 using UIKit;
 
-namespace iSign
+namespace iSign.ViewControllers
 {
     public partial class SignDocumentViewController : MvxViewController<SigningDocViewModel>
     {
-        private bool _editMode;
+        public bool EditMode { get; private set; }
         private UIImageView _imageView;
         public SignDocumentViewController () : base ("SignDocumentView", null)
         {
@@ -26,9 +26,9 @@ namespace iSign
             EndEditingBtn.Hidden = false;
         }
 
-        void Context_InputSet (object sender, string e)
+        private void Context_InputSet (object sender, string e)
         {
-            _editMode = true;
+            EditMode = true;
             //Todo : add label
         }
 
@@ -61,11 +61,12 @@ namespace iSign
         }
 
 
-        int nbRotations = 0;
+        public int NbRotations { get; private set; } = 0;
+
         partial void EndEditingBtn_TouchUpInside (UIButton sender)
         {
-            nbRotations++;
-            var degrees = nbRotations * 90 * (nfloat)Math.PI / 180;
+            NbRotations++;
+            var degrees = NbRotations * 90 * (nfloat)Math.PI / 180;
             var frame = _imageView.Frame;
             _imageView.RemoveFromSuperview ();
             _imageView.Transform = CGAffineTransform.MakeRotation (degrees);
@@ -114,12 +115,12 @@ namespace iSign
                 Context.Filename = "FastFlex.jpg";
                 return;
             }
-            var allowedUTIs = new string [] {
+            var allowedUtis = new string [] {
                 UTType.PDF,
                 UTType.Image
             };
 
-            var pickerMenu = new UIDocumentMenuViewController (allowedUTIs, UIDocumentPickerMode.Import);
+            var pickerMenu = new UIDocumentMenuViewController (allowedUtis, UIDocumentPickerMode.Import);
             pickerMenu.DidPickDocumentPicker += (s, args) => {
 
                 args.DocumentPicker.DidPickDocument += (sndr, pArgs) => {
@@ -143,7 +144,7 @@ namespace iSign
             PresentViewController (pickerMenu, true, null);
             UIPopoverPresentationController presentationPopover = pickerMenu.PopoverPresentationController;
             if (presentationPopover != null) {
-                presentationPopover.SourceView = this.View;
+                presentationPopover.SourceView = View;
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Down;
                 presentationPopover.SourceRect = LoadFileBtn.Frame;
             }

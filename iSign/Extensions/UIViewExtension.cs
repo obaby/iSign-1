@@ -1,10 +1,8 @@
 ﻿using System.Linq;
-using CoreAnimation;
 using CoreGraphics;
-using Foundation;
-using iSign.Extensions;
 using UIKit;
-namespace iSign
+
+namespace iSign.Extensions
 {
     public static class UIViewExtension
     {

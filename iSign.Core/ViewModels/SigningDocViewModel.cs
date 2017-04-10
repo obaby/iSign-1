@@ -1,12 +1,12 @@
 ﻿using System;
+using iSign.Core.Services;
 using MvvmCross.Core.ViewModels;
 
-namespace iSign.Core
+namespace iSign.Core.ViewModels
 {
     public class SigningDocViewModel : BaseViewModel
     {
         private IDialogService DialogService { get; }
-        private IFileStorageChooser FileStorageChooser { get; }
         public SigningViewModel SigningViewModel { get; }
         public string Filename { get; set;}
 

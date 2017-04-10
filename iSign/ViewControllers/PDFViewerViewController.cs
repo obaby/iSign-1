@@ -4,17 +4,15 @@ using CoreGraphics;
 using Foundation;
 using UIKit;
 
-namespace iSign
+namespace iSign.ViewControllers
 {
     public partial class PDFViewerViewController : UIViewController
     {
-        private string GetPath (string filename) => Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
+        private static string GetPath (string filename) => Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
         private string Filename { get; set; }
         private string Oldname { get; set; }
-        private string Originalname { get; set; }
+        private string Originalname { get; }
         private bool _filenameChanged;
-        private CGRect PrintableRect { get; set; }
-        private CGRect PaperRect { get; set; }
 
         public PDFViewerViewController (string filename) : base ("PDFViewer", null)
         {

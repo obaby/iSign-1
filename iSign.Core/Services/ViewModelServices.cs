@@ -1,7 +1,7 @@
-﻿using iSign.Services;
+﻿using iSign.Services.Attributes;
 using MvvmCross.Plugins.Messenger;
 
-namespace iSign.Core
+namespace iSign.Core.Services
 {
     [RegisterInterfacesAsSingleton]
     public class ViewModelServices : IViewModelServices

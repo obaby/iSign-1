@@ -2,10 +2,10 @@
 using System.IO;
 using System.Net;
 using Dropins.Chooser.iOS;
-using iSign.Core;
+using iSign.Core.Services;
 using UIKit;
 
-namespace iSign
+namespace iSign.IoC
 {
     public class DropBoxFileStorage : IFileStorage
     {
@@ -13,8 +13,8 @@ namespace iSign
 
         public void DownloadFile (Action<string> afterDownloading)
         {
-            var topVC = UIApplication.SharedApplication.KeyWindow.RootViewController;
-            DBChooser.DefaultChooser.OpenChooser (DBChooserLinkType.Direct, topVC, (results) => {
+            var topVc = UIApplication.SharedApplication.KeyWindow.RootViewController;
+            DBChooser.DefaultChooser.OpenChooser (DBChooserLinkType.Direct, topVc, results => {
                 if (results != null) {
                     string dropboxUrl = results [0].Link.ToString ();
                     var client = new WebClient ();

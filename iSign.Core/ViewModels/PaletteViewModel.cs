@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using iSign.Core.Services;
+using iSign.Core.ViewModels.Messages;
 using iSign.Services;
 using MvvmCross.Core.ViewModels;
 
-namespace iSign.Core
+namespace iSign.Core.ViewModels
 {
     public class PaletteViewModel : BaseViewModel
     {
@@ -49,16 +51,11 @@ namespace iSign.Core
         PaletteColorViewModel _selectedColor;
 
         public PaletteColorViewModel SelectedColor {
-            get {
-                return _selectedColor;
-            }
-
-            set {
-                SetProperty (ref _selectedColor, value);
-            }
+            get => _selectedColor;
+            set => SetProperty (ref _selectedColor, value);
         }
 
-        void PaletteColorSelectedMessageReceived (PaletteColorSelectedMessage message)
+        private void PaletteColorSelectedMessageReceived (PaletteColorSelectedMessage message)
         {
             if (SelectedColor != null && SelectedColor.Id != message.Id) {
                 SelectedColor.Unselect ();
@@ -68,9 +65,7 @@ namespace iSign.Core
 
         public void SetSelectedColor (string color)
         {
-            if (SelectedColor != null) {
-                SelectedColor.Unselect ();
-            }
+            SelectedColor?.Unselect ();
             SelectedColor = PaletteColors.First (x => x.Color == color);
             SelectedColor.Select ();
         }
@@ -84,15 +79,13 @@ namespace iSign.Core
 
         public string UndoText => "Undo";
 
-        private float pointThickness;
+        private float _pointThickness;
 
         public float PointThickness {
-            get {
-                return pointThickness;
-            }
+            get => _pointThickness;
 
             set {
-                pointThickness = value;
+                _pointThickness = value;
                 RaisePropertyChanged ();
             }
         }
