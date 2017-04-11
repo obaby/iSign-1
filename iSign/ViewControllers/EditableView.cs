@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using iSign.Extensions;
+using iSign.Views;
 using UIKit;
 
 namespace iSign.ViewControllers
@@ -15,9 +16,26 @@ namespace iSign.ViewControllers
         private UITapGestureRecognizer DoubleTapGesture { get; }
         private UIPinchGestureRecognizer PinchGesture { get; }
         private UILongPressGestureRecognizer LongPressGesture { get; }
+        private CircleButton DeleteButton { get; }
+        private CircleButton EditSignatureButton { get; set; }
+        private CircleButton OkButton { get; set; }
 
-        public EditableView (CGRect rect) : base(rect)
+        public EditableView (CGRect rect) : base (rect)
         {
+            DeleteButton = new CircleButton {
+                BackgroundColor = UIColor.Red
+            };
+            OkButton = new CircleButton {
+                BackgroundColor = UIColor.Green
+            };
+            EditSignatureButton = new CircleButton {
+                BackgroundColor = UIColor.Blue
+            };
+
+            DeleteButton.TouchUpInside += DeleteButton_TouchUpInside;
+            OkButton.TouchUpInside += OkButton_TouchUpInside;
+            EditSignatureButton.TouchUpInside += EditSignatureButton_TouchUpInside;
+            
             DragGesture = new UIPanGestureRecognizer (ViewDragged) {
                 MinimumNumberOfTouches = 1
             };
@@ -31,8 +49,7 @@ namespace iSign.ViewControllers
 
             PinchGesture = new UIPinchGestureRecognizer (ViewResized);
 
-            DoubleTapGesture = new UITapGestureRecognizer (ViewDoubleTapped)
-            {
+            DoubleTapGesture = new UITapGestureRecognizer (ViewDoubleTapped) {
                 NumberOfTapsRequired = 2
             };
 
@@ -45,6 +62,21 @@ namespace iSign.ViewControllers
             ViewStateFlow = new List<ViewState> { ViewState.Done, ViewState.Editing };
 
             UpdateLayer ();
+        }
+
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
+            DeleteButton.AtTheBeginingThisView (this, 10)
+                        .AboveThisView (this, 20);
+            Superview.Add (DeleteButton);
+
+            OkButton.AtTheEndThisView (this, 10)
+                    .AboveThisView (this, 20);
+            Superview.Add (OkButton);
+
+            EditSignatureButton.BeforeThisView (OkButton, 10);
+            Superview.Add (EditSignatureButton);
         }
 
         private CGPoint _viewCoordinate;
@@ -90,6 +122,13 @@ namespace iSign.ViewControllers
             this.UpdateLayersFrame ();
         }
 
+        void EditSignatureButton_TouchUpInside (object sender, EventArgs e)
+        {
+            if (OnDoubleTap != null) {
+                OnDoubleTap ();
+            }
+        }
+
         private void ViewDoubleTapped (UITapGestureRecognizer tapInfo)
         {
             if (OnDoubleTap != null) {
@@ -97,7 +136,12 @@ namespace iSign.ViewControllers
             }
         }
 
-        public Action OnDoubleTap { get; set;}
+        public Action OnDoubleTap { get; set; }
+
+        private void DeleteButton_TouchUpInside (object sender, EventArgs args)
+        {
+	        Remove ();
+        }
 
         private void ViewDoubleTappedWith2Fingers (UITapGestureRecognizer tapInfo)
         {
@@ -112,7 +156,22 @@ namespace iSign.ViewControllers
             RemoveGestureRecognizer (DoubleTapTwoFigersGesture);
             RemoveGestureRecognizer (LongPressGesture);
             RemoveGestureRecognizer (PinchGesture);
+
+            DeleteButton.TouchUpInside -= DeleteButton_TouchUpInside;
+            OkButton.TouchUpInside -= OkButton_TouchUpInside;
+            EditSignatureButton.TouchUpInside -= EditSignatureButton_TouchUpInside;
+
+            DeleteButton.RemoveFromSuperview ();
+            OkButton.RemoveFromSuperview ();
+            EditSignatureButton.RemoveFromSuperview ();
+
             Dispose ();
+        }
+
+        void OkButton_TouchUpInside (object sender, EventArgs e)
+        {
+            State = ViewState.Done;
+            UpdateLayer ();
         }
 
         private void ViewLongPressed (UILongPressGestureRecognizer tapInfo)
@@ -139,13 +198,22 @@ namespace iSign.ViewControllers
             case ViewState.Done:
                 this.UnantMarch ();
                 ChangeGestureEnablity (false);
+                ChangeButtonsVisibility (false);
                 break;
             case ViewState.Editing:
                 this.UnantMarch ();
                 this.AntMarch (UIColor.Blue);
+                ChangeButtonsVisibility (true);
                 ChangeGestureEnablity (true);
                 break;
             }
+        }
+
+        private void ChangeButtonsVisibility (bool visible)
+        {
+            DeleteButton.Hidden = !visible;
+            OkButton.Hidden = !visible;
+            EditSignatureButton.Hidden = !visible;
         }
 
         private void ChangeGestureEnablity (bool enabled)
