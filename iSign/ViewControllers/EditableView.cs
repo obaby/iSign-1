@@ -69,19 +69,20 @@ namespace iSign.ViewControllers
             base.LayoutSubviews ();
             DeleteButton.AtTheBeginingThisView (this, 10)
                         .AboveThisView (this, 20);
-            Superview.Add (DeleteButton);
+            if (DeleteButton.Superview != null)
+                Superview.Add (DeleteButton);
 
             OkButton.AtTheEndThisView (this, 10)
                     .AboveThisView (this, 20);
-            Superview.Add (OkButton);
+            if (OkButton.Superview != null)
+                Superview.Add (OkButton);
 
             EditSignatureButton.BeforeThisView (OkButton, 10);
-            Superview.Add (EditSignatureButton);
+            if (EditSignatureButton.Superview != null)
+                Superview.Add (EditSignatureButton);
         }
 
         private CGPoint _viewCoordinate;
-        private double? _previousX;
-        private double? _previousY;
 
         private void ViewDragged (UIPanGestureRecognizer panInfo)
         {
@@ -110,26 +111,8 @@ namespace iSign.ViewControllers
             panInfo.View.Frame = new CGRect (x, y,
                 width,
                 height);
-            if (_previousY.HasValue && _previousY.HasValue) {
-                UpdateButtonsFrame (x - _previousX.Value, y - _previousY.Value);
-            }
-
-            _previousY = y;
-            _previousX = x;
+            LayoutSubviews ();
         }
-
-        private void UpdateButtonsFrame (double deltaX, double deltaY)
-        {
-            OkButton.AddX ((nfloat)deltaX)
-                    .AddY ((nfloat)deltaY);
-
-            EditSignatureButton.AddX ((nfloat)deltaX)
-                    .AddY ((nfloat)deltaY);
-
-            DeleteButton.AddX ((nfloat)deltaX)
-                    .AddY ((nfloat)deltaY);
-        }
-
 
         private void ViewResized (UIPinchGestureRecognizer pinchInfo)
         {
