@@ -31,11 +31,55 @@ namespace iSign.ViewControllers
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint HandHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint HandTopConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton HelpButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint HelpHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint HelpTopConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton LabelBtn { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint LabelHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint LabelTopConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton LoadFileBtn { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint LoadHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint LoadTopConstrain { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint PdfHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint PdfTopConstraint { get; set; }
 
         [Action ("EditBtn_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -75,14 +119,69 @@ namespace iSign.ViewControllers
                 GeneratePdfBtn = null;
             }
 
+            if (HandHeightConstraint != null) {
+                HandHeightConstraint.Dispose ();
+                HandHeightConstraint = null;
+            }
+
+            if (HandTopConstraint != null) {
+                HandTopConstraint.Dispose ();
+                HandTopConstraint = null;
+            }
+
+            if (HelpButton != null) {
+                HelpButton.Dispose ();
+                HelpButton = null;
+            }
+
+            if (HelpHeightConstraint != null) {
+                HelpHeightConstraint.Dispose ();
+                HelpHeightConstraint = null;
+            }
+
+            if (HelpTopConstraint != null) {
+                HelpTopConstraint.Dispose ();
+                HelpTopConstraint = null;
+            }
+
             if (LabelBtn != null) {
                 LabelBtn.Dispose ();
                 LabelBtn = null;
             }
 
+            if (LabelHeightConstraint != null) {
+                LabelHeightConstraint.Dispose ();
+                LabelHeightConstraint = null;
+            }
+
+            if (LabelTopConstraint != null) {
+                LabelTopConstraint.Dispose ();
+                LabelTopConstraint = null;
+            }
+
             if (LoadFileBtn != null) {
                 LoadFileBtn.Dispose ();
                 LoadFileBtn = null;
+            }
+
+            if (LoadHeightConstraint != null) {
+                LoadHeightConstraint.Dispose ();
+                LoadHeightConstraint = null;
+            }
+
+            if (LoadTopConstrain != null) {
+                LoadTopConstrain.Dispose ();
+                LoadTopConstrain = null;
+            }
+
+            if (PdfHeightConstraint != null) {
+                PdfHeightConstraint.Dispose ();
+                PdfHeightConstraint = null;
+            }
+
+            if (PdfTopConstraint != null) {
+                PdfTopConstraint.Dispose ();
+                PdfTopConstraint = null;
             }
         }
     }

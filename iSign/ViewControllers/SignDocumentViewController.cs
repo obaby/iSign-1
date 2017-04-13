@@ -11,7 +11,7 @@ using UIKit;
 
 namespace iSign.ViewControllers
 {
-    public partial class SignDocumentViewController : MvxViewController<SigningDocViewModel>
+    public partial class SignDocumentViewController : MvxViewController<SigningDocViewModel>, IMvxModalIosView
     {
         public bool EditMode { get; private set; }
         private UIImageView _imageView;
@@ -24,6 +24,31 @@ namespace iSign.ViewControllers
         {
             base.ViewDidLoad ();
             EndEditingBtn.Hidden = true;
+        }
+
+        public override void ViewDidAppear (bool animated)
+        {
+            base.ViewDidAppear (animated);
+            UpdateConstraints ();
+            NavigationController.NavigationBar.Hidden = true;
+        }
+
+        void UpdateConstraints ()
+        {
+            var iPad = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
+            var topConstraint = iPad ? 50 : 25;
+            var heightConstraint = iPad ? 55 : 35;
+
+            HelpTopConstraint.Constant = topConstraint;
+            HelpHeightConstraint.Constant = heightConstraint;
+            HandTopConstraint.Constant = topConstraint;
+            HandHeightConstraint.Constant = heightConstraint;
+            LabelTopConstraint.Constant = topConstraint;
+            LabelHeightConstraint.Constant = heightConstraint;
+            LoadTopConstrain.Constant = topConstraint;
+            LoadHeightConstraint.Constant = heightConstraint;
+            PdfTopConstraint.Constant = topConstraint;
+            PdfHeightConstraint.Constant = heightConstraint;
         }
 
         private void Context_InputSet (object sender, string e)
