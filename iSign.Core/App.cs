@@ -50,7 +50,7 @@ namespace iSign.Core
 		}
 		public void Start(object hint = null)
 		{
-			NavigationService.ShowHomePage();
+			NavigationService.ShowSigningPage();
 		}
 	}
 }

@@ -34,6 +34,9 @@ namespace iSign.ViewControllers
             };
 
             signingView.OkAction = () => {
+                _signingViewIsShown = false;
+                var signature = signingView.GetSignature ();
+                if (signature == null) return;
                 var previousRect = CGRect.Empty;
                 if (doubleTapped) {
                     if (editableView != null)
@@ -43,8 +46,6 @@ namespace iSign.ViewControllers
                     }
                     doubleTapped = false;
                 }
-                _signingViewIsShown = false;
-                var signature = signingView.GetSignature ();
                 var center = this.GetCenter (signature.Size, ContentOffset);
                 var position = previousRect == CGRect.Empty ? new CGRect (center, signature.Size) : previousRect;
                 editableView = new EditableView (position);

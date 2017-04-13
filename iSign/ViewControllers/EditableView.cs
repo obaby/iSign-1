@@ -80,6 +80,8 @@ namespace iSign.ViewControllers
         }
 
         private CGPoint _viewCoordinate;
+        private double? _previousX;
+        private double? _previousY;
 
         private void ViewDragged (UIPanGestureRecognizer panInfo)
         {
@@ -108,7 +110,26 @@ namespace iSign.ViewControllers
             panInfo.View.Frame = new CGRect (x, y,
                 width,
                 height);
+            if (_previousY.HasValue && _previousY.HasValue) {
+                UpdateButtonsFrame (x - _previousX.Value, y - _previousY.Value);
+            }
+
+            _previousY = y;
+            _previousX = x;
         }
+
+        private void UpdateButtonsFrame (double deltaX, double deltaY)
+        {
+            OkButton.AddX ((nfloat)deltaX)
+                    .AddY ((nfloat)deltaY);
+
+            EditSignatureButton.AddX ((nfloat)deltaX)
+                    .AddY ((nfloat)deltaY);
+
+            DeleteButton.AddX ((nfloat)deltaX)
+                    .AddY ((nfloat)deltaY);
+        }
+
 
         private void ViewResized (UIPinchGestureRecognizer pinchInfo)
         {

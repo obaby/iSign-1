@@ -137,6 +137,7 @@
     <InterfaceDefinition Include="Views\SignDocumentView.xib" />
     <InterfaceDefinition Include="Views\DialogView.xib" />
     <InterfaceDefinition Include="Views\PDFViewer.xib" />
+    <InterfaceDefinition Include="Views\SignDocumentView_iphone.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

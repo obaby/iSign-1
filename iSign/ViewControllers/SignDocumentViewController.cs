@@ -23,7 +23,7 @@ namespace iSign.ViewControllers
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            EndEditingBtn.Hidden = false;
+            EndEditingBtn.Hidden = true;
         }
 
         private void Context_InputSet (object sender, string e)
@@ -110,6 +110,7 @@ namespace iSign.ViewControllers
 
         partial void LoadFileBtn_TouchUpInside (UIButton sender)
         {
+            EndEditingBtn.Hidden = false;
             if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) {
                 FileDownloaded ("Pdf/FastFlex.jpg");
                 Context.Filename = "FastFlex.jpg";

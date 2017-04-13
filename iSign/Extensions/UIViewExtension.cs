@@ -73,26 +73,38 @@ namespace iSign.Extensions
 
         public static UIView AtTheBeginingThisView (this UIView self, UIView relativeView, nfloat delta)
         {
-	         self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + delta, relativeView.Frame.Y), self.Frame.Size);
+            self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + delta, relativeView.Frame.Y), self.Frame.Size);
             return self;
         }
 
         public static UIView AtTheEndThisView (this UIView self, UIView relativeView, nfloat delta)
         {
-        	self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + relativeView.Frame.Width - self.Frame.Width - delta, relativeView.Frame.Y), self.Frame.Size);
-        	return self;
+            self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + relativeView.Frame.Width - self.Frame.Width - delta, relativeView.Frame.Y), self.Frame.Size);
+            return self;
         }
 
         public static UIView NextToThisView (this UIView self, UIView relativeView, nfloat delta)
         {
-        	self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + relativeView.Frame.Width + delta, relativeView.Frame.Y), self.Frame.Size);
-        	return self;
+            self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + relativeView.Frame.Width + delta, relativeView.Frame.Y), self.Frame.Size);
+            return self;
         }
 
         public static UIView BeforeThisView (this UIView self, UIView relativeView, nfloat delta)
         {
-        	self.Frame = new CGRect (new CGPoint (relativeView.Frame.X - self.Frame.Width - delta, relativeView.Frame.Y), self.Frame.Size);
-        	return self;
+            self.Frame = new CGRect (new CGPoint (relativeView.Frame.X - self.Frame.Width - delta, relativeView.Frame.Y), self.Frame.Size);
+            return self;
+        }
+
+        public static UIView AddX (this UIView self, nfloat x)
+        {
+            self.Frame = new CGRect (new CGPoint (self.Frame.X + x, self.Frame.Y), self.Frame.Size);
+            return self;
+        }
+
+        public static UIView AddY (this UIView self, nfloat y)
+        {
+            self.Frame = new CGRect (new CGPoint (self.Frame.X, self.Frame.Y + y), self.Frame.Size);
+            return self;
         }
     }
 }
