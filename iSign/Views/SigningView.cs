@@ -23,7 +23,8 @@ namespace iSign.Views
         public SigningView (CGRect bounds) : base (bounds)
         {
             Frame = bounds;
-            CanvasView = new CanvasView (new CGRect(0, 0, 500, 500));
+            var size = Frame.Height * 0.75;
+            CanvasView = new CanvasView (new CGRect(0, 0, size, size));
             CanvasView.OnLineAdded += CanvasView_OnLineAdded;
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha(0.3f);
             OkButton = new UIButton ();
@@ -106,7 +107,8 @@ namespace iSign.Views
 
         private void ShowPalette ()
         {
-            PaletteView.Frame = new CGRect (Frame.X, Frame.Height, Frame.Width, 50);
+            var height = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 30 : 50;
+            PaletteView.Frame = new CGRect (Frame.X, Frame.Height - height, Frame.Width, height);
             PaletteView.Layout ();
             Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () =>
                      Superview.Add (PaletteView), null);

@@ -9,8 +9,8 @@ namespace iSign.Views
 {
     public sealed class PaletteView : MvxView
     {
-        private const int Margin = 10;
-        private const int XMargin = 40;
+        private int Margin => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 2 : 10;
+        private int XMargin => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 15 : 40;
         private UIButton UndoButton { get; }
         private UISlider ThicknessSlider { get; }
         public PaletteView ()
@@ -54,7 +54,7 @@ namespace iSign.Views
             }
             var y = withMargin ? Margin : 0;
 
-            UndoButton.Frame = new CGRect (x, y, 10, 10);
+            UndoButton.Frame = new CGRect (x, 0, 10, 10);
            
             Add (UndoButton);
             UndoButton.SizeToFit ();
@@ -73,7 +73,7 @@ namespace iSign.Views
                 if (x >= Frame.Width - size - XMargin) break;
                 i++;
             }
-            ThicknessSlider.Frame = new CGRect (x, y, Frame.Width - XMargin - x, Frame.Height/2);
+            ThicknessSlider.Frame = new CGRect (x, y, Frame.Width - XMargin - x, size);
             Add (ThicknessSlider);
         }
 

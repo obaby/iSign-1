@@ -14,16 +14,27 @@
                 <outlet property="LoadFileBtn" destination="69" id="name-outlet-69"/>
                 <outlet property="GeneratePdfBtn" destination="74" id="name-outlet-74"/>
                 <outlet property="EndEditingBtn" destination="92" id="name-outlet-92"/>
+                <outlet property="HelpButton" destination="10" id="name-outlet-10"/>
+                <outlet property="HelpTopConstraint" destination="11" id="name-outlet-11"/>
+                <outlet property="HelpHeightConstraint" destination="13" id="name-outlet-13"/>
+                <outlet property="HandTopConstraint" destination="19" id="name-outlet-19"/>
+                <outlet property="HandHeightConstraint" destination="16" id="name-outlet-16"/>
+                <outlet property="LabelTopConstraint" destination="30" id="name-outlet-30"/>
+                <outlet property="LabelHeightConstraint" destination="181" id="name-outlet-181"/>
+                <outlet property="LoadTopConstrain" destination="70" id="name-outlet-70"/>
+                <outlet property="LoadHeightConstraint" destination="73" id="name-outlet-73"/>
+                <outlet property="PdfTopConstraint" destination="76" id="name-outlet-76"/>
+                <outlet property="PdfHeightConstraint" destination="75" id="name-outlet-75"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="2">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <subviews>
                 <view contentMode="scaleToFill" id="5" translatesAutoresizingMaskIntoConstraints="NO">
-                    <rect key="frame" x="0.0" y="49" width="86" height="551"/>
+                    <rect key="frame" x="0.0" y="0.0" width="86" height="1024"/>
                     <color key="backgroundColor" colorSpace="calibratedRGB" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="10" translatesAutoresizingMaskIntoConstraints="NO">
@@ -32,7 +43,9 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <constraints>
-                                <constraint id="13" firstItem="10" firstAttribute="height" constant="55"/>
+                                <constraint id="13" firstItem="10" firstAttribute="height" constant="55">
+                                    <variation key="heightClass=regular-widthClass=compact" constant="35"/>
+                                </constraint>
                             </constraints>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="15" translatesAutoresizingMaskIntoConstraints="NO">
@@ -41,7 +54,9 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <constraints>
-                                <constraint id="16" firstItem="15" firstAttribute="height" constant="55"/>
+                                <constraint id="16" firstItem="15" firstAttribute="height" constant="55">
+                                    <variation key="heightClass=regular-widthClass=compact" constant="35"/>
+                                </constraint>
                             </constraints>
                             <connections>
                                 <action selector="EditBtn_TouchUpInside:" destination="-1" id="21" eventType="touchUpInside"/>
@@ -52,6 +67,9 @@
                             <state key="normal" title="Label">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <constraints>
+                                <constraint id="181" firstItem="29" firstAttribute="height" constant="30"/>
+                            </constraints>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="69" translatesAutoresizingMaskIntoConstraints="NO">
                             <rect key="frame" x="5" y="375" width="76" height="62"/>
@@ -59,7 +77,9 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <constraints>
-                                <constraint id="73" firstItem="69" firstAttribute="height" constant="62"/>
+                                <constraint id="73" firstItem="69" firstAttribute="height" constant="62">
+                                    <variation key="heightClass=regular-widthClass=compact" constant="35"/>
+                                </constraint>
                             </constraints>
                             <connections>
                                 <action selector="LoadFileBtn_TouchUpInside:" destination="-1" id="178" eventType="touchUpInside"/>
@@ -80,29 +100,39 @@
                     </subviews>
                     <constraints>
                         <constraint id="9" firstItem="5" firstAttribute="width" constant="86"/>
-                        <constraint id="11" firstItem="10" firstAttribute="top" secondItem="5" secondAttribute="top" constant="50"/>
+                        <constraint id="11" firstItem="10" firstAttribute="top" secondItem="5" secondAttribute="top" constant="50">
+                            <variation key="heightClass=regular-widthClass=compact" constant="25"/>
+                        </constraint>
                         <constraint id="12" firstItem="10" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="5"/>
                         <constraint id="14" firstItem="5" firstAttribute="trailing" secondItem="10" secondAttribute="trailing" constant="5"/>
                         <constraint id="17" firstItem="15" firstAttribute="leading" secondItem="10" secondAttribute="leading"/>
                         <constraint id="18" firstItem="15" firstAttribute="trailing" secondItem="10" secondAttribute="trailing"/>
-                        <constraint id="19" firstItem="15" firstAttribute="top" secondItem="10" secondAttribute="bottom" constant="50"/>
-                        <constraint id="30" firstItem="29" firstAttribute="top" secondItem="15" secondAttribute="bottom" constant="65"/>
+                        <constraint id="19" firstItem="15" firstAttribute="top" secondItem="10" secondAttribute="bottom" constant="50">
+                            <variation key="heightClass=regular-widthClass=compact" constant="25"/>
+                        </constraint>
+                        <constraint id="30" firstItem="29" firstAttribute="top" secondItem="15" secondAttribute="bottom" constant="65">
+                            <variation key="heightClass=regular-widthClass=compact" constant="25"/>
+                        </constraint>
                         <constraint id="31" firstItem="29" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="5"/>
                         <constraint id="32" firstItem="5" firstAttribute="trailing" secondItem="29" secondAttribute="trailing" constant="5"/>
-                        <constraint id="70" firstItem="69" firstAttribute="top" secondItem="29" secondAttribute="bottom" constant="70"/>
+                        <constraint id="70" firstItem="69" firstAttribute="top" secondItem="29" secondAttribute="bottom" constant="70">
+                            <variation key="heightClass=regular-widthClass=compact" constant="25"/>
+                        </constraint>
                         <constraint id="71" firstItem="69" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="5"/>
                         <constraint id="72" firstItem="5" firstAttribute="trailing" secondItem="69" secondAttribute="trailing" constant="5"/>
-                        <constraint id="76" firstItem="74" firstAttribute="top" secondItem="69" secondAttribute="bottom" constant="55"/>
+                        <constraint id="76" firstItem="74" firstAttribute="top" secondItem="69" secondAttribute="bottom" constant="55">
+                            <variation key="heightClass=regular-widthClass=compact" constant="25"/>
+                        </constraint>
                         <constraint id="77" firstItem="5" firstAttribute="trailing" secondItem="74" secondAttribute="trailing" constant="5"/>
                         <constraint id="79" firstItem="5" firstAttribute="trailing" secondItem="74" secondAttribute="trailing" constant="5"/>
                         <constraint id="80" firstItem="74" firstAttribute="leading" secondItem="5" secondAttribute="leading" constant="5"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="22" translatesAutoresizingMaskIntoConstraints="NO" customClass="TouchableScrollView">
-                    <rect key="frame" x="86" y="49" width="514" height="551"/>
+                    <rect key="frame" x="86" y="0.0" width="682" height="1024"/>
                     <subviews/>
                 </scrollView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="92" translatesAutoresizingMaskIntoConstraints="NO">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="92" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
                     <rect key="frame" x="468" y="544" width="112" height="30"/>
                     <state key="normal" title="Rotate">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -117,10 +147,10 @@
             </subviews>
             <constraints>
                 <constraint id="6" firstItem="5" firstAttribute="leading" secondItem="2" secondAttribute="leading"/>
-                <constraint id="7" firstItem="5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="49"/>
+                <constraint id="7" firstItem="5" firstAttribute="top" secondItem="2" secondAttribute="top"/>
                 <constraint id="8" firstItem="2" firstAttribute="bottom" secondItem="5" secondAttribute="bottom"/>
                 <constraint id="23" firstItem="22" firstAttribute="leading" secondItem="5" secondAttribute="trailing"/>
-                <constraint id="24" firstItem="22" firstAttribute="top" secondItem="2" secondAttribute="top" constant="49"/>
+                <constraint id="24" firstItem="22" firstAttribute="top" secondItem="2" secondAttribute="top"/>
                 <constraint id="25" firstItem="2" firstAttribute="trailing" secondItem="22" secondAttribute="trailing"/>
                 <constraint id="26" firstItem="2" firstAttribute="bottom" secondItem="22" secondAttribute="bottom"/>
                 <constraint id="93" firstItem="2" firstAttribute="trailing" secondItem="92" secondAttribute="trailing" constant="20"/>
@@ -132,4 +162,7 @@
         <image name="Pdf/FastFlex.jpg" width="1724" height="1240"/>
         <image name="PencilTexture.png" width="200" height="200"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedScreenMetrics key="destination" type="iPad"/>
+    </simulatedMetricsContainer>
 </document>
