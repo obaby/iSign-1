@@ -69,16 +69,16 @@ namespace iSign.ViewControllers
             base.LayoutSubviews ();
             DeleteButton.AtTheBeginingThisView (this, 10)
                         .AboveThisView (this, 20);
-            if (DeleteButton.Superview != null)
+            if (DeleteButton.Superview == null)
                 Superview.Add (DeleteButton);
 
             OkButton.AtTheEndThisView (this, 10)
                     .AboveThisView (this, 20);
-            if (OkButton.Superview != null)
+            if (OkButton.Superview == null)
                 Superview.Add (OkButton);
 
             EditSignatureButton.BeforeThisView (OkButton, 10);
-            if (EditSignatureButton.Superview != null)
+            if (EditSignatureButton.Superview == null)
                 Superview.Add (EditSignatureButton);
         }
 
@@ -113,13 +113,20 @@ namespace iSign.ViewControllers
                 height);
             LayoutSubviews ();
         }
-
+        CGAffineTransform _previousTransform;
+        CGSize LimitSize = new CGSize (100, 100);
         private void ViewResized (UIPinchGestureRecognizer pinchInfo)
         {
             var scale = pinchInfo.Scale;
             var transform = CGAffineTransform.MakeIdentity ();
             transform.Scale (scale, scale);
             ImageView.Transform = transform;
+            if (ImageView.Frame.Size.IsSmallerThan (LimitSize))
+            {
+                ImageView.Transform = _previousTransform;
+                return;
+            }
+            _previousTransform = transform;
             var transformedBounds = CGAffineTransform.CGRectApplyAffineTransform (ImageView.Bounds, transform);
             var location = new CGPoint (Frame.X + ImageView.Frame.X, Frame.Y + ImageView.Frame.Y);
             Frame = new CGRect (location, transformedBounds.Size);
