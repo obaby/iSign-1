@@ -32,10 +32,10 @@ namespace iSign.Views
             base.TouchesMoved (touches, evt);
             var touch = touches.First () as UITouch;
             if (touch == null) return;
-
-            UIGraphics.BeginImageContextWithOptions (Bounds.Size, false, 0);
+            var bounds = Bounds.Ceiling ();
+            UIGraphics.BeginImageContextWithOptions (bounds.Size, false, 0);
             var context = UIGraphics.GetCurrentContext ();
-            DrawingImage?.Draw (Bounds);
+            DrawingImage?.Draw (bounds);
 
             var allTouches = new List<UITouch> ();
             var coalescedTouches = evt.GetCoalescedTouches (touch);
@@ -56,6 +56,7 @@ namespace iSign.Views
                 DrawStroke (context, t);
             }
             Image = UIGraphics.GetImageFromCurrentImageContext ();
+
             // Update image
             UIGraphics.EndImageContext ();
         }

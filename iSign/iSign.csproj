@@ -186,6 +186,7 @@
     <Compile Include="Extensions\BlinkingLayer.cs" />
     <Compile Include="Converters\UIColorConverter.cs" />
     <Compile Include="Views\CircleButton.cs" />
+    <Compile Include="Extensions\CGRectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
