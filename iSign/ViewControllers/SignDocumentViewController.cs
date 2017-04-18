@@ -23,7 +23,7 @@ namespace iSign.ViewControllers
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            EndEditingBtn.Hidden = true;
+            ChangeButtonsState (false);
         }
 
         public override void ViewDidAppear (bool animated)
@@ -131,11 +131,19 @@ namespace iSign.ViewControllers
             _imageView.RemoveFromSuperview ();
             ContainerView.Add (_imageView);
             ContainerView.ContentSize = _imageView.Frame.Size;
+            ChangeButtonsState (true);
+        }
+
+        private void ChangeButtonsState (bool fileLoaded)
+        {
+            EndEditingBtn.Hidden = !fileLoaded;
+            EditBtn.Enabled = fileLoaded;
+            LabelBtn.Enabled = fileLoaded;
+            GeneratePdfBtn.Enabled = fileLoaded;
         }
 
         partial void LoadFileBtn_TouchUpInside (UIButton sender)
         {
-            EndEditingBtn.Hidden = false;
             if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) {
                 FileDownloaded ("Pdf/FastFlex.jpg");
                 Context.Filename = "FastFlex.jpg";
