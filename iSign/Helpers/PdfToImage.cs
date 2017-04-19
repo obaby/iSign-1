@@ -41,7 +41,7 @@ namespace iSign.Helpers
                 ctx.BeginPage ();
                 image.Draw (new CGPoint (0, 0));
             });
-            var original = Path.Combine(Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL", filename);
+            var original = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL", filename);
             File.Delete (original);
             var filePath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), filename);
             pdf.Save (filePath, true);
@@ -54,6 +54,19 @@ namespace iSign.Helpers
             var context = UIGraphics.GetCurrentContext ();
             var originFrame = view.Frame;
             view.Frame = new CGRect (new CGPoint (0, 0), view.ContentSize);
+            view.Layer.RenderInContext (context);
+            view.Frame = originFrame;
+            var image = UIGraphics.GetImageFromCurrentImageContext ();
+            UIGraphics.EndImageContext ();
+            return image;
+        }
+
+        public static UIImage ToUIImage (this UIView view)
+        {
+            UIGraphics.BeginImageContext (view.Frame.Size);
+            var context = UIGraphics.GetCurrentContext ();
+            var originFrame = view.Frame;
+            view.Frame = new CGRect (new CGPoint (0, 0), view.Frame.Size);
             view.Layer.RenderInContext (context);
             view.Frame = originFrame;
             var image = UIGraphics.GetImageFromCurrentImageContext ();

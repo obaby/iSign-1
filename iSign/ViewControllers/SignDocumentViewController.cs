@@ -17,7 +17,6 @@ namespace iSign.ViewControllers
         private UIImageView _imageView;
         public SignDocumentViewController () : base ("SignDocumentView", null)
         {
-            this.DelayBind (SetBindings);
         }
 
         public override void ViewDidLoad ()
@@ -50,31 +49,10 @@ namespace iSign.ViewControllers
             PdfTopConstraint.Constant = topConstraint;
             PdfHeightConstraint.Constant = heightConstraint;
         }
-
-        private void Context_InputSet (object sender, string e)
-        {
-            EditMode = true;
-            //Todo : add label
-        }
-
+       
         partial void EditBtn_TouchUpInside (UIButton sender)
         {
             ContainerView.ShowSigningView (Context.SigningViewModel);
-        }
-
-        private void SetBindings ()
-        {
-            var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
-            set.Bind (LabelBtn)
-               .To (vm => vm.AddLabelCommand);
-
-               set.Apply ();
-
-            var context = DataContext as SigningDocViewModel;
-            if (context == null) return;
-
-            context.InputSet += Context_InputSet;
-
         }
 
         void Converter_ImageCreated (object sender, UIImage e)
@@ -182,6 +160,11 @@ namespace iSign.ViewControllers
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Down;
                 presentationPopover.SourceRect = LoadFileBtn.Frame;
             }
+        }
+
+        partial void LabelTouchUpInside (UIButton sender)
+        {
+            ContainerView.ShowTextView ();
         }
    }
 }

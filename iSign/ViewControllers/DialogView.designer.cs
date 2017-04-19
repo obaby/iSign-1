@@ -15,7 +15,15 @@ namespace iSign.ViewControllers
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView BorderView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton CancelBtn { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView ContainerView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -27,9 +35,19 @@ namespace iSign.ViewControllers
 
         void ReleaseDesignerOutlets ()
         {
+            if (BorderView != null) {
+                BorderView.Dispose ();
+                BorderView = null;
+            }
+
             if (CancelBtn != null) {
                 CancelBtn.Dispose ();
                 CancelBtn = null;
+            }
+
+            if (ContainerView != null) {
+                ContainerView.Dispose ();
+                ContainerView = null;
             }
 
             if (InputTxt != null) {

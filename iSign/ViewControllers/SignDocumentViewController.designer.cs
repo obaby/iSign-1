@@ -93,6 +93,10 @@ namespace iSign.ViewControllers
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void GeneratePdfBtn_TouchUpInside (UIKit.UIButton sender);
 
+        [Action ("LabelTouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void LabelTouchUpInside (UIKit.UIButton sender);
+
         [Action ("LoadFileBtn_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void LoadFileBtn_TouchUpInside (UIKit.UIButton sender);
