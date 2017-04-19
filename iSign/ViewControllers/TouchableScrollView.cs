@@ -1,5 +1,6 @@
 using System;
 using CoreGraphics;
+using iSign.Core;
 using iSign.Core.ViewModels;
 using iSign.Extensions;
 using iSign.Views;
@@ -20,74 +21,37 @@ namespace iSign.ViewControllers
             PanGestureRecognizer.MinimumNumberOfTouches = 2;
         }
 
-        private bool _signingViewIsShown;
+        private bool _dialogViewIsShown;
 
-        public void ShowSigningView (IMvxViewModel context)
+        public void ShowSigningView (IReloadableViewModel context)
         {
-            if (_signingViewIsShown) return;
-            var vc = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController;
             var signingView = new SigningView (Frame);
-            EditableView editableView = null;
-            var doubleTapped = false;
-            signingView.DataContext = context;
-            signingView.CancelAction = () => {
-                _signingViewIsShown = false;
-            };
-
-            signingView.OkAction = () => {
-                _signingViewIsShown = false;
-                var signature = signingView.GetSignature ();
-                if (signature == null) return;
-                var previousRect = CGRect.Empty;
-                if (doubleTapped) {
-                    if (editableView != null) {
-                        previousRect = editableView.Frame;
-                        editableView.Remove ();
-                    }
-                    doubleTapped = false;
-                }
-                var center = this.GetCenter (signature.Size, ContentOffset);
-                var position = previousRect == CGRect.Empty ? new CGRect (center, signature.Size) : previousRect;
-                editableView = new EditableView (position);
-                editableView.SetImage (signature);
-                if (previousRect != CGRect.Empty) {
-                    editableView.Frame = previousRect;
-                    editableView.UpdateImageAndLayer (previousRect.Size);
-                }
-                Add (editableView);
-
-                editableView.OnDoubleTap = () => {
-                    var vm = signingView.DataContext as SigningViewModel;
-                    vm?.Reloaded ();
-                    doubleTapped = true;
-                    _signingViewIsShown = true;
-                    signingView.StartWith (editableView.ImageView.Image);
-                    vc.Add (signingView);
-                };
-            };
-
-            vc.Add (signingView);
-            _signingViewIsShown = true;
+            ShowDialog (signingView, context);
         }
-
-        private bool _textViewIsShown;
 
         public void ShowTextView ()
         {
-            if (_textViewIsShown) return;
-            var vc = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController;
             var dialogView = ViewFactory.Create<DialogView> ();
+            ShowDialog (dialogView);
+
+        }
+
+        private void ShowDialog (IImageView dialogView, IReloadableViewModel context = null)
+        {
+            if (_dialogViewIsShown) return;
+            var vc = ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController;
             dialogView.Frame = Frame;
+            dialogView.DataContext = context;
             EditableView editableView = null;
             var reopened = false;
 
             dialogView.CancelAction = () => {
-                _textViewIsShown = false;
+                _dialogViewIsShown = false;
             };
 
             dialogView.OkAction = () => {
-                _textViewIsShown = false;
-                var signature = dialogView.GetImageOfText ();
+                _dialogViewIsShown = false;
+                var signature = dialogView.GetImage ();
                 if (signature == null) return;
                 var previousRect = CGRect.Empty;
                 if (reopened) {
@@ -99,26 +63,29 @@ namespace iSign.ViewControllers
                 }
                 var center = this.GetCenter (signature.Image.Size, ContentOffset);
                 var position = previousRect == CGRect.Empty ? new CGRect (center, signature.Image.Size) : previousRect;
-                editableView = new EditableView (position);
+                editableView = new EditableView (position) {
+                    LimitSize = dialogView.MinimumSize
+                };
                 editableView.SetImage (signature.Image);
                 if (previousRect != CGRect.Empty) {
                     editableView.Frame = previousRect;
                     editableView.UpdateImageAndLayer (previousRect.Size);
                 }
+
                 Add (editableView);
 
                 editableView.OnDoubleTap = () => {
-                    var vm = dialogView.DataContext as SigningViewModel;
-                    vm?.Reloaded ();
+                    var vm = dialogView.DataContext as IReloadableViewModel;
+                    vm?.Reload ();
                     reopened = true;
-                    _textViewIsShown = true;
-                    dialogView.StartWith (signature.Text);
-                    vc.Add (dialogView);
+                    _dialogViewIsShown = true;
+                    dialogView.StartWith (signature);
+                    vc.Add ((UIView)dialogView);
                 };
             };
 
-            vc.Add (dialogView);
-            _textViewIsShown = true;
+            vc.Add ((UIView)dialogView);
+            _dialogViewIsShown = true;
         }
     }
 }

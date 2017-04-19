@@ -5,7 +5,7 @@ using iSign.Services;
 namespace iSign.Core.ViewModels
 {
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
-    public class SigningViewModel : BaseViewModel
+    public class SigningViewModel : BaseViewModel, IReloadableViewModel
     {
         public PaletteViewModel PaletteContext { get; }
         private const string DefaultColor = Colors.Black;
@@ -36,7 +36,7 @@ namespace iSign.Core.ViewModels
         public string DrawingColor => PaletteContext.SelectedColor?.Color;
         public float Thickness => PaletteContext.PointThickness;
 
-        public void Reloaded ()
+        public void Reload ()
         {
             AddSignatureTxt = "Modify";
             RaisePropertyChanged (nameof (AddSignatureTxt));

@@ -1,4 +1,5 @@
 using System;
+using CoreGraphics;
 using iSign.Core.ViewModels;
 using iSign.Helpers;
 using MvvmCross.Binding.BindingContext;
@@ -7,7 +8,7 @@ using UIKit;
 
 namespace iSign.ViewControllers
 {
-    public partial class DialogView : MvxView
+    public partial class DialogView : MvxView, IImageView
     {
 
         public DialogView (IntPtr handle) : base (handle)
@@ -28,9 +29,9 @@ namespace iSign.ViewControllers
 
         private string Text { get; set; }
 
-        internal void StartWith (string text)
+        public void StartWith (ImageText imageText)
         {
-            Text = text;
+            Text = imageText.Text;
         }
 
         public override void LayoutSubviews ()
@@ -51,7 +52,9 @@ namespace iSign.ViewControllers
         public Action OkAction { get; set; }
         public Action CancelAction { get; set; }
 
-        public ImageText GetImageOfText ()
+        public CGSize MinimumSize => new CGSize (186, 30);
+
+        public ImageText GetImage ()
         {
             var borderStyle = InputTxt.BorderStyle;
             InputTxt.BorderStyle = UITextBorderStyle.None;
@@ -82,12 +85,5 @@ namespace iSign.ViewControllers
             OkBtn.TouchUpInside -= OkBtn_TouchUpInside;
             RemoveFromSuperview ();
         }
-
-        public class ImageText
-        {
-            public UIImage Image { get; set; }
-            public string Text { get; set; }
-        }
-
-   }
+    }
 }
