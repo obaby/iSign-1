@@ -79,7 +79,8 @@ namespace iSign.ViewControllers
             var dialogView = ViewFactory.Create<DialogView> ();
             dialogView.Frame = Frame;
             EditableView editableView = null;
-            var doubleTapped = false;
+            var reopened = false;
+
             dialogView.CancelAction = () => {
                 _textViewIsShown = false;
             };
@@ -89,12 +90,12 @@ namespace iSign.ViewControllers
                 var signature = dialogView.GetImageOfText ();
                 if (signature == null) return;
                 var previousRect = CGRect.Empty;
-                if (doubleTapped) {
+                if (reopened) {
                     if (editableView != null) {
                         previousRect = editableView.Frame;
                         editableView.Remove ();
                     }
-                    doubleTapped = false;
+                    reopened = false;
                 }
                 var center = this.GetCenter (signature.Image.Size, ContentOffset);
                 var position = previousRect == CGRect.Empty ? new CGRect (center, signature.Image.Size) : previousRect;
@@ -109,7 +110,7 @@ namespace iSign.ViewControllers
                 editableView.OnDoubleTap = () => {
                     var vm = dialogView.DataContext as SigningViewModel;
                     vm?.Reloaded ();
-                    doubleTapped = true;
+                    reopened = true;
                     _textViewIsShown = true;
                     dialogView.StartWith (signature.Text);
                     vc.Add (dialogView);
