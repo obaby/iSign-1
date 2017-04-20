@@ -13,6 +13,7 @@ namespace iSign
         object DataContext { get; set; }
         ImageText GetImage ();
         void StartWith (ImageText imageText);
+        void CloseView ();
    }
 
     public class ImageText

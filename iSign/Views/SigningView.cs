@@ -129,7 +129,7 @@ namespace iSign.Views
 
         public CGSize MinimumSize => new CGSize (100, 100);
 
-        private void CloseView ()
+        public void CloseView ()
         {
             CanvasView.OnLineAdded -= CanvasView_OnLineAdded;
             Messenger.Unsubscribe<UndoMessage> (Token);

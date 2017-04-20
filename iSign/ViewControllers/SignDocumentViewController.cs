@@ -166,6 +166,8 @@ namespace iSign.ViewControllers
         {
             ContainerView.ShowTextView ();
         }
+
+        public TouchableScrollView ScrollView => ContainerView;
    }
 }
 

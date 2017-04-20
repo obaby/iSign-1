@@ -79,7 +79,7 @@ namespace iSign.ViewControllers
             CloseView ();
         }
 
-        private void CloseView ()
+        public void CloseView ()
         {
             CancelBtn.TouchUpInside -= CancelBtn_TouchUpInside;
             OkBtn.TouchUpInside -= OkBtn_TouchUpInside;

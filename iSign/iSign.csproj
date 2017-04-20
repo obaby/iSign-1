@@ -190,6 +190,7 @@
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Helpers\ViewFactory.cs" />
     <Compile Include="Views\IImageView.cs" />
+    <Compile Include="Service\DialogService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

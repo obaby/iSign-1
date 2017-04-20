@@ -1,9 +1,11 @@
-﻿using System;
+﻿using iSign.Core.ViewModels;
 
 namespace iSign.Core.Services
 {
     public interface IDialogService
     {
-        void ShowDialog (Action<string> okAction);
+        void ShowTextDialog (DialogViewModel context);
+        void ShowImageDialog (DialogViewModel context);
+        void HideDialog ();
     }
 }
