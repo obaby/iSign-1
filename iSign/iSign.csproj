@@ -188,6 +188,8 @@
     <Compile Include="Views\CircleButton.cs" />
     <Compile Include="Extensions\CGRectExtensions.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Helpers\ViewFactory.cs" />
+    <Compile Include="Views\IImageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

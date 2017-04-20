@@ -48,6 +48,7 @@
     <Compile Include="ViewModels\Messages\ViewActivated.cs" />
     <Compile Include="ViewModels\Messages\UndoMessage.cs" />
     <Compile Include="ViewModels\SigningViewModel.cs" />
+    <Compile Include="ViewModels\IReloadableViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">

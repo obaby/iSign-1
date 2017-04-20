@@ -12,7 +12,7 @@ using UIKit;
 
 namespace iSign.Views
 {
-    public sealed class SigningView : MvxView
+    public sealed class SigningView : MvxView, IImageView
     {
         private CanvasView CanvasView { get; }
         private UIButton OkButton { get; }
@@ -114,18 +114,21 @@ namespace iSign.Views
                      Superview.Add (PaletteView), null);
         }
 
-        public UIImage GetSignature ()
+        public ImageText GetImage ()
         {
-            return CanvasView?.DrawingImage;
+            return new ImageText { Image = CanvasView?.DrawingImage };
         }
 
-        public void StartWith (UIImage image)
+        public void StartWith (ImageText imageText)
         {
-            CanvasView?.StartWith (image);
+            CanvasView?.StartWith (imageText.Image);
         }
 
         public Action OkAction { get; set;}
         public Action CancelAction { get; set;}
+
+        public CGSize MinimumSize => new CGSize (100, 100);
+
         private void CloseView ()
         {
             CanvasView.OnLineAdded -= CanvasView_OnLineAdded;

@@ -114,7 +114,7 @@ namespace iSign.ViewControllers
             LayoutSubviews ();
         }
         CGAffineTransform _previousTransform;
-        CGSize LimitSize = new CGSize (100, 100);
+        public CGSize LimitSize { get; set; } = new CGSize (100, 100);
         private void ViewResized (UIPinchGestureRecognizer pinchInfo)
         {
             var scale = pinchInfo.Scale;
