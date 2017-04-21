@@ -167,7 +167,6 @@
     <Compile Include="ViewControllers\TouchableScrollView.designer.cs">
       <DependentUpon>TouchableScrollView.cs</DependentUpon>
     </Compile>
-    <Compile Include="IoC\DialogService.cs" />
     <Compile Include="Helpers\PdfToImage.cs" />
     <Compile Include="ViewControllers\PDFViewerViewController.cs" />
     <Compile Include="ViewControllers\PDFViewerViewController.designer.cs">
@@ -190,6 +189,7 @@
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Helpers\ViewFactory.cs" />
     <Compile Include="Views\IImageView.cs" />
+    <Compile Include="Service\DialogService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">

@@ -17,12 +17,35 @@ namespace iSign.ViewControllers
         private UIImageView _imageView;
         public SignDocumentViewController () : base ("SignDocumentView", null)
         {
+            this.DelayBind (SetBindings);
+        }
+
+        void SetBindings ()
+        {
+            var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
+            set.Bind (EditBtn)
+               .To (vm => vm.AddImageCommand);
+            set.Bind (EditBtn)
+               .For (v => v.Enabled)
+               .To (vm => vm.CanAddSignature);
+
+            set.Bind (LabelBtn)
+               .To (vm => vm.AddTextCommand);
+            set.Bind (LabelBtn)
+              .For (v => v.Enabled)
+              .To (vm => vm.CanAddText);
+
+            set.Bind (GeneratePdfBtn)
+               .For (v => v.Enabled)
+               .To (vm => vm.CanGeneratePdf);
+
+            set.Apply ();
         }
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            ChangeButtonsState (false);
+            ChangeButtonsState (true);
         }
 
         public override void ViewDidAppear (bool animated)
@@ -50,11 +73,6 @@ namespace iSign.ViewControllers
             PdfHeightConstraint.Constant = heightConstraint;
         }
        
-        partial void EditBtn_TouchUpInside (UIButton sender)
-        {
-            ContainerView.ShowSigningView (Context.SigningViewModel);
-        }
-
         void Converter_ImageCreated (object sender, UIImage e)
         {
             _imageView = new UIImageView (e);
@@ -161,11 +179,8 @@ namespace iSign.ViewControllers
                 presentationPopover.SourceRect = LoadFileBtn.Frame;
             }
         }
-
-        partial void LabelTouchUpInside (UIButton sender)
-        {
-            ContainerView.ShowTextView ();
-        }
+       
+        public TouchableScrollView ScrollView => ContainerView;
    }
 }
 

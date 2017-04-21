@@ -28,10 +28,8 @@ namespace iSign.Views
             CanvasView.OnLineAdded += CanvasView_OnLineAdded;
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha(0.3f);
             OkButton = new UIButton ();
-            OkButton.TouchUpInside += OkButton_TouchUpInside;
 
             CancelButton = new UIButton ();
-            CancelButton.TouchUpInside += CancelButton_TouchUpInside;
 
             PaletteView = new PaletteView ();
 
@@ -39,11 +37,17 @@ namespace iSign.Views
                 var set = this.CreateBindingSet<SigningView, SigningViewModel> ();
                 set.Bind (OkButton)
                    .For ("Title")
-                   .To (vm => vm.AddSignatureTxt);
+                   .To (vm => vm.OkTxt);
+
+                set.Bind (OkButton)
+                   .To (vm => vm.OkCommand);
 
                 set.Bind (CancelButton)
                    .For ("Title")
                    .To (vm => vm.CancelTxt);
+
+                set.Bind (CancelButton)
+                   .To (vm => vm.CancelCommand);
 
                 set.Bind (PaletteView)
                    .For (v => v.DataContext)
@@ -63,10 +67,16 @@ namespace iSign.Views
                    .To (vm => vm.Thickness);
 
                 set.Apply ();
+
+                if (ViewModel == null) return;
+                ViewModel.OnOk += ViewModel_OnOk;
+                ViewModel.OnCancel += ViewModel_OnCancel;
             });
 
             Messenger = Mvx.Resolve<IMvxMessenger> ();
         }
+
+        private SigningViewModel ViewModel => DataContext as SigningViewModel;
 
         private void Undo ()
         {
@@ -137,7 +147,7 @@ namespace iSign.Views
             RemoveFromSuperview ();
         }
 
-        void OkButton_TouchUpInside (object sender, EventArgs e)
+        void ViewModel_OnOk (object sender, EventArgs e)
         {
             if (OkAction != null) {
                 OkAction ();
@@ -145,7 +155,7 @@ namespace iSign.Views
             CloseView ();
         }
 
-        void CancelButton_TouchUpInside (object sender, EventArgs e)
+        void ViewModel_OnCancel (object sender, EventArgs e)
         {
             if (CancelAction != null) {
                 CancelAction ();

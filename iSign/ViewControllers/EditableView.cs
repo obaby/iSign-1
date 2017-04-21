@@ -64,6 +64,9 @@ namespace iSign.ViewControllers
             UpdateLayer ();
         }
 
+        public UIViewController ParentViewController { get; set; }
+        public IImageView DialogView { get; set; }
+
         public override void LayoutSubviews ()
         {
             base.LayoutSubviews ();

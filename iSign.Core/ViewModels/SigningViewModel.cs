@@ -4,23 +4,19 @@ using iSign.Services;
 
 namespace iSign.Core.ViewModels
 {
-    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
-    public class SigningViewModel : BaseViewModel, IReloadableViewModel
+    [SuppressMessage ("ReSharper", "ExplicitCallerInfoArgument")]
+    public class SigningViewModel : DialogViewModel
     {
         public PaletteViewModel PaletteContext { get; }
         private const string DefaultColor = Colors.Black;
 
-        public SigningViewModel (IViewModelServices viewModelService, PaletteViewModel paletteContext) : base(viewModelService)
+        public SigningViewModel (IViewModelServices viewModelService, PaletteViewModel paletteContext) : base (viewModelService)
         {
             PaletteContext = paletteContext;
             PaletteContext.PropertyChanged += PaletteContext_PropertyChanged;
             PaletteContext.SetDefaultColor (DefaultColor);
-            AddSignatureTxt = "Add signature";
-            CancelTxt = "Cancel";
+            OkTxt = "Add signature";
         }
-
-        public string AddSignatureTxt { get; private set;}
-        public string CancelTxt { get;  }
 
         void PaletteContext_PropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -36,10 +32,10 @@ namespace iSign.Core.ViewModels
         public string DrawingColor => PaletteContext.SelectedColor?.Color;
         public float Thickness => PaletteContext.PointThickness;
 
-        public void Reload ()
+        public override void Reload ()
         {
-            AddSignatureTxt = "Modify";
-            RaisePropertyChanged (nameof (AddSignatureTxt));
+            OkTxt = "Modify";
+            RaisePropertyChanged (nameof (OkTxt));
         }
     }
 }
