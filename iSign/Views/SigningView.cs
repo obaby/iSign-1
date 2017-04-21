@@ -142,7 +142,6 @@ namespace iSign.Views
             if (OkAction != null) {
                 OkAction ();
             }
-            CloseView ();
         }
 
         void CancelButton_TouchUpInside (object sender, EventArgs e)
@@ -150,7 +149,6 @@ namespace iSign.Views
             if (CancelAction != null) {
                 CancelAction ();
             }
-            CloseView ();
         }
 
         void CanvasView_OnLineAdded (object sender, EventArgs e)

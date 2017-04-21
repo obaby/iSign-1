@@ -1,6 +1,7 @@
 ﻿using iSign.Core;
 using iSign.Core.Services;
 using iSign.IoC;
+using iSign.Service;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
 using MvvmCross.Platform;

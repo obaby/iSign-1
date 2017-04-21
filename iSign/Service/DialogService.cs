@@ -13,19 +13,20 @@ namespace iSign.Service
         private IImageView OpenedDialogView { get; set; }
         public void HideDialog ()
         {
+            _dialogViewIsShown = false;
             if (OpenedDialogView != null) {
                 OpenedDialogView.CloseView ();
                 OpenedDialogView = null;
             }
         }
 
-        public void ShowImageDialog (DialogViewModel context)
+        public void ShowImageDialog (IReloadableViewModel context)
         {
             var dialogView = new SigningView (SignDocumentViewController.ScrollView.Frame);
             ShowDialog (dialogView, context);
         }
 
-        public void ShowTextDialog (DialogViewModel context)
+        public void ShowTextDialog ()
         {
             var dialogView = ViewFactory.Create<DialogView> ();
 			ShowDialog (dialogView);
@@ -44,9 +45,7 @@ namespace iSign.Service
             EditableView editableView = null;
             var reopened = false;
 
-            dialogView.CancelAction = () => {
-                HideDialog ();
-            };
+            dialogView.CancelAction = HideDialog;
 
             dialogView.OkAction = () => {
                 var signature = dialogView.GetImage ();
@@ -81,6 +80,7 @@ namespace iSign.Service
                     dialogView.StartWith (signature);
                     SignDocumentViewController.Add ((UIView)dialogView);
                 };
+                HideDialog ();
             };
 
             SignDocumentViewController.Add ((UIView)dialogView);

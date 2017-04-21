@@ -167,7 +167,6 @@
     <Compile Include="ViewControllers\TouchableScrollView.designer.cs">
       <DependentUpon>TouchableScrollView.cs</DependentUpon>
     </Compile>
-    <Compile Include="IoC\DialogService.cs" />
     <Compile Include="Helpers\PdfToImage.cs" />
     <Compile Include="ViewControllers\PDFViewerViewController.cs" />
     <Compile Include="ViewControllers\PDFViewerViewController.designer.cs">

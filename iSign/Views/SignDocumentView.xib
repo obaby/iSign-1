@@ -58,9 +58,7 @@
                                     <variation key="heightClass=regular-widthClass=compact" constant="35"/>
                                 </constraint>
                             </constraints>
-                            <connections>
-                                <action selector="EditBtn_TouchUpInside:" destination="-1" id="21" eventType="touchUpInside"/>
-                            </connections>
+                            <connections/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="29" translatesAutoresizingMaskIntoConstraints="NO">
                             <rect key="frame" x="5" y="275" width="76" height="30"/>
@@ -70,9 +68,7 @@
                             <constraints>
                                 <constraint id="181" firstItem="29" firstAttribute="height" constant="30"/>
                             </constraints>
-                            <connections>
-                                <action selector="LabelTouchUpInside:" destination="-1" id="184" eventType="touchUpInside"/>
-                            </connections>
+                            <connections/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="69" translatesAutoresizingMaskIntoConstraints="NO">
                             <rect key="frame" x="5" y="375" width="76" height="62"/>

@@ -1,6 +1,7 @@
 ﻿using System;
 using iSign.Core.Services;
 using MvvmCross.Core.ViewModels;
+using MvvmCross.Platform;
 
 namespace iSign.Core.ViewModels
 {
@@ -12,21 +13,23 @@ namespace iSign.Core.ViewModels
 
         public SigningDocViewModel (IViewModelServices viewModelServices, IDialogService dialogService, SigningViewModel signingViewModel) : base(viewModelServices)
         {
-            AddLabelCommand = new MvxCommand (AddLabel);
+            AddTextCommand = new MvxCommand (AddLabel);
+            AddImageCommand = new MvxCommand (AddImage);
             DialogService = dialogService;
             SigningViewModel = signingViewModel;
         }
 
-        public IMvxCommand AddLabelCommand { get; }
+        public IMvxCommand AddTextCommand { get; }
         private void AddLabel ()
         {
-            DialogService.ShowDialog (OnInputSet);
+            DialogService.ShowTextDialog ();
         }
 
-        public event EventHandler<string> InputSet;
-        private void OnInputSet (string input)
+        public IMvxCommand AddImageCommand { get; }
+        private void AddImage ()
         {
-            InputSet?.Invoke (this, input);
+            var context = Mvx.Resolve<SigningViewModel> ();
+            DialogService.ShowImageDialog (context);
         }
 
         public void LoadFile (IFileStorage tool)
