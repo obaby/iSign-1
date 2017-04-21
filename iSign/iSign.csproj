@@ -190,11 +190,17 @@
     <Compile Include="Helpers\ViewFactory.cs" />
     <Compile Include="Views\IImageView.cs" />
     <Compile Include="Service\DialogService.cs" />
+    <Compile Include="Service\PdfGeneratorService.cs" />
+    <Compile Include="Converters\ReverseBooleanConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iSign.Core\iSign.Core.csproj">
       <Project>{6FE34CB1-E91D-44C1-8C7A-463666022E03}</Project>
       <Name>iSign.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iSign.Services\iSign.Services.csproj">
+      <Project>{1FF4EFAF-DA48-4ECF-96B3-B86B44634373}</Project>
+      <Name>iSign.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

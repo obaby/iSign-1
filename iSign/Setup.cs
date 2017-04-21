@@ -26,6 +26,7 @@ namespace iSign
             base.InitializePlatformServices ();
             Mvx.RegisterType<IDialogService, DialogService> ();
             Mvx.RegisterType<IFileStorageChooser, FileStorageChooser> ();
+            Mvx.RegisterType<IPdfGeneratorService, PdfGeneratorService> ();
         }
     }
 }

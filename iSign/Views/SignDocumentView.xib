@@ -8,12 +8,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignDocumentViewController">
             <connections>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
-                <outlet property="EditBtn" destination="15" id="name-outlet-15"/>
+                <outlet property="SignBtn" destination="15" id="name-outlet-15"/>
                 <outlet property="ContainerView" destination="22" id="name-outlet-22"/>
-                <outlet property="LabelBtn" destination="29" id="name-outlet-29"/>
+                <outlet property="AddTextBtn" destination="29" id="name-outlet-29"/>
                 <outlet property="LoadFileBtn" destination="69" id="name-outlet-69"/>
                 <outlet property="GeneratePdfBtn" destination="74" id="name-outlet-74"/>
-                <outlet property="EndEditingBtn" destination="92" id="name-outlet-92"/>
+                <outlet property="RotateBtn" destination="92" id="name-outlet-92"/>
                 <outlet property="HelpButton" destination="10" id="name-outlet-10"/>
                 <outlet property="HelpTopConstraint" destination="11" id="name-outlet-11"/>
                 <outlet property="HelpHeightConstraint" destination="13" id="name-outlet-13"/>
@@ -80,9 +80,7 @@
                                     <variation key="heightClass=regular-widthClass=compact" constant="35"/>
                                 </constraint>
                             </constraints>
-                            <connections>
-                                <action selector="LoadFileBtn_TouchUpInside:" destination="-1" id="178" eventType="touchUpInside"/>
-                            </connections>
+                            <connections/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="74" translatesAutoresizingMaskIntoConstraints="NO">
                             <rect key="frame" x="5" y="492" width="76" height="62"/>
@@ -92,9 +90,7 @@
                             <constraints>
                                 <constraint id="75" firstItem="74" firstAttribute="height" constant="62"/>
                             </constraints>
-                            <connections>
-                                <action selector="GeneratePdfBtn_TouchUpInside:" destination="-1" id="171" eventType="touchUpInside"/>
-                            </connections>
+                            <connections/>
                         </button>
                     </subviews>
                     <constraints>
@@ -139,9 +135,7 @@
                     <constraints>
                         <constraint id="95" firstItem="92" firstAttribute="width" constant="112"/>
                     </constraints>
-                    <connections>
-                        <action selector="EndEditingBtn_TouchUpInside:" destination="-1" id="175" eventType="touchUpInside"/>
-                    </connections>
+                    <connections/>
                 </button>
             </subviews>
             <constraints>

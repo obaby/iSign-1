@@ -15,15 +15,11 @@ namespace iSign.ViewControllers
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton AddTextBtn { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         iSign.ViewControllers.TouchableScrollView ContainerView { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton EditBtn { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton EndEditingBtn { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -48,10 +44,6 @@ namespace iSign.ViewControllers
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.NSLayoutConstraint HelpTopConstraint { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton LabelBtn { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -81,33 +73,24 @@ namespace iSign.ViewControllers
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.NSLayoutConstraint PdfTopConstraint { get; set; }
 
-        [Action ("EndEditingBtn_TouchUpInside:")]
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void EndEditingBtn_TouchUpInside (UIKit.UIButton sender);
+        UIKit.UIButton RotateBtn { get; set; }
 
-        [Action ("GeneratePdfBtn_TouchUpInside:")]
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void GeneratePdfBtn_TouchUpInside (UIKit.UIButton sender);
-
-        [Action ("LoadFileBtn_TouchUpInside:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        partial void LoadFileBtn_TouchUpInside (UIKit.UIButton sender);
+        UIKit.UIButton SignBtn { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
+            if (AddTextBtn != null) {
+                AddTextBtn.Dispose ();
+                AddTextBtn = null;
+            }
+
             if (ContainerView != null) {
                 ContainerView.Dispose ();
                 ContainerView = null;
-            }
-
-            if (EditBtn != null) {
-                EditBtn.Dispose ();
-                EditBtn = null;
-            }
-
-            if (EndEditingBtn != null) {
-                EndEditingBtn.Dispose ();
-                EndEditingBtn = null;
             }
 
             if (GeneratePdfBtn != null) {
@@ -138,11 +121,6 @@ namespace iSign.ViewControllers
             if (HelpTopConstraint != null) {
                 HelpTopConstraint.Dispose ();
                 HelpTopConstraint = null;
-            }
-
-            if (LabelBtn != null) {
-                LabelBtn.Dispose ();
-                LabelBtn = null;
             }
 
             if (LabelHeightConstraint != null) {
@@ -178,6 +156,16 @@ namespace iSign.ViewControllers
             if (PdfTopConstraint != null) {
                 PdfTopConstraint.Dispose ();
                 PdfTopConstraint = null;
+            }
+
+            if (RotateBtn != null) {
+                RotateBtn.Dispose ();
+                RotateBtn = null;
+            }
+
+            if (SignBtn != null) {
+                SignBtn.Dispose ();
+                SignBtn = null;
             }
         }
     }
