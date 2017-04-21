@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using CoreGraphics;
+using iSign.Converters;
 using iSign.Core.ViewModels;
 using iSign.Helpers;
 using MobileCoreServices;
@@ -20,32 +21,44 @@ namespace iSign.ViewControllers
             this.DelayBind (SetBindings);
         }
 
-        void SetBindings ()
+        private void SetBindings ()
         {
             var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
-            set.Bind (EditBtn)
+            set.Bind (SignBtn)
                .To (vm => vm.AddImageCommand);
-            set.Bind (EditBtn)
+            set.Bind (SignBtn)
                .For (v => v.Enabled)
                .To (vm => vm.CanAddSignature);
 
-            set.Bind (LabelBtn)
+            set.Bind (AddTextBtn)
                .To (vm => vm.AddTextCommand);
-            set.Bind (LabelBtn)
+            set.Bind (AddTextBtn)
               .For (v => v.Enabled)
               .To (vm => vm.CanAddText);
 
             set.Bind (GeneratePdfBtn)
+               .To (vm => vm.GeneratePdfCommand);
+            set.Bind (GeneratePdfBtn)
                .For (v => v.Enabled)
                .To (vm => vm.CanGeneratePdf);
+            
+
+            set.Bind (RotateBtn)
+               .For (v => v.Hidden)
+               .To (vm => vm.CanRotate)
+               .WithConversion (new ReverseBooleanConverter ());
+            set.Bind (RotateBtn)
+               .To (vm => vm.RotateCommand);
+
+            set.Bind (LoadFileBtn)
+               .To (vm => vm.LoadFileCommand);
+            set.Bind (LoadFileBtn)
+               .For (v => v.Enabled)
+               .To (vm => vm.CanLoadFile);
 
             set.Apply ();
-        }
-
-        public override void ViewDidLoad ()
-        {
-            base.ViewDidLoad ();
-            ChangeButtonsState (true);
+            Context.OnRotatedImage += ViewModel_OnRotatedImage;
+            Context.OnLoadFile += Context_OnLoadFile;
         }
 
         public override void ViewDidAppear (bool animated)
@@ -55,7 +68,7 @@ namespace iSign.ViewControllers
             NavigationController.NavigationBar.Hidden = true;
         }
 
-        void UpdateConstraints ()
+        private void UpdateConstraints ()
         {
             var iPad = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
             var topConstraint = iPad ? 50 : 25;
@@ -73,7 +86,7 @@ namespace iSign.ViewControllers
             PdfHeightConstraint.Constant = heightConstraint;
         }
        
-        void Converter_ImageCreated (object sender, UIImage e)
+        private void Converter_ImageCreated (object sender, UIImage e)
         {
             _imageView = new UIImageView (e);
             _imageView.RemoveFromSuperview ();
@@ -81,10 +94,9 @@ namespace iSign.ViewControllers
             ContainerView.ContentSize = _imageView.Frame.Size;
         }
 
-
         public int NbRotations { get; private set; } = 0;
 
-        partial void EndEditingBtn_TouchUpInside (UIButton sender)
+        private void ViewModel_OnRotatedImage (object sender, EventArgs e)
         {
             NbRotations++;
             var degrees = NbRotations * 90 * (nfloat)Math.PI / 180;
@@ -95,15 +107,9 @@ namespace iSign.ViewControllers
             ContainerView.Add (_imageView);
             ContainerView.ContentSize = _imageView.Frame.Size;
         }
-        SigningDocViewModel Context => DataContext as SigningDocViewModel;
-        partial void GeneratePdfBtn_TouchUpInside (UIButton sender)
-        {
-            var filename = ContainerView.ToPDF (Context.Filename);
-            var vc = new PDFViewerViewController (Context.Filename);
-            PresentViewController (vc, true, null);
-        }
 
-        void FileDownloaded (string filename)
+        private SigningDocViewModel Context => DataContext as SigningDocViewModel;
+        private void FileDownloaded (string filename)
         {
             UIImage image = null;
             try {
@@ -127,18 +133,9 @@ namespace iSign.ViewControllers
             _imageView.RemoveFromSuperview ();
             ContainerView.Add (_imageView);
             ContainerView.ContentSize = _imageView.Frame.Size;
-            ChangeButtonsState (true);
         }
 
-        private void ChangeButtonsState (bool fileLoaded)
-        {
-            EndEditingBtn.Hidden = !fileLoaded;
-            EditBtn.Enabled = fileLoaded;
-            LabelBtn.Enabled = fileLoaded;
-            GeneratePdfBtn.Enabled = fileLoaded;
-        }
-
-        partial void LoadFileBtn_TouchUpInside (UIButton sender)
+        private void Context_OnLoadFile (object sender, EventArgs e)
         {
             if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) {
                 FileDownloaded ("Pdf/FastFlex.jpg");
@@ -160,8 +157,9 @@ namespace iSign.ViewControllers
                     var client = new WebClient ();
                     Context.Filename = filename;
                     Directory.CreateDirectory (Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL"));
-                    var localpath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL" ,filename);
+                    var localpath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "DL", filename);
                     client.DownloadFile (pArgs.Url, localpath);
+
                     FileDownloaded (localpath);
 
                     pArgs.Url.StopAccessingSecurityScopedResource ();
@@ -171,6 +169,7 @@ namespace iSign.ViewControllers
             };
 
             pickerMenu.ModalPresentationStyle = UIModalPresentationStyle.Popover;
+
             PresentViewController (pickerMenu, true, null);
             UIPopoverPresentationController presentationPopover = pickerMenu.PopoverPresentationController;
             if (presentationPopover != null) {
@@ -179,7 +178,7 @@ namespace iSign.ViewControllers
                 presentationPopover.SourceRect = LoadFileBtn.Frame;
             }
         }
-       
+
         public TouchableScrollView ScrollView => ContainerView;
    }
 }

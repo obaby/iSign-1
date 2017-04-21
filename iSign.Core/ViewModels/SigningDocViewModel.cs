@@ -8,19 +8,32 @@ namespace iSign.Core.ViewModels
     public class SigningDocViewModel : BaseViewModel
     {
         private IDialogService DialogService { get; }
+        private IPdfGeneratorService PdfGeneratorService { get; }
         public SigningViewModel SigningViewModel { get; }
         public string Filename { get; set; }
 
-        public SigningDocViewModel (IViewModelServices viewModelServices, IDialogService dialogService, SigningViewModel signingViewModel) : base (viewModelServices)
+        public SigningDocViewModel (IViewModelServices viewModelServices, IDialogService dialogService, SigningViewModel signingViewModel, IPdfGeneratorService pdfGeneratorService) : base (viewModelServices)
         {
-            AddTextCommand = new MvxCommand (AddLabel);
-            AddImageCommand = new MvxCommand (AddImage);
             DialogService = dialogService;
             SigningViewModel = signingViewModel;
+            PdfGeneratorService = pdfGeneratorService;
+
+            AddTextCommand = new MvxCommand (AddLabel);
+            AddImageCommand = new MvxCommand (AddImage);
+            RotateCommand = new MvxCommand (RotateImage);
+            GeneratePdfCommand = new MvxCommand (GeneratePdf);
+            LoadFileCommand = new MvxCommand (LoadFile);
+
             ChangeButtonEnablity (false);
+            CanLoadFile = true;
         }
 
+        public IMvxCommand AddImageCommand { get; }
         public IMvxCommand AddTextCommand { get; }
+        public IMvxCommand GeneratePdfCommand { get; }
+        public IMvxCommand RotateCommand { get; }
+        public IMvxCommand LoadFileCommand { get; }
+
         private void AddLabel ()
         {
             var context = Mvx.Resolve<DialogTextViewModel> ();
@@ -32,7 +45,6 @@ namespace iSign.Core.ViewModels
             DialogService.ShowTextDialog (context);
         }
 
-        public IMvxCommand AddImageCommand { get; }
         private void AddImage ()
         {
             var context = Mvx.Resolve<SigningViewModel> ();
@@ -44,32 +56,43 @@ namespace iSign.Core.ViewModels
             DialogService.ShowImageDialog (context);
         }
 
-        public void LoadFile (IFileStorage tool)
+        public void GeneratePdf ()
         {
-            tool.DownloadFile (OnFileDownloaded);
+            PdfGeneratorService.Generate (Filename);
         }
 
-        public event EventHandler<string> FileDownloaded;
-        private void OnFileDownloaded (string filename)
+        public event EventHandler OnLoadFile;
+        private void LoadFile ()
         {
-            Filename = filename;
-            FileDownloaded?.Invoke (this, filename);
+            OnLoadFile?.Invoke (this, EventArgs.Empty);
             ChangeButtonEnablity (true);
+        }
+
+        public event EventHandler OnRotatedImage;
+        private void RotateImage ()
+        {
+            OnRotatedImage?.Invoke (this, EventArgs.Empty);
         }
 
         public bool CanGeneratePdf { get; set; }
         public bool CanAddSignature { get; set; }
         public bool CanAddText { get; set; }
+        public bool CanLoadFile { get; set; }
+        public bool CanRotate { get; set; }
 
         private void ChangeButtonEnablity (bool enabled)
         {
             CanAddText = enabled;
             CanAddSignature = enabled;
             CanGeneratePdf = enabled;
+            CanRotate = enabled;
+            CanLoadFile = enabled;
 
             RaisePropertyChanged (() => CanAddText);
             RaisePropertyChanged (() => CanAddSignature);
             RaisePropertyChanged (() => CanGeneratePdf);
+            RaisePropertyChanged (() => CanRotate);
+            RaisePropertyChanged (() => CanLoadFile);
         }
     }
 }

@@ -2,6 +2,7 @@
 using iSign.Core.Services;
 using iSign.Core.ViewModels;
 using iSign.Extensions;
+using iSign.Services.Attributes;
 using iSign.ViewControllers;
 using iSign.Views;
 using UIKit;
@@ -25,11 +26,11 @@ namespace iSign.Service
         public void ShowTextDialog (DialogViewModel context)
         {
             var dialogView = ViewFactory.Create<DialogView> ();
-			ShowDialog (dialogView, context);
+            ShowDialog (dialogView, context);
         }
 
         private bool _dialogViewIsShown;
-       
+
         SignDocumentViewController SignDocumentViewController => ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController as SignDocumentViewController;
 
         private void ShowDialog (IImageView dialogView, DialogViewModel context)
