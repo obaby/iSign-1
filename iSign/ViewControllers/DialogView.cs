@@ -10,29 +10,30 @@ namespace iSign.ViewControllers
 {
     public partial class DialogView : MvxView, IImageView
     {
-
         public DialogView (IntPtr handle) : base (handle)
         {
-            //this.DelayBind (SetBindings);
+            this.DelayBind (SetBindings);
         }
 
         private void SetBindings ()
         {
-            var set = this.CreateBindingSet<DialogView, DialogViewModel> ();
+            var set = this.CreateBindingSet<DialogView, DialogTextViewModel> ();
             set.Bind (OkBtn).To (vm => vm.OkCommand);
             set.Bind (OkBtn).For ("Title").To (vm => vm.OkTxt);
             set.Bind (CancelBtn).To (vm => vm.CancelCommand);
             set.Bind (CancelBtn).For ("Title").To (vm => vm.CancelTxt);
             set.Bind (InputTxt).To (vm => vm.Input);
+            set.Bind (InputTxt)
+               .For (v => v.Placeholder)
+               .To (vm => vm.Placeholder);
             set.Apply ();
+
+            if (ViewModel == null) return;
+            ViewModel.OnOk += ViewModel_OnOk;
+            ViewModel.OnCancel += ViewModel_OnCancel;
         }
 
-        private string Text { get; set; }
-
-        public void StartWith (ImageText imageText)
-        {
-            Text = imageText.Text;
-        }
+        DialogTextViewModel ViewModel => DataContext as DialogTextViewModel;
 
         public override void LayoutSubviews ()
         {
@@ -40,12 +41,6 @@ namespace iSign.ViewControllers
             BorderView.Layer.CornerRadius = 20;
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha (0.3f);
             InputTxt.AutocapitalizationType = UITextAutocapitalizationType.Sentences;
-            OkBtn.SetTitle ("OK", UIControlState.Normal);
-            OkBtn.TouchUpInside += OkBtn_TouchUpInside;
-            CancelBtn.SetTitle ("Cancel", UIControlState.Normal);
-            CancelBtn.TouchUpInside += CancelBtn_TouchUpInside;
-            InputTxt.Placeholder = "Text";
-            InputTxt.Text = Text;
             base.LayoutSubviews ();
         }
 
@@ -67,23 +62,26 @@ namespace iSign.ViewControllers
             return new ImageText { Image = image, Text = InputTxt.Text };
         }
 
-        void OkBtn_TouchUpInside (object sender, EventArgs e)
+        void ViewModel_OnOk (object sender, EventArgs e)
         {
             OkAction?.Invoke ();
             CloseView ();
         }
 
-        void CancelBtn_TouchUpInside (object sender, EventArgs e)
+        void ViewModel_OnCancel (object sender, EventArgs e)
         {
             CancelAction?.Invoke ();
             CloseView ();
         }
 
-        public void CloseView ()
+        private void CloseView ()
         {
-            CancelBtn.TouchUpInside -= CancelBtn_TouchUpInside;
-            OkBtn.TouchUpInside -= OkBtn_TouchUpInside;
             RemoveFromSuperview ();
+        }
+
+        public void StartWith (ImageText imageText)
+        {
+            
         }
     }
 }

@@ -25,9 +25,19 @@ namespace iSign.ViewControllers
             var set = this.CreateBindingSet<SignDocumentViewController, SigningDocViewModel> ();
             set.Bind (EditBtn)
                .To (vm => vm.AddImageCommand);
+            set.Bind (EditBtn)
+               .For (v => v.Enabled)
+               .To (vm => vm.CanAddSignature);
 
             set.Bind (LabelBtn)
                .To (vm => vm.AddTextCommand);
+            set.Bind (LabelBtn)
+              .For (v => v.Enabled)
+              .To (vm => vm.CanAddText);
+
+            set.Bind (GeneratePdfBtn)
+               .For (v => v.Enabled)
+               .To (vm => vm.CanGeneratePdf);
 
             set.Apply ();
         }

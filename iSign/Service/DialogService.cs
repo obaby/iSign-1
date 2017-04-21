@@ -11,32 +11,28 @@ namespace iSign.Service
     public class DialogService : IDialogService
     {
         private IImageView OpenedDialogView { get; set; }
-        public void HideDialog ()
+        private void HideDialog ()
         {
             _dialogViewIsShown = false;
-            if (OpenedDialogView != null) {
-                OpenedDialogView.CloseView ();
-                OpenedDialogView = null;
-            }
         }
 
-        public void ShowImageDialog (IReloadableViewModel context)
+        public void ShowImageDialog (DialogViewModel context)
         {
             var dialogView = new SigningView (SignDocumentViewController.ScrollView.Frame);
             ShowDialog (dialogView, context);
         }
 
-        public void ShowTextDialog ()
+        public void ShowTextDialog (DialogViewModel context)
         {
             var dialogView = ViewFactory.Create<DialogView> ();
-			ShowDialog (dialogView);
+			ShowDialog (dialogView, context);
         }
 
         private bool _dialogViewIsShown;
        
         SignDocumentViewController SignDocumentViewController => ((UINavigationController)UIApplication.SharedApplication.KeyWindow.RootViewController).VisibleViewController as SignDocumentViewController;
 
-        private void ShowDialog (IImageView dialogView, IReloadableViewModel context = null)
+        private void ShowDialog (IImageView dialogView, DialogViewModel context)
         {
             if (_dialogViewIsShown) return;
             var scrollView = SignDocumentViewController.ScrollView;
@@ -72,7 +68,7 @@ namespace iSign.Service
                 scrollView.Add (editableView);
 
                 editableView.OnDoubleTap = () => {
-                    var vm = dialogView.DataContext as IReloadableViewModel;
+                    var vm = dialogView.DataContext as DialogViewModel;
                     vm?.Reload ();
                     reopened = true;
                     _dialogViewIsShown = true;
