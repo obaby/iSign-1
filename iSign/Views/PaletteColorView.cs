@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using CoreGraphics;
+using iSign.Converters;
 using iSign.Core.ViewModels;
 using iSign.Extensions;
 using MvvmCross.Binding.iOS.Views;
@@ -18,7 +19,8 @@ namespace iSign.Views
         public override void WillMoveToSuperview (UIView newsuper)
         {
             base.WillMoveToSuperview (newsuper);
-            BackgroundColor = Context.Color.ToUIColor();
+            var converter = new UIColorConverter ();
+            BackgroundColor = (UIColor) converter.Convert (Context.Texture, null, null, null);
             Context.PropertyChanged -= Context_PropertyChanged;
             Context.PropertyChanged += Context_PropertyChanged;
             var size = (nfloat) Math.Min (Frame.Height, Frame.Width);

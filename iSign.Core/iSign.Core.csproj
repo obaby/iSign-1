@@ -50,6 +50,7 @@
     <Compile Include="ViewModels\SigningViewModel.cs" />
     <Compile Include="ViewModels\DialogTextViewModel.cs" />
     <Compile Include="Services\IPdfGeneratorService.cs" />
+    <Compile Include="ViewModels\Texture.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Platform">

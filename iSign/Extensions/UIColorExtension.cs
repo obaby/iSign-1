@@ -1,13 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using iSign.Services;
 using UIKit;
 
 namespace iSign.Extensions
 {
     public static class UIColorExtension
     {
-        public static UIColor ToUIColor (this string color)
+        private static Dictionary<Color, string> Colors = new Dictionary<Color, string> {
+            { Color.Red, ColorDefinition.Red},
+            { Color.Blue, ColorDefinition.Blue},
+            { Color.Black, ColorDefinition.Black},
+            { Color.Yellow, ColorDefinition.Yellow},
+            { Color.Orange, ColorDefinition.Orange},
+            { Color.White, ColorDefinition.White},
+            { Color.Purple, ColorDefinition.Purple},
+            { Color.Green, ColorDefinition.Green},
+        };
+        public static UIColor ToUIColor (this Color color)
         {
-            var colorString = color.Replace ("#", "");
+            var hexa = Colors [color];
+            var colorString = hexa.Replace ("#", "");
             float red, green, blue;
             UIColor result;
 

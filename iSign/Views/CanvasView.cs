@@ -17,7 +17,17 @@ namespace iSign.Views
         public double HandLineWidth { get; set;} = 2;
         private List<UIImage> PreviousImages { get; set; }
         public UIImage DrawingImage { get; private set;}
-        public UIColor DrawColor { get; set;}
+        UIColor drawColor;
+
+        public UIColor DrawColor {
+            get {
+                return drawColor;
+            }
+
+            set {
+                drawColor = value;
+            }
+        }
 
         public CanvasView (CGRect rect)
         {

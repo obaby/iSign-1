@@ -13,21 +13,21 @@ namespace iSign.Core.ViewModels
         public PaletteViewModel (IViewModelServices viewModelServices) : base(viewModelServices)
         {
             Subscribe<PaletteColorSelectedMessage> (PaletteColorSelectedMessageReceived);
-            var colors = new List<string> {
-                Colors.Red,
-                Colors.Blue,
-                Colors.Yellow,
-                Colors.Green,
-                Colors.Purple,
-                Colors.Orange,
-                Colors.Black,
-                Colors.White
+            var textures = new List<Texture> {
+                new Texture{ Color = Color.Red},
+                new Texture{ Color = Color.Blue},
+                new Texture{ Color = Color.Yellow},
+                new Texture{ Color = Color.Green},
+                new Texture{ Path = "PencilTexture.png"},
+                new Texture{ Path = "BluePenTexture.png"},
+                new Texture{ Color = Color.Black},
+                new Texture{ Color = Color.White},
             };
 
             var list = new List<PaletteColorViewModel> ();
             var i = 0;
-            foreach (var color in colors) {
-                var vm = new PaletteColorViewModel (viewModelServices, color, i);
+            foreach (var texture in textures) {
+                var vm = new PaletteColorViewModel (viewModelServices, texture, i);
                 list.Add (vm);
                 i++;
             }
@@ -37,10 +37,10 @@ namespace iSign.Core.ViewModels
             PointThickness = 2;
         }
 
-        public void SetDefaultColor (string defaultColor)
+        public void SetDefaultColor (Texture defaultTexture)
         {
             foreach (var vm in PaletteColors) {
-                if (vm.Color == defaultColor) {
+                if (vm.Texture == defaultTexture) {
                     vm.IsSelected = true;
                     return;
                 }
@@ -63,10 +63,10 @@ namespace iSign.Core.ViewModels
             SelectedColor = PaletteColors.First (x => x.Id == message.Id);
         }
 
-        public void SetSelectedColor (string color)
+        public void SetSelectedColor (Texture texture)
         {
             SelectedColor?.Unselect ();
-            SelectedColor = PaletteColors.First (x => x.Color == color);
+            SelectedColor = PaletteColors.First (x => x.Texture == texture);
             SelectedColor.Select ();
         }
 
