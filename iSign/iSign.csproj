@@ -124,7 +124,6 @@
     <Folder Include="Views\" />
     <Folder Include="ViewControllers\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Model\" />
     <Folder Include="IoC\" />
     <Folder Include="Resources\Pdf\" />
     <Folder Include="Service\" />
@@ -156,8 +155,6 @@
       <DependentUpon>SignDocumentViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CGRectHelpers.cs" />
-    <Compile Include="Model\Line.cs" />
-    <Compile Include="Model\LinePoint.cs" />
     <Compile Include="ViewControllers\DialogView.cs" />
     <Compile Include="ViewControllers\DialogView.designer.cs">
       <DependentUpon>DialogView.cs</DependentUpon>
@@ -207,6 +204,7 @@
     <BundleResource Include="Resources\Pdf\FastFlex.jpg" />
     <BundleResource Include="Resources\Pdf\Timesheet.pdf" />
     <BundleResource Include="Resources\PencilTexture.png" />
+    <BundleResource Include="Resources\BluePenTexture.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="dropboxdropins">

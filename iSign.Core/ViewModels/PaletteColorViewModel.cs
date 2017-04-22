@@ -7,13 +7,14 @@ namespace iSign.Core.ViewModels
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public class PaletteColorViewModel : BaseViewModel
     {
-        public string Color { get; }
+        public Texture Texture { get; }
         public int Id { get; }
-        public PaletteColorViewModel (IViewModelServices viewModelService, string color, int id) : base(viewModelService)
+        public PaletteColorViewModel (IViewModelServices viewModelService, Texture texture, int id) : base(viewModelService)
         {
             Id = id;
-            Color = color;
+            Texture = texture;
         }
+
         bool _isSelected;
 
         public bool IsSelected {

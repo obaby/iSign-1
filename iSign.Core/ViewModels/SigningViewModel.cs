@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using iSign.Core.Services;
 using iSign.Services;
 
@@ -8,7 +8,7 @@ namespace iSign.Core.ViewModels
     public class SigningViewModel : DialogViewModel
     {
         public PaletteViewModel PaletteContext { get; }
-        private const string DefaultColor = Colors.Black;
+        private Texture DefaultColor = new Texture { Color = Color.Black };
 
         public SigningViewModel (IViewModelServices viewModelService, PaletteViewModel paletteContext) : base (viewModelService)
         {
@@ -29,7 +29,7 @@ namespace iSign.Core.ViewModels
             }
         }
 
-        public string DrawingColor => PaletteContext.SelectedColor?.Color;
+        public Texture DrawingColor => PaletteContext.SelectedColor?.Texture;
         public float Thickness => PaletteContext.PointThickness;
 
         public override void Reload ()
