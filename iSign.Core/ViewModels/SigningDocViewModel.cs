@@ -61,11 +61,10 @@ namespace iSign.Core.ViewModels
             PdfGeneratorService.Generate (Filename);
         }
 
-        public event EventHandler OnLoadFile;
+        public event EventHandler<Action> OnLoadFile;
         private void LoadFile ()
         {
-            OnLoadFile?.Invoke (this, EventArgs.Empty);
-            ChangeButtonEnablity (true);
+            OnLoadFile?.Invoke (this, () => ChangeButtonEnablity (true));
         }
 
         public event EventHandler OnRotatedImage;

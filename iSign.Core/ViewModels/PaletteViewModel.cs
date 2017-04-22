@@ -14,14 +14,14 @@ namespace iSign.Core.ViewModels
         {
             Subscribe<PaletteColorSelectedMessage> (PaletteColorSelectedMessageReceived);
             var textures = new List<Texture> {
-                new Texture{ Color = Color.Red},
-                new Texture{ Color = Color.Blue},
-                new Texture{ Color = Color.Yellow},
-                new Texture{ Color = Color.Green},
-                new Texture{ Path = "PencilTexture.png"},
-                new Texture{ Path = "BluePenTexture.png"},
-                new Texture{ Color = Color.Black},
-                new Texture{ Color = Color.White},
+                new Texture { Color = Color.Black},
+                new Texture { Color = Color.Red},
+                new Texture { Color = Color.Blue},
+                new Texture { Path = "BlackPenTexture.png"},
+                new Texture { Path = "RedPenTexture.png"},
+                new Texture { Path = "BluePenTexture.png"},
+                new Texture { Path = "PencilTexture.png"},
+                new Texture { Color = Color.White}
             };
 
             var list = new List<PaletteColorViewModel> ();

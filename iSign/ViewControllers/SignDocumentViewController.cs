@@ -135,11 +135,12 @@ namespace iSign.ViewControllers
             ContainerView.ContentSize = _imageView.Frame.Size;
         }
 
-        private void Context_OnLoadFile (object sender, EventArgs e)
+        private void Context_OnLoadFile (object sender, Action e)
         {
             if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) {
                 FileDownloaded ("Pdf/FastFlex.jpg");
                 Context.Filename = "FastFlex.jpg";
+                e ();
                 return;
             }
             var allowedUtis = new string [] {
@@ -161,7 +162,7 @@ namespace iSign.ViewControllers
                     client.DownloadFile (pArgs.Url, localpath);
 
                     FileDownloaded (localpath);
-
+                    e ();
                     pArgs.Url.StopAccessingSecurityScopedResource ();
                 };
 
