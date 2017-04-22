@@ -205,6 +205,8 @@
     <BundleResource Include="Resources\Pdf\Timesheet.pdf" />
     <BundleResource Include="Resources\PencilTexture.png" />
     <BundleResource Include="Resources\BluePenTexture.png" />
+    <BundleResource Include="Resources\BlackPenTexture.png" />
+    <BundleResource Include="Resources\RedPenTexture.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="dropboxdropins">
