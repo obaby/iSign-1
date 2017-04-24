@@ -13,7 +13,7 @@ namespace iSign.Views
         public override void LayoutSubviews ()
         {
             base.LayoutSubviews ();
-            Layer.CornerRadius = Frame.Width / 2;
+            //Layer.CornerRadius = Frame.Width / 2;
         }
     }
 }
