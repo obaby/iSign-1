@@ -104,9 +104,6 @@
     <Reference Include="MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.iOS10\MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="Dropins.Chooser.iOS">
-      <HintPath>..\Components\dropboxdropins-1.2.1.4\lib\ios-unified\Dropins.Chooser.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="MvvmCross.Plugins.Messenger">
       <HintPath>..\packages\MvvmCross.Plugin.Messenger.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.Messenger.dll</HintPath>
     </Reference>
@@ -141,7 +138,6 @@
     <Folder Include="Views\" />
     <Folder Include="ViewControllers\" />
     <Folder Include="Helpers\" />
-    <Folder Include="IoC\" />
     <Folder Include="Resources\Pdf\" />
     <Folder Include="Service\" />
     <Folder Include="Extensions\" />
@@ -186,8 +182,6 @@
     <Compile Include="ViewControllers\PDFViewerViewController.designer.cs">
       <DependentUpon>PDFViewerViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="IoC\DropBoxFileStorage.cs" />
-    <Compile Include="IoC\FileStorageChooser.cs" />
     <Compile Include="Views\PaletteView.cs" />
     <Compile Include="Views\PaletteColorView.cs" />
     <Compile Include="Extensions\UIColorExtension.cs" />
@@ -224,12 +218,6 @@
     <BundleResource Include="Resources\BluePenTexture.png" />
     <BundleResource Include="Resources\BlackPenTexture.png" />
     <BundleResource Include="Resources\RedPenTexture.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <XamarinComponentReference Include="dropboxdropins">
-      <Version>1.2.1.4</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
