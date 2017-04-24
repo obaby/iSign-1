@@ -98,7 +98,8 @@ namespace iSign.Views
             var topLeft = this.GetCenter (CanvasView.Frame);
             var topRight = new CGPoint (topLeft.X + CanvasView.Frame.Width, topLeft.Y);
             CanvasView.Frame = new CGRect (topLeft, CanvasView.Frame.Size);
-            CanvasView.Layer.BorderWidth = 5;
+            CanvasView.Layer.BorderWidth = 2;
+            CanvasView.Layer.BorderColor = UIColor.FromRGB (42, 56, 93).CGColor;
             CanvasView.Layer.CornerRadius = 10;
             CanvasView.Transform = CGAffineTransform.Scale (CGAffineTransform.MakeIdentity (), 0.001f, 0.001f);
             Add (CanvasView);
