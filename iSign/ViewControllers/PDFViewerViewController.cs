@@ -54,6 +54,7 @@ namespace iSign.ViewControllers
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+            View.BackgroundColor = UIColor.FromRGB (42, 56, 93);
             FilenameTextfield.Text = Filename;
             var path = GetPath (Filename);
             var uriPath = new Uri (path);

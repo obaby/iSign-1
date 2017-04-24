@@ -77,6 +77,8 @@ namespace iSign.Core.ViewModels
             PublishMessage (new UndoMessage (this));
         }
 
+        public bool UndoEnabled { get; set; }
+
         public string UndoText => "Undo";
 
         private float _pointThickness;

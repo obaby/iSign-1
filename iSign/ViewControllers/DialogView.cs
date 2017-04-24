@@ -37,8 +37,6 @@ namespace iSign.ViewControllers
 
         public override void LayoutSubviews ()
         {
-            ContainerView.Layer.CornerRadius = 20;
-            BorderView.Layer.CornerRadius = 20;
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha (0.3f);
             InputTxt.AutocapitalizationType = UITextAutocapitalizationType.Sentences;
             base.LayoutSubviews ();

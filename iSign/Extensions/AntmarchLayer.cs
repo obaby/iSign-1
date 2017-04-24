@@ -21,7 +21,7 @@ namespace iSign.Extensions
             LineJoin = JoinRound;
             LineDashPattern = new [] { NSNumber.FromNInt (2), NSNumber.FromNInt (5), NSNumber.FromNInt (5) };
 
-            var path = UIBezierPath.FromRoundedRect (Bounds, 15);
+            var path = UIBezierPath.FromRoundedRect (Bounds, 0);
             Path = path.CGPath;
 
             if (AnimationForKey ("linePhase") != null) {

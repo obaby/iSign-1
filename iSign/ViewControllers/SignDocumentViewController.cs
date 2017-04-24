@@ -42,7 +42,6 @@ namespace iSign.ViewControllers
                .For (v => v.Enabled)
                .To (vm => vm.CanGeneratePdf);
             
-
             set.Bind (RotateBtn)
                .For (v => v.Hidden)
                .To (vm => vm.CanRotate)
@@ -64,6 +63,7 @@ namespace iSign.ViewControllers
         public override void ViewDidAppear (bool animated)
         {
             base.ViewDidAppear (animated);
+            MenuView.BackgroundColor = UIColor.FromRGB(42, 56, 93);
             UpdateConstraints ();
             NavigationController.NavigationBar.Hidden = true;
         }
@@ -76,11 +76,11 @@ namespace iSign.ViewControllers
 
             HelpTopConstraint.Constant = topConstraint;
             HelpHeightConstraint.Constant = heightConstraint;
-            HandTopConstraint.Constant = topConstraint;
-            HandHeightConstraint.Constant = heightConstraint;
-            LabelTopConstraint.Constant = topConstraint;
-            LabelHeightConstraint.Constant = heightConstraint;
-            LoadTopConstrain.Constant = topConstraint;
+            SignTopConstraint.Constant = topConstraint;
+            SignHeightConstraint.Constant = heightConstraint;
+            AddTextTopConstraint.Constant = topConstraint;
+            AddTextHeightConstraint.Constant = heightConstraint;
+            LoadTopConstraint.Constant = topConstraint;
             LoadHeightConstraint.Constant = heightConstraint;
             PdfTopConstraint.Constant = topConstraint;
             PdfHeightConstraint.Constant = heightConstraint;

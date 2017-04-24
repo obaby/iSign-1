@@ -71,6 +71,12 @@ namespace iSign.Extensions
             return self;
         }
 
+        public static UIView BelowThisView (this UIView self, UIView relativeView, nfloat delta)
+        {
+            self.Frame = new CGRect (new CGPoint (self.Frame.X, relativeView.Frame.Y + relativeView.Frame.Height     + delta), self.Frame.Size);
+            return self;
+        }
+
         public static UIView AtTheBeginingThisView (this UIView self, UIView relativeView, nfloat delta)
         {
             self.Frame = new CGRect (new CGPoint (relativeView.Frame.X + delta, relativeView.Frame.Y), self.Frame.Size);

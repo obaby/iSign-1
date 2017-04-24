@@ -19,19 +19,19 @@ namespace iSign.ViewControllers
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint AddTextHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint AddTextTopConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         iSign.ViewControllers.TouchableScrollView ContainerView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton GeneratePdfBtn { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.NSLayoutConstraint HandHeightConstraint { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.NSLayoutConstraint HandTopConstraint { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -47,14 +47,6 @@ namespace iSign.ViewControllers
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.NSLayoutConstraint LabelHeightConstraint { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.NSLayoutConstraint LabelTopConstraint { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton LoadFileBtn { get; set; }
 
         [Outlet]
@@ -63,7 +55,11 @@ namespace iSign.ViewControllers
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.NSLayoutConstraint LoadTopConstrain { get; set; }
+        UIKit.NSLayoutConstraint LoadTopConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView MenuView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -81,11 +77,29 @@ namespace iSign.ViewControllers
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton SignBtn { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint SignHeightConstraint { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.NSLayoutConstraint SignTopConstraint { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (AddTextBtn != null) {
                 AddTextBtn.Dispose ();
                 AddTextBtn = null;
+            }
+
+            if (AddTextHeightConstraint != null) {
+                AddTextHeightConstraint.Dispose ();
+                AddTextHeightConstraint = null;
+            }
+
+            if (AddTextTopConstraint != null) {
+                AddTextTopConstraint.Dispose ();
+                AddTextTopConstraint = null;
             }
 
             if (ContainerView != null) {
@@ -96,16 +110,6 @@ namespace iSign.ViewControllers
             if (GeneratePdfBtn != null) {
                 GeneratePdfBtn.Dispose ();
                 GeneratePdfBtn = null;
-            }
-
-            if (HandHeightConstraint != null) {
-                HandHeightConstraint.Dispose ();
-                HandHeightConstraint = null;
-            }
-
-            if (HandTopConstraint != null) {
-                HandTopConstraint.Dispose ();
-                HandTopConstraint = null;
             }
 
             if (HelpButton != null) {
@@ -123,16 +127,6 @@ namespace iSign.ViewControllers
                 HelpTopConstraint = null;
             }
 
-            if (LabelHeightConstraint != null) {
-                LabelHeightConstraint.Dispose ();
-                LabelHeightConstraint = null;
-            }
-
-            if (LabelTopConstraint != null) {
-                LabelTopConstraint.Dispose ();
-                LabelTopConstraint = null;
-            }
-
             if (LoadFileBtn != null) {
                 LoadFileBtn.Dispose ();
                 LoadFileBtn = null;
@@ -143,9 +137,14 @@ namespace iSign.ViewControllers
                 LoadHeightConstraint = null;
             }
 
-            if (LoadTopConstrain != null) {
-                LoadTopConstrain.Dispose ();
-                LoadTopConstrain = null;
+            if (LoadTopConstraint != null) {
+                LoadTopConstraint.Dispose ();
+                LoadTopConstraint = null;
+            }
+
+            if (MenuView != null) {
+                MenuView.Dispose ();
+                MenuView = null;
             }
 
             if (PdfHeightConstraint != null) {
@@ -166,6 +165,16 @@ namespace iSign.ViewControllers
             if (SignBtn != null) {
                 SignBtn.Dispose ();
                 SignBtn = null;
+            }
+
+            if (SignHeightConstraint != null) {
+                SignHeightConstraint.Dispose ();
+                SignHeightConstraint = null;
+            }
+
+            if (SignTopConstraint != null) {
+                SignTopConstraint.Dispose ();
+                SignTopConstraint = null;
             }
         }
     }

@@ -25,7 +25,6 @@ namespace iSign.Views
             Context.PropertyChanged += Context_PropertyChanged;
             var size = (nfloat) Math.Min (Frame.Height, Frame.Width);
             Frame = new CGRect (Frame.Location, new CGSize (size, size));
-            Layer.CornerRadius = size / 2;
         }
 
         private void Tapped ()

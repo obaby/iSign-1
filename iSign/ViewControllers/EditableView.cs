@@ -20,11 +20,11 @@ namespace iSign.ViewControllers
         private CircleButton EditSignatureButton { get; set; }
         private CircleButton OkButton { get; set; }
 
-        private UIColor DeleteButtonColor => UIColor.FromRGB (175, 68, 72);
+        private UIColor DeleteButtonColor => UIColor.FromRGB (195, 13, 13);
         private UIColor EditSignatureButtonColor => UIColor.FromRGB (42, 56, 93);
        // private UIColor OkButtonColor => UIColor.FromRGB (36, 212, 255);
-        private UIColor OkButtonColor => UIColor.FromRGB (144, 229, 198);
-        private UIColor BorderColor => UIColor.FromRGB (42, 56, 93);
+        private UIColor OkButtonColor => UIColor.FromRGB (50, 122, 56);
+        private UIColor BorderColor => UIColor.FromRGB (119, 119, 119);
 
         public EditableView (CGRect rect) : base (rect)
         {
@@ -76,17 +76,18 @@ namespace iSign.ViewControllers
         public override void LayoutSubviews ()
         {
             base.LayoutSubviews ();
-            DeleteButton.AtTheBeginingThisView (this, 10)
-                        .AboveThisView (this, 20);
+
+            OkButton.NextToThisView (this, 5);
+            if (OkButton.Superview == null)
+                Superview.Add (OkButton);
+            
+            DeleteButton.NextToThisView (this, 5)
+                        .BelowThisView (OkButton, 10);
             if (DeleteButton.Superview == null)
                 Superview.Add (DeleteButton);
 
-            OkButton.AtTheEndThisView (this, 10)
-                    .AboveThisView (this, 20);
-            if (OkButton.Superview == null)
-                Superview.Add (OkButton);
-
-            EditSignatureButton.BeforeThisView (OkButton, 10);
+            EditSignatureButton.NextToThisView (this, 5)
+                               .BelowThisView (DeleteButton, 10);
             if (EditSignatureButton.Superview == null)
                 Superview.Add (EditSignatureButton);
         }

@@ -9,8 +9,8 @@ namespace iSign.Views
 {
     public sealed class PaletteView : MvxView
     {
-        private int Margin => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 2 : 10;
-        private int XMargin => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 15 : 40;
+        private int Margin => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 5 : 10;
+        private int XMargin => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 15 : 30;
         private UIButton UndoButton { get; }
         private UISlider ThicknessSlider { get; }
         public PaletteView ()
