@@ -16,7 +16,7 @@ namespace iSign.Extensions
         public override void LayoutSublayers ()
         {
             Frame = View.Bounds;
-            LineWidth = 2;
+            LineWidth = 1;
             FillColor = UIColor.Clear.CGColor;
             LineJoin = JoinRound;
             LineDashPattern = new [] { NSNumber.FromNInt (2), NSNumber.FromNInt (5), NSNumber.FromNInt (5) };
@@ -34,6 +34,8 @@ namespace iSign.Extensions
                 animation.RepeatCount = 10000;
                 AddAnimation (animation, "linePhase");
             }
+            ShadowOpacity = 0.8f;
+            ShadowOffset = new CoreGraphics.CGSize (3, 3);
             base.LayoutSublayers ();
         }
     }

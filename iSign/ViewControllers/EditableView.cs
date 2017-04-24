@@ -20,22 +20,28 @@ namespace iSign.ViewControllers
         private CircleButton EditSignatureButton { get; set; }
         private CircleButton OkButton { get; set; }
 
+        private UIColor DeleteButtonColor => UIColor.FromRGB (175, 68, 72);
+        private UIColor EditSignatureButtonColor => UIColor.FromRGB (42, 56, 93);
+       // private UIColor OkButtonColor => UIColor.FromRGB (36, 212, 255);
+        private UIColor OkButtonColor => UIColor.FromRGB (144, 229, 198);
+        private UIColor BorderColor => UIColor.FromRGB (42, 56, 93);
+
         public EditableView (CGRect rect) : base (rect)
         {
             DeleteButton = new CircleButton {
-                BackgroundColor = UIColor.Red
+                BackgroundColor = DeleteButtonColor
             };
             OkButton = new CircleButton {
-                BackgroundColor = UIColor.Green
+                BackgroundColor = OkButtonColor
             };
             EditSignatureButton = new CircleButton {
-                BackgroundColor = UIColor.Blue
+                BackgroundColor = EditSignatureButtonColor
             };
 
             DeleteButton.TouchUpInside += DeleteButton_TouchUpInside;
             OkButton.TouchUpInside += OkButton_TouchUpInside;
             EditSignatureButton.TouchUpInside += EditSignatureButton_TouchUpInside;
-            
+
             DragGesture = new UIPanGestureRecognizer (ViewDragged) {
                 MinimumNumberOfTouches = 1
             };
@@ -124,8 +130,7 @@ namespace iSign.ViewControllers
             var transform = CGAffineTransform.MakeIdentity ();
             transform.Scale (scale, scale);
             ImageView.Transform = transform;
-            if (ImageView.Frame.Size.IsSmallerThan (LimitSize))
-            {
+            if (ImageView.Frame.Size.IsSmallerThan (LimitSize)) {
                 ImageView.Transform = _previousTransform;
                 return;
             }
@@ -154,7 +159,7 @@ namespace iSign.ViewControllers
 
         private void DeleteButton_TouchUpInside (object sender, EventArgs args)
         {
-	        Remove ();
+            Remove ();
         }
 
         private void ViewDoubleTappedWith2Fingers (UITapGestureRecognizer tapInfo)
@@ -216,7 +221,7 @@ namespace iSign.ViewControllers
                 break;
             case ViewState.Editing:
                 this.UnantMarch ();
-                this.AntMarch (UIColor.Blue);
+                this.AntMarch (BorderColor);
                 ChangeButtonsVisibility (true);
                 ChangeGestureEnablity (true);
                 break;
