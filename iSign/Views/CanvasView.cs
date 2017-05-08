@@ -6,7 +6,7 @@ using UIKit;
 
 namespace iSign.Views
 {
-    public sealed class CanvasView : UIImageView
+    public sealed class CanvasView : UIView
     {
         // ReSharper disable once InconsistentNaming
         private const double π = Math.PI;
@@ -14,11 +14,24 @@ namespace iSign.Views
         public double ForceSensitivity { get; set; } = 2;
         private const double TiltThreshold = π / 6; // 30°
         private const double MinLineWidth = 1;
-        public double HandLineWidth { get; set;} = 2;
+        public double HandLineWidth { get; set; } = 2;
         private List<UIImage> PreviousImages { get; set; }
-        public UIImage DrawingImage { get; private set;}
+        public UIImage DrawingImage { get; private set; }
         UIColor drawColor;
+        UIImage _image;
 
+        private UIImage Image {
+            get {
+                return _image;
+            }
+
+            set {
+                _image = value;
+                ImageView.Image = _image;
+            }
+        }
+
+        private UIImageView ImageView { get; set; }
         public UIColor DrawColor {
             get {
                 return drawColor;
@@ -35,8 +48,11 @@ namespace iSign.Views
             BackgroundColor = UIColor.White;
             Frame = rect;
             PreviousImages = new List<UIImage> ();
+            ImageView = new UIImageView ();
+            ImageView.Frame = Frame;
+            AddSubview (ImageView);
         }
-       
+
         public override void TouchesMoved (Foundation.NSSet touches, UIEvent evt)
         {
             base.TouchesMoved (touches, evt);
@@ -79,7 +95,8 @@ namespace iSign.Views
                 Image = new UIImage ();
                 DrawingImage = new UIImage ();
                 PreviousImages = new List<UIImage> ();
-                return; }
+                return;
+            }
             PreviousImages.RemoveAt (PreviousImages.Count - 1);
             Image = PreviousImages [PreviousImages.Count - 1];
             DrawingImage = Image;
@@ -176,7 +193,7 @@ namespace iSign.Views
                 lineWidth = touch.Force * ForceSensitivity;
             }
 
-            return (nfloat) lineWidth;
+            return (nfloat)lineWidth;
         }
 
         public void ClearCanvas (bool animated)
@@ -191,6 +208,27 @@ namespace iSign.Views
             } else {
                 Image = null;
                 DrawingImage = null;
+            }
+        }
+
+        public override void Draw (CGRect rect)
+        {
+            base.Draw (rect);
+            using (var context = UIGraphics.GetCurrentContext ()) {
+
+                //set up drawing attributes
+                context.SetLineWidth (2);
+
+                context.SetStrokeColor (UIColor.Black.CGColor);
+                //create geometry
+                var path = new CGPath ();
+
+                path.AddLines (new CGPoint []{
+                    new CGPoint (0, Frame.Height / 2 ),
+                    new CGPoint (Frame.Width, Frame.Height / 2)});
+
+                context.AddPath (path);
+                context.StrokePath ();
             }
         }
     }

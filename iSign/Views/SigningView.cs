@@ -23,8 +23,9 @@ namespace iSign.Views
         public SigningView (CGRect bounds) : base (bounds)
         {
             Frame = bounds;
-            var size = Frame.Height * 0.75;
-            CanvasView = new CanvasView (new CGRect(0, 0, size, size));
+            var height = Frame.Height * 0.75;
+            var width = Frame.Width * 0.75;
+            CanvasView = new CanvasView (new CGRect(0, 0, width, height));
             CanvasView.OnLineAdded += CanvasView_OnLineAdded;
             BackgroundColor = UIColor.FromRGB (0, 153, 255).ColorWithAlpha(0.3f);
             OkButton = new UIButton ();
@@ -120,7 +121,7 @@ namespace iSign.Views
             var height = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 30 : 50;
             PaletteView.Frame = new CGRect (Frame.X, Frame.Height - height, Frame.Width, height);
             PaletteView.Layout ();
-            Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () =>
+            Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () => 
                      Superview.Add (PaletteView), null);
         }
 
@@ -137,7 +138,7 @@ namespace iSign.Views
         public Action OkAction { get; set;}
         public Action CancelAction { get; set;}
 
-        public CGSize MinimumSize => new CGSize (100, 100);
+        public CGSize MinimumSize => new CGSize (50, 50);
 
         private void CloseView ()
         {
