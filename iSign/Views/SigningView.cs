@@ -121,7 +121,7 @@ namespace iSign.Views
             var height = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 30 : 50;
             PaletteView.Frame = new CGRect (Frame.X, Frame.Height - height, Frame.Width, height);
             PaletteView.Layout ();
-            Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () =>
+            Animate (0.5, 0.2, UIViewAnimationOptions.CurveLinear, () => 
                      Superview.Add (PaletteView), null);
         }
 
